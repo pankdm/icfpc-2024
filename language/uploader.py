@@ -1,6 +1,6 @@
 import os
 import sys
-from requests import post
+from requests import post, exceptions
 from dotenv import load_dotenv
 from interpreter import ICFPInterpreter
 from parser import decode_token, encode_token
@@ -17,15 +17,19 @@ def read_and_send_solution(name, path, num):
             s = f.read()
             # print (s)
             command = encode_token(f"solve {name}{num} {s}")
-            resp = post(
-                "https://boundvariable.space/communicate",
-                data=command,
-                headers={"Authorization": f"Bearer {os.environ["ICFPC_TOKEN"]}"}
-            )
-            print (f"  >> got {resp.text}")
-            encoded = decode_token(resp.text)
-            print (encoded)
-            sleep(3.01)
+            try:
+                resp = post(
+                    "https://boundvariable.space/communicate",
+                    data=command,
+                    headers={"Authorization": f"Bearer {os.environ["ICFPC_TOKEN"]}"}
+                )
+                re.raise_for_status()
+                print (f"  >> got {resp.text}")
+                encoded = decode_token(resp.text)
+                print (encoded)
+                sleep(3.01)
+            except exceptions.RequestException as e:
+                print("Error: ", e)
 
 
 
