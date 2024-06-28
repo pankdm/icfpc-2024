@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  ui:
+    container_name: icfpc2024-ui
+    volumes:
+      - ./ui/:/src
+      - /src/node_modules   # ignore node_modules
+    build:
+      context: .
+      dockerfile: Dockerfile.ui
+    command: make start-ui
+    ports:
+      - "5173:5173"
+
+  server:
+    container_name: icfpc2024-server
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    command: make start-server
+    volumes:
+      - .:/src
+      - /src/ui  # ignore all UI
+    ports:
+      - "8000:8000"

@@ -1,0 +1,5 @@
+FROM node:alpine
+
+WORKDIR /src
+RUN apk add make
+RUN npm i -g pnpm
