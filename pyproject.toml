@@ -1,0 +1,16 @@
+[tool.poetry]
+package-mode = false
+name = "icfpc-2024"
+version = "1.0.0"
+description = "ICFPC project of team Snakes, Monkeys, and Two Smoking Lambdas"
+authors = ["Oleg Godovykh <oleg.godovykh@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
