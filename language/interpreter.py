@@ -64,7 +64,11 @@ class LambdaNode(ASTNode):
         self.env = env if env is not None else {}
 
     def __str__(self):
-        return f"(λ var_{self.var_num} {self.body} [{self.env}])"
+        if self.env:
+            env_str = f" {self.env}"
+        else:
+            env_str = ""
+        return f"(λ var_{self.var_num} {self.body}{env_str})"
 
 class VariableNode(ASTNode):
     def __init__(self, var_num):
