@@ -1,26 +1,33 @@
 from dataclasses import dataclass
 
+OFFSET = 33
+BASE = 94
+FROM_CHARS = "".join(chr(x) for x in range(OFFSET, OFFSET + BASE))
+TO_CHARS = """abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!"#$%&'()*+,-./:;<=>?@[\\]^_`|~ \n"""
+DECODE = str.maketrans(FROM_CHARS, TO_CHARS)
+ENCODE = str.maketrans(TO_CHARS, FROM_CHARS)
+
 class ASTNode:
     pass
 
 class BooleanNode(ASTNode):
     def __init__(self, value):
         self.value = value
-    
+
     def __str__(self):
         return str(self.value)
 
 class IntegerNode(ASTNode):
     def __init__(self, value):
         self.value = value
-    
+
     def __str__(self):
         return str(self.value)
 
 class StringNode(ASTNode):
     def __init__(self, value):
         self.value = value
-    
+
     def __str__(self):
         return repr(self.value)
 
@@ -28,7 +35,7 @@ class UnaryOpNode(ASTNode):
     def __init__(self, op, expr):
         self.op = op
         self.expr = expr
-    
+
     def __str__(self):
         return f"({self.op} {self.expr})"
 
@@ -46,7 +53,7 @@ class IfNode(ASTNode):
         self.condition = condition
         self.true_branch = true_branch
         self.false_branch = false_branch
-    
+
     def __str__(self):
         return f"(? {self.condition} {self.true_branch} {self.false_branch})"
 
@@ -55,14 +62,14 @@ class LambdaNode(ASTNode):
         self.var_num = var_num
         self.body = body
         self.env = env if env is not None else {}
-    
+
     def __str__(self):
         return f"(λ var_{self.var_num} {self.body} [{self.env}])"
 
 class VariableNode(ASTNode):
     def __init__(self, var_num):
         self.var_num = var_num
-    
+
     def __str__(self):
         return f"var_{self.var_num}"
 
@@ -261,24 +268,23 @@ class ICFPInterpreter:
         return self.evaluate(ast, eval_context), eval_context
 
     def base94_to_int(self, s):
-        return sum((ord(c) - 33) * (94 ** i) for i, c in enumerate(reversed(s)))
+        return sum((ord(c) - OFFSET) * (BASE ** i) for i, c in enumerate(reversed(s)))
 
     def int_to_base94(self, n):
         if n == 0:
             return '!'
         digits = []
         while n:
-            digits.append(chr((n % 94) + 33))
-            n //= 94
+            digits.append(chr((n % BASE) + OFFSET))
+            n //= BASE
         return self.decode_string(''.join(reversed(digits)))
 
     def decode_string(self, s):
-        charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\"#$%&'()*+,-./:;<=>?@[\\]^_`|~ \n"
-        return ''.join(charset[ord(c) - 33] for c in s)
+        return s.translate(DECODE)
 
     def encode_string(self, s):
-        charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\"#$%&'()*+,-./:;<=>?@[\\]^_`|~ \n"
-        return ''.join(chr(charset.index(c) + 33) for c in s)
+        return s.translate(ENCODE)
+
 
 if __name__ == "__main__":
     interpreter = ICFPInterpreter()
