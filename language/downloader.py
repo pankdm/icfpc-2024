@@ -48,12 +48,13 @@ def download_problem(name: str, number: int):
 
 
 if __name__ == "__main__":
-    assert len(sys.argv) == 3
-    _, problem, upto = sys.argv
+    assert len(sys.argv) == 4
+    _, problem, start, upto = sys.argv
     upto = int(upto)
+    start = int(start)
 
-    bar = Bar(f"Downloading {problem}", max=upto)
-    for i in range(1, upto + 1):
+    bar = Bar(f"Downloading {problem}", max=(upto - start))
+    for i in range(start, upto + 1):
         if download_problem(problem, i):
             bar.next()
             sleep(3.01)

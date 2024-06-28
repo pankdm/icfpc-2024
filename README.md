@@ -63,6 +63,12 @@ Modules:
 To download problems:
 
 ```
-python3 language/downloader.py lambdaman 21
-python3 language/downloader.py spaceship 25
+python3 language/downloader.py lambdaman 1 21
+python3 language/downloader.py spaceship 1 25
+```
+
+To upload solutions:
+
+```
+python3 language/uploader.py solutions/spaceship/best/ 1 25
 ```
