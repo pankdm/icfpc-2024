@@ -18,6 +18,8 @@ def read_and_send_solution(name, path, num):
             # print (s)
             if name == "spaceship":
                 command = "S" + interpreter.encode_string(f"solve {name}{num} {s}")
+            elif name == "3d":
+                command = "S" + interpreter.encode_string(f"solve {name}{num}\n{s}")
             else:
                 command = s
             request_size = len(command)
