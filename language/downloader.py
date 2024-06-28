@@ -2,7 +2,7 @@ import os
 import sys
 from requests import post
 from dotenv import load_dotenv
-from interpreter import ICFPInterpreter
+from interpreter import ICFPInterpreter, run_fast
 from progress.bar import Bar
 from time import sleep
 
@@ -31,10 +31,10 @@ def download_problem(name: str, number: int):
         with open(f"problems/{name}/raw_{name}{number}.txt", "w") as encoded_file:
             encoded_file.write(encoded)
         try:
-            tokens = interpreter.run(encoded)
+            tokens = run_fast(encoded)
 
             with open(f"problems/{name}/{name}{number}.txt", "w") as decoded_file:
-                decoded_file.write(tokens[0])
+                decoded_file.write(tokens)
         except Exception as e:
             print(f"Error decoding {e}")
 
