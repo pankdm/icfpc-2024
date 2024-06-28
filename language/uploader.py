@@ -16,7 +16,7 @@ def read_and_send_solution(name, path, num):
         with open(file, "r") as f:
             s = f.read()
             # print (s)
-            command = interpreter.encode_string(f"solve {name}{num} {s}")
+            command = "S" + interpreter.encode_string(f"solve {name}{num} {s}")
             request_size = len(command)
             print (f"  >> command size = {request_size}")
             if (request_size > 10**6):

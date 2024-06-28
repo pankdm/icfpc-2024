@@ -11,7 +11,7 @@ os.makedirs("problems", exist_ok=True)
 interpreter = ICFPInterpreter()
 
 def download_problem(name: str, number: int):
-    command = interpreter.encode_string(f"get {name}{number}")
+    command = "S" + interpreter.encode_string(f"get {name}{number}")
 
     if not os.path.exists(f"problems/{name}/"):
         os.mkdir(f"problems/{name}/")

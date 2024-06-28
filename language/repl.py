@@ -19,11 +19,11 @@ if sys.argv[1] == "encode":
     while True:
         s = input("Enter token to encode:\n")
         print ("Encoded: ")
-        print (interpreter.encode_string(s))
+        print ("S" + interpreter.encode_string(s))
 if sys.argv[1] == "repl":
     while True:
         s = input("Enter command to send:\n")
-        command = interpreter.encode_string(s)
+        command = "S" + interpreter.encode_string(s)
         print (f"  >> Sending {command}")
         try:
             resp = post(

@@ -11,7 +11,6 @@ from flask import Flask, Response, request, send_from_directory
 # from solvers.python import hello_json
 from .api import icfpc as ICFPC
 from .utils import get_sanitized_args, cached
-from language.parser import encode_string, decode_string
 from language.interpreter import ICFPInterpreter
 # import numpy as np
 
@@ -112,7 +111,7 @@ def post_translate_to_english():
 def post_translate_to_alien():
     text = request.get_json().get('text')
     return {
-        "text": encode_string(text)
+        "text": "S" + icfpc_interpreter.encode_string(text)
     }
 
 @app.get("/problems/stats")
