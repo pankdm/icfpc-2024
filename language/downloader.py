@@ -31,11 +31,10 @@ def download_problem(name: str, number: int):
         with open(f"problems/{name}/raw_{name}{number}.txt", "w") as encoded_file:
             encoded_file.write(encoded)
         try:
-            tokens = interpreter.tokenize(encoded)
-            tree = interpreter.parse(tokens)
+            tokens = interpreter.run(encoded)
 
             with open(f"problems/{name}/{name}{number}.txt", "w") as decoded_file:
-                decoded_file.write(eval(str(tree)))
+                decoded_file.write(tokens[0])
         except Exception as e:
             print(f"Error decoding {e}")
 
