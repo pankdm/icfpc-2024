@@ -25,7 +25,7 @@ class Greedy1D : public BaseSolver {
 
   std::string Name() const override { return "greedy1d"; }
 
-  bool SkipSolutionRead() const override { return true; }
+  // bool SkipSolutionRead() const override { return true; }
   // bool SkipBest() const override { return true; }
 
   Solution Solve(const TProblem& p) override {
