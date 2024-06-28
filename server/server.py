@@ -12,7 +12,10 @@ from flask import Flask, Response, request, send_from_directory
 from .api import icfpc as ICFPC
 from .utils import get_sanitized_args, cached
 from language.parser import encode_string, decode_string
+from language.interpreter import ICFPInterpreter
 # import numpy as np
+
+icfpc_interpreter = ICFPInterpreter()
 
 logger = logging.getLogger(__name__)
 
@@ -102,7 +105,7 @@ def get_cached_problem_stats():
 def post_translate_to_english():
     text = request.get_json().get('text')
     return {
-        "text": decode_string(text)
+        "text": icfpc_interpreter.run(text)[0]
     }
 
 @app.post("/translate-to-alien")
