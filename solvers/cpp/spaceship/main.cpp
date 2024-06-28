@@ -5,6 +5,7 @@
 #include "spaceship/solution.h"
 #include "spaceship/solvers/base.h"
 #include "spaceship/solvers/greedy1.h"
+#include "spaceship/solvers/greedy1s.h"
 
 #include "common/files/command_line.h"
 #include "common/solvers/ext/run_n.h"
@@ -26,6 +27,8 @@ spaceship::BaseSolver::PSolver CreateSolver(const files::CommandLine& cmd,
   auto timelimit = cmd.GetInt("timelimit");
   if (solver_name == "greedy1") {
     return std::make_shared<spaceship::Greedy1>(timelimit);
+  } else if (solver_name == "greedy1s") {
+    return std::make_shared<spaceship::Greedy1S>(timelimit);
   } else {
     std::cerr << "Unknown solver type: " << solver_name << std::endl;
     exit(-1);

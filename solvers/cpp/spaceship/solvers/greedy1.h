@@ -69,14 +69,22 @@ class Greedy1 : public BaseSolver {
     return s;
   }
 
+  static std::string SolveI(const std::vector<I2Point>& vp) {
+    std::string s;
+    I2Point last;
+    for (auto pp : vp) {
+      s += RunAndStopS(pp - last);
+      last = pp;
+    }
+    return s;
+  }
+
   Solution Solve(const TProblem& p) override {
     Solution s;
     s.SetId(p.Id());
-    I2Point last;
-    for (auto pp : p.GetPoints()) {
-      s.commands += RunAndStopS(pp - last);
-      last = pp;
-    }
+    s.commands = SolveI(p.GetPoints());
+    std::cout << p.Id() << "\t" << p.GetPoints().size() << "\t"
+              << s.commands.size() << std::endl;
     return s;
   }
 };
