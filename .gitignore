@@ -166,3 +166,4 @@ cython_debug/
 
 # Temp files
 tmp/
+solvers/cpp/*.solver
