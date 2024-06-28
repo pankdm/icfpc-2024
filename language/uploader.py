@@ -35,7 +35,7 @@ def read_and_send_solution(name, path, num):
                 )
                 resp.raise_for_status()
                 print (f"  >> got {resp.text}")
-                encoded = interpreter.decode_string(resp.text)
+                encoded = interpreter.decode_string(resp.text[1:])
                 print (encoded)
                 sleep(3.01)
             except exceptions.RequestException as e:
