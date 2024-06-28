@@ -24,8 +24,7 @@ if sys.argv[1] == "repl":
     while True:
         s = input("Enter command to send:\n")
         command = interpreter.encode_string(s)
-        print ("Encoded: ")
-        print (f" >> {command}")
+        print (f"  >> Sending {command}")
         try:
             resp = post(
                 "https://boundvariable.space/communicate",
@@ -33,7 +32,7 @@ if sys.argv[1] == "repl":
                 headers={"Authorization": f"Bearer {os.environ["ICFPC_TOKEN"]}"}
             )
             resp.raise_for_status()
-            print (f"  >> got {resp.text}")
+            print (f"  << got {resp.text}")
             encoded = interpreter.decode_string(resp.text)
             print (encoded)
             # sleep(3.01)
