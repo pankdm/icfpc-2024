@@ -26,7 +26,12 @@ const fetchAPI = async (
     },
     body: body && JSON.stringify(body),
   })
-    .then((r) => r.json())
+    .then(async (r) => {
+      if (r.status >= 300) {
+        throw new Error(await r.text())
+      }
+      return await r.json()
+    })
     .catch((err) => {
       console.error(err)
       throw err
