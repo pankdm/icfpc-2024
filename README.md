@@ -72,3 +72,10 @@ To upload solutions:
 ```
 python3 language/uploader.py solutions/spaceship/best/ 1 25
 ```
+
+
+REPL to send commands to their server:
+
+```
+python3 language/repl.py repl
+```
