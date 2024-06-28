@@ -34,6 +34,7 @@ if sys.argv[1] == "repl":
             resp.raise_for_status()
             print (f"  << got {resp.text}")
             encoded = interpreter.decode_string(resp.text)
+            print ()
             print (encoded)
             # sleep(3.01)
         except exceptions.RequestException as e:
