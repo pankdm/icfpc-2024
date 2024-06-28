@@ -4,7 +4,7 @@
 #include "spaceship/solvers/base.h"
 #include "spaceship/solvers/greedy1.h"
 
-#include "common/geometry/d2/distance/distance_l1.h"
+#include "common/geometry/d2/distance/distance_linf.h"
 #include "common/solvers/solver.h"
 
 #include <algorithm>
@@ -25,7 +25,7 @@ class Greedy1D : public BaseSolver {
 
   std::string Name() const override { return "greedy1d"; }
 
-  // bool SkipSolutionRead() const override { return true; }
+  bool SkipSolutionRead() const override { return true; }
   // bool SkipBest() const override { return true; }
 
   Solution Solve(const TProblem& p) override {
@@ -35,7 +35,7 @@ class Greedy1D : public BaseSolver {
     auto vp = p.GetPoints();
     for (; !vp.empty();) {
       for (unsigned i = 0; i < vp.size() - 1; ++i) {
-        if (DistanceL1(last, vp[i]) < DistanceL1(last, vp.back())) {
+        if (DistanceLInf(last, vp[i]) < DistanceLInf(last, vp.back())) {
           std::swap(vp[i], vp.back());
         }
       }
