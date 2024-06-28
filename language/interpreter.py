@@ -183,7 +183,7 @@ class ICFPInterpreter:
                 return self.base94_to_int(self.encode_string(operand))
             elif ast.op == '$':
                 assert isinstance(operand, int)
-                return self.int_to_base94(operand)
+                return self.decode_string(self.int_to_base94(operand))
         elif isinstance(ast, BinaryOpNode):
             if ast.op == '$':
                 func = self.evaluate(ast.left, context, environment)
