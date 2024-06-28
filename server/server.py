@@ -11,7 +11,8 @@ from flask import Flask, Response, request, send_from_directory
 # from solvers.python import hello_json
 from .api import icfpc as ICFPC
 from .utils import get_sanitized_args, cached
-import numpy as np
+from language.parser import encode_string, decode_string
+# import numpy as np
 
 logger = logging.getLogger(__name__)
 
@@ -96,6 +97,20 @@ def get_cached_problem_stats():
         for id in stats.keys()
     }
     return merged_stats
+
+@app.post("/translate-to-english")
+def post_translate_to_english():
+    text = request.get_json().get('text')
+    return {
+        "text": decode_string(text)
+    }
+
+@app.post("/translate-to-alien")
+def post_translate_to_alien():
+    text = request.get_json().get('text')
+    return {
+        "text": encode_string(text)
+    }
 
 @app.get("/problems/stats")
 def handle_get_problems_stats():

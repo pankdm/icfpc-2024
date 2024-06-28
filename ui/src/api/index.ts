@@ -11,20 +11,27 @@ import {
 } from './types'
 import useRandomKey from '../hooks/useRandomKey'
 
-export const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+export const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8005'
 
 const fetchAPI = async (
   path: string,
   requestOpts: Omit<RequestInfo, 'url'> = {}
-) =>
-  fetch(`${API_URL}${path}`, {
-    ...requestOpts,
+) => {
+  const { body, headers = {}, ...otherOpts } = requestOpts
+  return fetch(`${API_URL}${path}`, {
+    ...otherOpts,
+    headers: {
+      ...(body && { 'Content-Type': 'application/json' }),
+      ...headers,
+    },
+    body: body && JSON.stringify(body),
   })
     .then((r) => r.json())
     .catch((err) => {
       console.error(err)
       throw err
     })
+}
 
 export const AssetURL = {
   hishogram: (problemId: string, type: string) =>
@@ -45,6 +52,16 @@ const API = {
     fetchAPI(`/problems/${problemId}/solutions`) as Promise<Solutions>,
   getSolution: async (solutionId: string) =>
     fetchAPI(`/solutions/${solutionId}`) as Promise<Solution>,
+  translateToEnglish: async (text: string) =>
+    fetchAPI(`/translate-to-english`, {
+      method: 'POST',
+      body: { text },
+    }),
+  translateToAlien: async (text: string) =>
+    fetchAPI(`/translate-to-alien`, {
+      method: 'POST',
+      body: { text },
+    }),
 }
 
 export function useAPIData<T extends Record<string, any>>({

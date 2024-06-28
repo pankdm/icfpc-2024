@@ -46,6 +46,8 @@ def encode_int(value: int) -> str:
     return "".join(out[::-1])
 
 def decode_string(body: str) -> str:
+    if body[0] == "S":
+        body = body[1:]
     return body.translate(DECODE)
 
 def encode_string(value: str) -> str:

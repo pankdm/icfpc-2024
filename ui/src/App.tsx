@@ -4,6 +4,7 @@ import Problems from './pages/problems'
 import ProblemInspector from './pages/problems/id'
 import Scoreboard from './pages/scoreboard'
 import Root from './pages/root'
+import Interpreter from './pages/interpreter'
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/problems/:problemId" element={<ProblemInspector />} />
         <Route path="/problems" element={<Problems />} />
         <Route path="/scoreboard" element={<Scoreboard />} />
+        <Route path="/interpreter" element={<Interpreter />} />
         <Route path="*" element={<Root />} />
       </Route>
     </Routes>

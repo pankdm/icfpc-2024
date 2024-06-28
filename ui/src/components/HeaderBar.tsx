@@ -37,6 +37,13 @@ export default function HeaderBar({ children, ...props }: GroupProps) {
             </Text>
           )}
         </NavLink>
+        <NavLink to="/interpreter">
+          {({ isActive }) => (
+            <Text fw="bolder" td={isActive ? 'underline' : 'none'}>
+              Interpreter
+            </Text>
+          )}
+        </NavLink>
       </Group>
       <Box maw={150} sx={{ flexGrow: 0.125 }} />
     </Group>
