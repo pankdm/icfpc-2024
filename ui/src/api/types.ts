@@ -1,10 +1,9 @@
 export type Scoreboard = {
-  frozen: boolean
-  scoreboard: {
-    username: string
-    score: number
-  }[]
-  updated_at: string
+  columns: string[]
+  rows: {
+    isYou: boolean
+    values: any[]
+  }
 }
 
 export type SubprocessResult = {
@@ -25,14 +24,6 @@ export type Problems = {
 }
 
 export type ProblemStats = {
-  attendees: number
-  instruments: number
-  musicians: number
-  room_height: number
-  room_width: number
-  stage_height: number
-  stage_width: number
-  stage_bottom_left: [number, number]
   score: number | null
   estimated_max: number | null
   our_best: any
@@ -43,27 +34,8 @@ export type ProblemsStats = {
   }
 }
 
-type InstrumentId = number
-type InstrumentPreference = number
-type Attendee = {
-  x: number
-  y: number
-  tastes: InstrumentPreference[]
-}
-type Pillar = {
-  center: [x: number, y: number]
-  radius: number
-}
-
 export type Problem = {
-  room_width: number
-  room_height: number
-  stage_width: number
-  stage_height: number
-  stage_bottom_left: [number, number]
-  musicians: InstrumentId[]
-  attendees: Attendee[]
-  pillars: Pillar[]
+  // TBD
 }
 
 export type Solutions = {
@@ -71,8 +43,5 @@ export type Solutions = {
 }
 
 export type Solution = {
-  placements?: {
-    x: number
-    y: number
-  }[]
+  // TBD
 }

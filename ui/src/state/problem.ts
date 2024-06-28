@@ -4,7 +4,7 @@ import { persistentAtom } from '@nanostores/persistent'
 import { Problem } from '../api/types'
 
 const $problemIdStored = persistentAtom<string>(
-  'icfpc-2023:current_problem',
+  'icfpc-2024:current_problem',
   '1'
 )
 export const $problemId = computed<number | null, Store>(

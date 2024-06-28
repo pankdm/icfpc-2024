@@ -30,10 +30,10 @@ export default function HeaderBar({ children, ...props }: GroupProps) {
             </Text>
           )}
         </NavLink>
-        <NavLink to="/leaderboard">
+        <NavLink to="/scoreboard">
           {({ isActive }) => (
             <Text fw="bolder" td={isActive ? 'underline' : 'none'}>
-              Leaderboard
+              Scoreboard
             </Text>
           )}
         </NavLink>
