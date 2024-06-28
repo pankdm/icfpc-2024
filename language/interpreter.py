@@ -268,7 +268,11 @@ class ICFPInterpreter:
         return self.evaluate(ast, eval_context), eval_context
 
     def base94_to_int(self, s):
-        return sum((ord(c) - OFFSET) * (BASE ** i) for i, c in enumerate(reversed(s)))
+        res = 0
+        for c in s:
+            res *= BASE
+            res += ord(c) - OFFSET
+        return res
 
     def int_to_base94(self, n):
         if n == 0:
@@ -277,7 +281,7 @@ class ICFPInterpreter:
         while n:
             digits.append(chr((n % BASE) + OFFSET))
             n //= BASE
-        return self.decode_string(''.join(reversed(digits)))
+        return ''.join(digits[::-1])
 
     def decode_string(self, s):
         return s.translate(DECODE)
