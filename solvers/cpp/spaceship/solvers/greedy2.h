@@ -140,9 +140,9 @@ class Greedy2 : public BaseSolver {
             continue;
           }
           // One step search
-          auto ed = t.ss.p + t.ss.v;
+          auto ed1 = t.ss.p + t.ss.v;
           for (unsigned j = 0; j < t.vp.size(); ++j) {
-            if (DistanceLInf(ed, t.vp[j]) <= 1) {
+            if (DistanceLInf(ed1, t.vp[j]) <= 1) {
               // Possible to get
               Task task_new;
               task_new.ss.p = t.vp[j];
@@ -162,11 +162,39 @@ class Greedy2 : public BaseSolver {
                 // Already processed
                 continue;
               }
-              // std::cout << "Add new task:\t" << i + 1 << "\t" <<
-              // task_new.ss.p
-              //           << "\t" << task_new.ss.v << "\t" << t.vp[j]
-              //           << std::endl;
               vheap[i + 1].Add({task_new_hash, task_new.cost});
+            }
+          }
+          // Two steps search
+          auto ed2 = t.ss.p + t.ss.v * 2;
+          for (unsigned j = 0; j < t.vp.size(); ++j) {
+            if (DistanceLInf(ed1, t.vp[j]) <= 3) {
+              // Possible to get
+              for (int idx = -1; idx <= 1; ++idx) {
+                for (int idy = -1; idy <= 1; ++idy) {
+                  I2Vector idv(idx, idy);
+                  if (DistanceLInf(ed2 + idv * 2, t.vp[j]) <= 1) {
+                    Task task_new;
+                    task_new.ss.p = t.ss.p + t.ss.v + idv;
+                    task_new.ss.v = task_new.ss.p - t.ss.p;
+                    task_new.vp = t.vp;
+                    task_new.cost = best_i + 1;
+                    task_new.source_hash = t_hash;
+                    auto task_new_hash = task_new.Hash();
+                    auto it = tasks.find(task_new_hash);
+                    if (it == tasks.end()) {
+                      tasks[task_new_hash] = task_new;
+                    } else if (it->second.cost > task_new.cost) {
+                      it->second.cost = task_new.cost;
+                      it->second.source_hash = task_new.source_hash;
+                    } else {
+                      // Already processed
+                      continue;
+                    }
+                    vheap[i].Add({task_new_hash, task_new.cost});
+                  }
+                }
+              }
             }
           }
         }
