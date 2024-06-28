@@ -72,6 +72,20 @@ class EvalContext:
     debug: bool
 
 
+def div_towards_zero(a, b):
+    if a < 0:
+        return -div_towards_zero(-a, b)
+    if b < 0:
+        return -div_towards_zero(a, -b)
+    return a // b
+
+def mod_towards_zero(a, b):
+    if a < 0:
+        return -mod_towards_zero(-a, b)
+    if b < 0:
+        return -mod_towards_zero(a, -b)
+    return a % b
+
 class ICFPInterpreter:
     def tokenize(self, program):
         return program.split()
@@ -144,7 +158,7 @@ class ICFPInterpreter:
                 return not operand
             elif ast.op == '#':
                 assert isinstance(operand, str)
-                return self.base94_to_int(operand)
+                return self.base94_to_int(self.encode_string(operand))
             elif ast.op == '$':
                 assert isinstance(operand, int)
                 return self.int_to_base94(operand)
@@ -175,11 +189,11 @@ class ICFPInterpreter:
                 elif ast.op == '/':
                     assert isinstance(left, int)
                     assert isinstance(right, int)
-                    return left // right
+                    return div_towards_zero(left, right)
                 elif ast.op == '%':
                     assert isinstance(left, int)
                     assert isinstance(right, int)
-                    return left % right
+                    return mod_towards_zero(left, right)
                 elif ast.op == '<':
                     assert isinstance(left, int)
                     assert isinstance(right, int)
@@ -216,6 +230,7 @@ class ICFPInterpreter:
                     return right[left:]
         elif isinstance(ast, IfNode):
             condition = self.evaluate(ast.condition, context, environment)
+            assert isinstance(condition, bool)
             if condition:
                 return self.evaluate(ast.true_branch, context, environment)
             else:
@@ -245,7 +260,7 @@ class ICFPInterpreter:
         while n:
             digits.append(chr((n % 94) + 33))
             n //= 94
-        return ''.join(reversed(digits))
+        return self.decode_string(''.join(reversed(digits)))
 
     def decode_string(self, s):
         charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\"#$%&'()*+,-./:;<=>?@[\\]^_`|~ \n"
