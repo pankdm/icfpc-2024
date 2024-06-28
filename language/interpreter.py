@@ -79,20 +79,25 @@ class EvalContext:
     optimize: bool = False
     debug: bool = False
 
-
 def div_towards_zero(a, b):
-    if a < 0:
-        return -div_towards_zero(-a, b)
-    if b < 0:
-        return -div_towards_zero(a, -b)
-    return a // b
+    if a < 0 and b < 0:
+        return -a // -b
+    elif a < 0:
+        return -(-a // b)
+    elif b < 0:
+        return -(a // -b)
+    else:
+        return a // b
 
 def mod_towards_zero(a, b):
-    if a < 0:
-        return -mod_towards_zero(-a, b)
-    if b < 0:
-        return -mod_towards_zero(a, -b)
-    return a % b
+    if a < 0 and b < 0:
+        return -a % -b
+    elif a < 0:
+        return -(-a % b)
+    elif b < 0:
+        return -(a % -b)
+    else:
+        return a % b
 
 @dataclass
 class Thunk:
@@ -292,6 +297,7 @@ class ICFPInterpreter:
 
 if __name__ == "__main__":
     interpreter = ICFPInterpreter()
+
     print(interpreter.run('B$ L# B$ L" B+ v" v" B* I$ I# v8'))
     print(interpreter.run('? B> I# I$ S9%3 S./'))
     print(interpreter.run('B$ B$ L# L$ v# B. SB%,,/ S}Q/2,$_ IK'))
