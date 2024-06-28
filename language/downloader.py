@@ -2,7 +2,9 @@ import os
 import sys
 from requests import post
 from dotenv import load_dotenv
+from interpreter import ICFPInterpreter
 from parser import decode_token, encode_token
+from progress.bar import Bar
 from time import sleep
 
 load_dotenv()
@@ -26,12 +28,14 @@ def download_problem(name: str, number: int):
         with open(f"problems/{name}{number}_encoded.txt", "w") as encoded_file:
             encoded_file.write(encoded)
         try:
-            tokens = [str(decode_token(token)) for token in encoded.split()]
-        except:
-            tokens = []
+            interpreter = ICFPInterpreter()
+            tokens = interpreter.tokenize(encoded)
+            tree = interpreter.parse(tokens)
 
-        with open(f"problems/{name}{number}_decoded.txt", "w") as decoded_file:
-            decoded_file.writelines(tokens)
+            with open(f"problems/{name}{number}_decoded.txt", "w") as decoded_file:
+                decoded_file.write(str(tree))
+        except Exception as e:
+            print(f"Error decoding {e}")
 
         return True
     else:
@@ -43,9 +47,13 @@ def download_problem(name: str, number: int):
 if __name__ == "__main__":
     assert len(sys.argv) == 3
     _, problem, upto = sys.argv
+    upto = int(upto)
 
-    for i in range(1, int(upto) + 1):
+    bar = Bar(f"Downloading {problem}", max=upto)
+    for i in range(1, upto + 1):
         if download_problem(problem, i):
+            bar.next()
             sleep(3.01)
         else:
             exit()
+    bar.finish()
