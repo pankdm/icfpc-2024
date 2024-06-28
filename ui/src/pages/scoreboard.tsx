@@ -23,13 +23,13 @@ export default function Scoreboard() {
           }}
           columns={[
             {
-              id: 'rank',
+              id: '0',
               header: 'Rank',
               accessorFn: (row) => row?.values?.[0],
-              size: 10
+              size: 10,
             },
             {
-              id: 'name',
+              id: '1',
               header: 'Name',
               size: 200,
               accessorFn: (row) => row?.values?.[1],
@@ -42,16 +42,20 @@ export default function Scoreboard() {
                 </Text>
               ),
             },
-            {
-              id: 'score',
-              header: 'Score',
-              accessorFn: (row) => formatNumber(0),
-            },
-            {
-              id: 'score-exp',
-              header: 'Score Exp',
-              accessorFn: (row) => formatNumberExp(0),
-            },
+            ...[
+              '# Hello',
+              '# Lambdaman',
+              '# Spaceship',
+              '# 3D',
+              '# Efficiency',
+            ].map((header, i) => ({
+              id: `${2 + i}`,
+              header,
+              sortDescFirst: false,
+              accessorFn: (row) => row?.values?.[2 + i] || Infinity,
+              Cell: ({ cell }) =>
+                Number.isFinite(cell.getValue()) ? cell.getValue() : null,
+            })),
           ]}
           enablePagination={false}
           enableHiding={false}
