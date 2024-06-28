@@ -1,1 +1,1 @@
-NoneLNoneNoneNoneNoneNoneNoneNoneNoneNoneNoneNoneNoneNoneNoneNoneNoneNoneNoneNoneNoneNoneNoneNone1NoneNoneNoneNoneNoneNoneNone1.199
+(. L ($ ($ (λ var_1 ($ (λ var_1 ($ (λ var_2 ($ var_1 ($ var_2 var_2))) (λ var_2 ($ var_1 ($ var_2 var_2))))) (λ var_3 (λ var_2 (? (= var_2 1) var_1 (. var_1 ($ var_3 (- var_2 1)))))))) .) 199))
