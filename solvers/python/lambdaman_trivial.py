@@ -35,7 +35,7 @@ def rle(s):
         i = j
     return ans
 
-def encode_sol(sol):
+def encode_sol(sol, task_i):
     code = 1
     for c in sol:
         code = code * 4 + "RULD".index(c)
@@ -44,9 +44,9 @@ def encode_sol(sol):
     def f(rec, n):
         return If(n == 1, "", cat(rec(n / 4), str2expr("RULD").tail(n % 4).head_(1)))
     
-    expr = str(Yc(f, code))
-    # assert sol == run_fast(expr)
-    return expr
+    expr = Yc(f, code)
+    # assert sol == run_fast(str(expr))
+    return str(cat(f"solve lambdaman{task_i} ", expr))
 
 for i in range(1, 22):
     # ret = comm(f"S{interpreter.encode_string(f'get lambdaman{i}')}")
@@ -54,7 +54,7 @@ for i in range(1, 22):
         maze = run_fast(f.read())
     l1 = len(rle(maze))
     maze = maze.split()
-    sol = encode_sol(solve_maze(maze))
-    with open(f"solutions/lambdaman/trivial/lambdaman{i}.txt", "wt") as f:
+    sol = encode_sol(solve_maze(maze), i)
+    with open(f"solutions/lambdaman/trivial/{i}.txt", "wt") as f:
         f.write(sol)
     print(i, len(maze), len(sol))
