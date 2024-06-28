@@ -1,34 +1,29 @@
-
-
-from parser import decode_token, encode_token
-import sys
-
 import os
 import sys
 from requests import post, exceptions
 from dotenv import load_dotenv
 from interpreter import ICFPInterpreter
-from parser import decode_token, encode_token
 from progress.bar import Bar
 from time import sleep
 
 load_dotenv()
 
+interpreter = ICFPInterpreter()
 
 if sys.argv[1] == "decode":
     while True:
         s = input("Enter token to decode:\n")
         print ("Decoded: ")
-        print (decode_token(s))
+        print (interpreter.decode_string(s))
 if sys.argv[1] == "encode":
     while True:
         s = input("Enter token to encode:\n")
         print ("Encoded: ")
-        print (encode_token(s))
+        print (interpreter.encode_string(s))
 if sys.argv[1] == "repl":
     while True:
         s = input("Enter command to send:\n")
-        command = encode_token(s)
+        command = interpreter.encode_string(s)
         print ("Encoded: ")
         print (f" >> {command}")
         try:
@@ -39,12 +34,11 @@ if sys.argv[1] == "repl":
             )
             resp.raise_for_status()
             print (f"  >> got {resp.text}")
-            encoded = decode_token(resp.text)
+            encoded = interpreter.decode_string(resp.text)
             print (encoded)
             # sleep(3.01)
         except exceptions.RequestException as e:
             print("Error: ", e)
-
 
 
 print(f"Unknown mode: {sys.argv[1]}")

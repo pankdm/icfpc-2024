@@ -3,20 +3,20 @@ import sys
 from requests import post, exceptions
 from dotenv import load_dotenv
 from interpreter import ICFPInterpreter
-from parser import decode_token, encode_token
 from progress.bar import Bar
 from time import sleep
 
 load_dotenv()
 
 def read_and_send_solution(name, path, num):
+    interpreter = ICFPInterpreter()
     file = f"{path}/{i}.txt"
     if os.path.exists(file):
         print (f"Sending problem #{num} at {file}")
         with open(file, "r") as f:
             s = f.read()
             # print (s)
-            command = encode_token(f"solve {name}{num} {s}")
+            command = interpreter.encode_string(f"solve {name}{num} {s}")
             request_size = len(command)
             print (f"  >> command size = {request_size}")
             if (request_size > 10**6):
@@ -32,7 +32,7 @@ def read_and_send_solution(name, path, num):
                 )
                 resp.raise_for_status()
                 print (f"  >> got {resp.text}")
-                encoded = decode_token(resp.text)
+                encoded = interpreter.decode_string(resp.text)
                 print (encoded)
                 sleep(3.01)
             except exceptions.RequestException as e:
@@ -62,11 +62,3 @@ if __name__ == "__main__":
 
     for i in range(start, end + 1):
         read_and_send_solution(name, path, i)
-
-
-
-    
-
-
-
-

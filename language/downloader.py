@@ -3,15 +3,15 @@ import sys
 from requests import post
 from dotenv import load_dotenv
 from interpreter import ICFPInterpreter
-from parser import decode_token, encode_token
 from progress.bar import Bar
 from time import sleep
 
 load_dotenv()
 os.makedirs("problems", exist_ok=True)
+interpreter = ICFPInterpreter()
 
 def download_problem(name: str, number: int):
-    command = encode_token(f"get {name}{number}")
+    command = interpreter.encode_string(f"get {name}{number}")
 
     if not os.path.exists(f"problems/{name}/"):
         os.mkdir(f"problems/{name}/")
@@ -31,7 +31,6 @@ def download_problem(name: str, number: int):
         with open(f"problems/{name}/raw_{name}{number}.txt", "w") as encoded_file:
             encoded_file.write(encoded)
         try:
-            interpreter = ICFPInterpreter()
             tokens = interpreter.tokenize(encoded)
             tree = interpreter.parse(tokens)
 
