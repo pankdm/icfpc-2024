@@ -36,20 +36,10 @@ function install_python_deps() {
 
 function install_docker() {
     echo ">>>>>> Installing Docker"
+    which docker > /dev/null && echo "Docker already installed." && return
     maybe_brew_install --cask docker
     echo installed Docker.
 }
 
-function install_ui_deps() {
-    echo ">>>>>> Installing UI deps"
-    maybe_brew_install node
-    maybe_brew_install pnpm
-    cd ./ui
-    pnpm i
-    cd ..
-    echo installed UI deps.
-}
-
 ask_and_install_deps Python install_python_deps
-ask_and_install_deps Docker install_docker_deps
-ask_and_install_deps UI install_ui_deps
+ask_and_install_deps Docker install_docker
