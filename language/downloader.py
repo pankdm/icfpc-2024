@@ -13,6 +13,9 @@ os.makedirs("problems", exist_ok=True)
 def download_problem(name: str, number: int):
     command = encode_token(f"get {name}{number}")
 
+    if not os.path.exists(f"problems/{name}/"):
+        os.mkdir(f"problems/{name}/")
+
     resp = post(
         "https://boundvariable.space/communicate",
         data=command,
@@ -25,15 +28,15 @@ def download_problem(name: str, number: int):
         return False
 
     if encoded:
-        with open(f"problems/{name}{number}_encoded.txt", "w") as encoded_file:
+        with open(f"problems/{name}/raw_{name}{number}.txt", "w") as encoded_file:
             encoded_file.write(encoded)
         try:
             interpreter = ICFPInterpreter()
             tokens = interpreter.tokenize(encoded)
             tree = interpreter.parse(tokens)
 
-            with open(f"problems/{name}{number}_decoded.txt", "w") as decoded_file:
-                decoded_file.write(str(tree))
+            with open(f"problems/{name}/{name}{number}.txt", "w") as decoded_file:
+                decoded_file.write(eval(str(tree)))
         except Exception as e:
             print(f"Error decoding {e}")
 
