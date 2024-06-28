@@ -55,3 +55,14 @@ Modules:
   - slack
 >>>
 ```
+
+
+### Problems
+
+
+To download problems:
+
+```
+python3 language/downloader.py lambdaman 21
+python3 language/downloader.py spaceship 25
+```
