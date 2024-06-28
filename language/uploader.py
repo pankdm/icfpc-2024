@@ -17,13 +17,20 @@ def read_and_send_solution(name, path, num):
             s = f.read()
             # print (s)
             command = encode_token(f"solve {name}{num} {s}")
+            request_size = len(command)
+            print (f"  >> command size = {request_size}")
+            if (request_size > 10**6):
+                print ("Error: Request is too large!")
+                return
+
+            # print (f"  >> sending '{command}'")
             try:
                 resp = post(
                     "https://boundvariable.space/communicate",
                     data=command,
                     headers={"Authorization": f"Bearer {os.environ["ICFPC_TOKEN"]}"}
                 )
-                re.raise_for_status()
+                resp.raise_for_status()
                 print (f"  >> got {resp.text}")
                 encoded = decode_token(resp.text)
                 print (encoded)
