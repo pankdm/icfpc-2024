@@ -19,6 +19,7 @@ python-dotenv = "^1.0.1"
 python-dateutil = "^2.9.0.post0"
 requests = "^2.32.3"
 progress = "^1.6"
+drawsvg = "^2.4.0"
 
 
 [build-system]
