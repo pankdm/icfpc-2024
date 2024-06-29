@@ -57,25 +57,31 @@ Modules:
 ```
 
 
-### Problems
+## Problems
 
 
-To download problems:
+### To download problems:
 
 ```
 python3 language/downloader.py lambdaman 1 21
 python3 language/downloader.py spaceship 1 25
 ```
 
-To upload solutions:
+### To upload solutions:
 
 ```
 python3 language/uploader.py solutions/spaceship/best/ 1 25
 ```
 
 
-REPL to send commands to their server:
+### REPL to send commands to their server:
 
 ```
 python3 language/repl.py repl
 ```
+
+### How to submit 3d:
+
+1. Copy the cells from spreadsheet into N-input.txt file
+2. Run `python solvers/python/3d/clean.py solutions/3d/manual/N-input.txt` to generate `N.txt`
+3. Submit via  `python language/uploader.py solutions/3d/manual/ N N`
