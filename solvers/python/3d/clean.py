@@ -19,12 +19,14 @@ with open(file, "r") as f:
     for row in s.split("\n"):
         values = []
         for value in row.split("\t"):
-            if value == "*":
+            if value in ["*", "="]:
                 values.append(value)
                 continue
             elif "acc" in value or "*" in value:
                 values.append(".")
                 continue
+            elif "=" in value:
+                values.append(value.split("=")[1])
             elif value == "":
                 values.append(".")
             else:
