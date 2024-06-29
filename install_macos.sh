@@ -10,7 +10,7 @@ fi
 INSTALL_OPT=$1
 
 function maybe_brew_install() {
-    type $1 1>/dev/null || brew install $1
+    type $@ 1>/dev/null || brew install $@
 }
 
 function ask_and_install_deps() {
