@@ -53,7 +53,8 @@ class SpaceShip {
 
   size_t Hash() const {
     return std::hash<std::vector<int64_t>>{}(
-        std::vector<int64_t>{p.x, p.y, v.dx, v.dy, 17, p.x, p.y, v.dx, v.dy});
+        std::vector<int64_t>{(p.x << 24) + (p.y << 16) + (v.dx << 8) + (v.dy),
+                             p.x, p.y, v.dx, v.dy});
   }
 
   bool operator==(const SpaceShip& r) const { return (p == r.p) && (v == r.v); }
