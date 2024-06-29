@@ -88,6 +88,9 @@ python3 language/repl.py send 'get spaceship'
 
 ### How to submit 3d:
 
-1. Copy the cells from spreadsheet into N-input.txt file
-2. Run `python solvers/python/3d/clean.py solutions/3d/manual/N-input.txt` to generate `N.txt`
-3. Submit via  `python language/uploader.py solutions/3d/manual/ N N`
+1. For problem `N`, copy the cells from spreadsheet into `N-something.input` file (for example `1.input`)
+2. Run 
+
+```
+PYTHONPATH="./language/" python solvers/python/3d/clean2.py solutions/3d/organized/1.input
+```
