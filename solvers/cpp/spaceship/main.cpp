@@ -12,6 +12,7 @@
 #include "spaceship/solvers/greedy2.h"
 #include "spaceship/solvers/greedy2a.h"
 #include "spaceship/solvers/greedy2b.h"
+#include "spaceship/solvers/greedy3.h"
 
 #include "common/files/command_line.h"
 #include "common/solvers/ext/run_n.h"
@@ -43,6 +44,8 @@ spaceship::BaseSolver::PSolver CreateSolver(const files::CommandLine& cmd,
     return std::make_shared<spaceship::Greedy2A>(timelimit);
   } else if (solver_name == "greedy2b") {
     return std::make_shared<spaceship::Greedy2B>(timelimit);
+  } else if (solver_name == "greedy3") {
+    return std::make_shared<spaceship::Greedy3>(timelimit);
   } else if (solver_name == "dp1") {
     return std::make_shared<spaceship::DP1>(timelimit);
   } else if (solver_name == "dp1a") {
