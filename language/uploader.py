@@ -37,8 +37,10 @@ def send_solution(solution, name, num):
         print (f"  >> got {resp.text}")
         encoded = interpreter.decode_string(resp.text[1:])
         print (encoded)
+        return encoded
     except exceptions.RequestException as e:
         print("Error: ", e)
+        return None
 
 
 def read_and_send_solution(name, path, num):

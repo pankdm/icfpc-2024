@@ -1,6 +1,17 @@
 import sys
 
 from uploader import send_solution
+import re
+from runner import parse_prog
+
+def extract_score(input_string):
+    pattern = r'(\d+)!'  # This pattern captures one or more digits followed by an exclamation mark
+    match = re.search(pattern, input_string)
+    if match:
+        score = match.group(1)
+        return int(score)
+    else:
+        return None  # Return None if no match is found
 
 
 file = sys.argv[1]
@@ -51,4 +62,15 @@ with open(output_file, "w") as out:
 
 print ("")
 print ("[Sending the solution]")
-send_solution(solution, "3d", num)
+msg = send_solution(solution, "3d", num)
+
+if msg is not None and "Correct" in msg:
+    score = extract_score(msg)
+
+    prog = parse_prog(solution)
+    padded_solution = prog.to_str_padded()
+
+    score_output = f"solutions/3d/organized/{prefix}.score.{score}"
+    print (f"Writing to file = {score_output}")
+    with open(score_output, "w") as out:
+        out.write(padded_solution)
