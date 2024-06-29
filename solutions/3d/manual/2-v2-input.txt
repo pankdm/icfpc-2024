@@ -1,0 +1,22 @@
+				0* (receive #1)	
+	0	>	acc*	+	acc*
+1	+	acc*		S	
+	acc*				
+	v				
+	acc*				
+0	@	5			
+	2				
+	1		0		
+A	+	A*	=	0*	
+	A*		0* (send to #1)		
+	v	-1	@	11	
+	A*		2		
+1	@	4			
+	2				
+	1		0		
+A	-	A*	=	0*	
+	A*		0* (send to #1)		
+	v	-1	@	18	
+	A *		2	0	
+1	@	4	A	=	
+	2			S	

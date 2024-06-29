@@ -4,6 +4,16 @@ import sys
 file = sys.argv[1]
 
 
+parts = file.split("/")
+
+num = parts[-1].split(".")[0].split("-")[0]
+
+output_file = f"solutions/3d/manual/{num}.txt"
+
+
+max_dx = 0
+
+data = []
 with open(file, "r") as f:
     s = f.read()
     for row in s.split("\n"):
@@ -17,6 +27,13 @@ with open(file, "r") as f:
             else:
                 values.append(value)
         # print (values)
-        print (" ".join(values))
-        
+        max_dx = max(max_dx, len(values))
+        data.append(" ".join(values))
 
+max_dy = len(data)
+max_dt = 3
+print (f"volume: {max_dx} * {max_dy} * {max_dt} = {max_dx * max_dy * max_dt}")
+
+print (f"writing to file {output_file}")
+with open(output_file, "w") as out:
+    out.write("\n".join(data))
