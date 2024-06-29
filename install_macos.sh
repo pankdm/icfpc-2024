@@ -9,10 +9,6 @@ fi
 
 INSTALL_OPT=$1
 
-function maybe_brew_install() {
-    type $@ 1>/dev/null || brew install $@
-}
-
 function ask_and_install_deps() {
     if [[ "${INSTALL_OPT}" == "all" ]]; then
         $2
@@ -30,14 +26,14 @@ function ask_and_install_deps() {
 
 function install_python_deps() {
     echo ">>>>>> Installing Python deps"
-    maybe_brew_install python3 poetry
+    brew install python3 poetry
     echo installed Python deps.
 }
 
 function install_docker() {
     echo ">>>>>> Installing Docker"
     which docker > /dev/null && echo "Docker already installed." && return
-    maybe_brew_install --cask docker
+    type docker 1>/dev/null || brew install --cask docker
     echo installed Docker.
 }
 
