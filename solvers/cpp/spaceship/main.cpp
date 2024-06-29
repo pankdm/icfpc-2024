@@ -12,6 +12,7 @@
 #include "spaceship/solvers/greedy2.h"
 #include "spaceship/solvers/greedy2a.h"
 #include "spaceship/solvers/greedy2b.h"
+#include "spaceship/solvers/greedy3.h"
 
 #include "common/files/command_line.h"
 #include "common/solvers/ext/run_n.h"
@@ -23,6 +24,7 @@ void InitCommaneLine(files::CommandLine& cmd) {
   cmd.AddArg("solution", "best");
   cmd.AddArg("solver", "greedy1");
   cmd.AddArg("timelimit", 125);
+  cmd.AddArg("max_speed_at_stop", 100);
   cmd.AddArg("nthreads", 4);
   cmd.AddArg("first_problem", 1);
   cmd.AddArg("last_problem", spaceship::last_problem);
@@ -43,6 +45,9 @@ spaceship::BaseSolver::PSolver CreateSolver(const files::CommandLine& cmd,
     return std::make_shared<spaceship::Greedy2A>(timelimit);
   } else if (solver_name == "greedy2b") {
     return std::make_shared<spaceship::Greedy2B>(timelimit);
+  } else if (solver_name == "greedy3") {
+    return std::make_shared<spaceship::Greedy3>(
+        cmd.GetInt("max_speed_at_stop"));
   } else if (solver_name == "dp1") {
     return std::make_shared<spaceship::DP1>(timelimit);
   } else if (solver_name == "dp1a") {
