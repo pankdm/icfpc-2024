@@ -182,6 +182,9 @@ class Greedy2A : public BaseSolver {
               auto it = tasks.find(task_new_hash);
               if (it == tasks.end()) {
                 tasks[task_new_hash] = task_new;
+              } else if (it->second.ss != task_new.ss) {
+                // Hash conflict, skipping
+                continue;
               } else if (it->second.cost > task_new.cost) {
                 it->second.cost = task_new.cost;
                 it->second.source_hash = task_new.source_hash;

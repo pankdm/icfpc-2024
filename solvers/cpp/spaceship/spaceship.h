@@ -24,5 +24,8 @@ class SpaceShip {
   size_t Hash() const {
     return HashCombine(std::hash<I2Point>{}(p), std::hash<I2Vector>{}(v));
   }
+
+  bool operator==(const SpaceShip& r) const { return (p == r.p) && (v == r.v); }
+  bool operator!=(const SpaceShip& r) const { return (p != r.p) || (v != r.v); }
 };
 }  // namespace spaceship
