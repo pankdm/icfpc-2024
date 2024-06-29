@@ -7,16 +7,16 @@ A*	<	A*	<	A < #A
 v				v	10			
 A*				A*	%	A%10*		
 v	10				A%10*			
-A*	/			2	*			
+A*	/			2	*	A*		
 	A/10*				A*			
-dx=-3	@ > #A	dy=6		-3	+			
-	5				1 | -1 *			
+dx=-3	@ > #A	dy=6		-3	+	A*		
+	5				1 or -1 *			
 cnt*	>	cnt*	>	cnt*	+	cnt + d*		
 ^	-1	=	-1*		cnt + d*			
 cnt*		-1*		dx=5	@ > #cnt	dy=-2		
 ^	1	+	S		5			
 cnt=0 < #cnt	>	cnt*						
-	0* < #1	+	cnt*					
-cnt*	<	cnt*						
-v	0	#	S					
-S								
+	0* < #1	+			1			
+		cnt*	>	cnt*	+			
+	0	#			S			
+		S						
