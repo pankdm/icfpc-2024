@@ -1,5 +1,6 @@
-	X=0 < #loop		A		0
-1	+	X*	/	X*	#
-	X*		X*		S
-0	@ > #loop	3		0	
-	1		A	=	S
+				A	
+	X*	<	X=1 < #loop	/	X*
+1	+	X*		X*	
+	X*		0	#	S
+-2	@ > #loop	3		0	
+	2		A	=	S
