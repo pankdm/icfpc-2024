@@ -22,7 +22,7 @@ with open(file, "r") as f:
             if value in ["*", "="]:
                 values.append(value)
                 continue
-            elif "acc" in value or "*" in value:
+            elif "*" in value:
                 values.append(".")
                 continue
             elif "=" in value:
