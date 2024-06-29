@@ -89,8 +89,14 @@ python language/repl.py send 'get spaceship'
 ### How to submit 3d:
 
 1. For problem `N`, copy the cells from spreadsheet into `N-something.input` file (for example `1.input`)
-2. Run 
+2. Run
 
 ```
 PYTHONPATH="./language/" python solvers/3d/clean2.py solutions/3d/organized/1.input
 ```
+
+### How to java
+cd solvers/3d
+brew install maven openjdk
+... make sure java is on your path and resolves (use jenv or whatever).
+mvn compile exec:java -Dexec.mainClass="icfpc3d.Main" -Dexec.args="../../solutions/3d/organized/1.output 5 0"
