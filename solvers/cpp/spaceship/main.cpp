@@ -7,6 +7,7 @@
 #include "spaceship/solvers/dp1.h"
 #include "spaceship/solvers/dp1a.h"
 #include "spaceship/solvers/dp2.h"
+#include "spaceship/solvers/dp2a.h"
 #include "spaceship/solvers/greedy1.h"
 #include "spaceship/solvers/greedy1d.h"
 #include "spaceship/solvers/greedy1s.h"
@@ -14,6 +15,7 @@
 #include "spaceship/solvers/greedy2a.h"
 #include "spaceship/solvers/greedy2b.h"
 #include "spaceship/solvers/greedy3.h"
+#include "spaceship/solvers/line_sweep1.h"
 
 #include "common/files/command_line.h"
 #include "common/solvers/ext/run_n.h"
@@ -55,6 +57,10 @@ spaceship::BaseSolver::PSolver CreateSolver(const files::CommandLine& cmd,
     return std::make_shared<spaceship::DP1A>(timelimit);
   } else if (solver_name == "dp2") {
     return std::make_shared<spaceship::DP2>(timelimit);
+  } else if (solver_name == "dp2a") {
+    return std::make_shared<spaceship::DP2A>(timelimit);
+  } else if (solver_name == "ls1") {
+    return std::make_shared<spaceship::LineSweep1>(timelimit);
   } else {
     std::cerr << "Unknown solver type: " << solver_name << std::endl;
     exit(-1);

@@ -4,16 +4,10 @@
 #include "spaceship/solvers/base.h"
 
 #include "common/geometry/d2/compare/point_xy.h"
-#include "common/geometry/d2/distance/distance_linf.h"
-#include "common/geometry/d2/point_io.h"
-#include "common/geometry/d2/stl_hash/point.h"
-#include "common/geometry/d2/vector_io.h"
 #include "common/hash.h"
 #include "common/heap.h"
 #include "common/solvers/solver.h"
-#include "common/stl/hash/vector.h"
 #include "common/timer.h"
-#include "common/vector/enumerate.h"
 #include "common/vector/unique.h"
 
 #include <algorithm>
@@ -22,52 +16,44 @@
 #include <vector>
 
 namespace spaceship {
-class DP2 : public BaseSolver {
+class LineSweep1 : public BaseSolver {
  public:
   using TBase = BaseSolver;
   using PSolver = TBase::PSolver;
 
  public:
-  DP2() : BaseSolver() {}
-  explicit DP2(unsigned _max_time) : BaseSolver(_max_time) {}
+  LineSweep1() : BaseSolver() {}
+  explicit LineSweep1(unsigned _max_time) : BaseSolver(_max_time) {}
 
-  PSolver Clone() const override { return std::make_shared<DP2>(*this); }
+  PSolver Clone() const override { return std::make_shared<LineSweep1>(*this); }
 
-  std::string Name() const override { return "dp2"; }
+  std::string Name() const override { return "ls1"; }
 
-  // bool SkipSolutionRead() const override { return true; }
+  bool SkipSolutionRead() const override { return true; }
   // bool SkipBest() const override { return true; }
 
  protected:
   class Task {
    public:
     SpaceShip ss;
-    std::vector<uint16_t> vp;
+    unsigned covered;
 
     unsigned cost;
     unsigned min_final_cost;
 
     size_t source_hash;
 
-    size_t Hash() const {
-      return HashCombine(ss.Hash(), std::hash<std::vector<uint16_t>>{}(vp));
-    }
+    size_t Hash() const { return HashCombine(ss.Hash(), covered); }
 
-    void ComputeMinFinalCost(const std::vector<I2Point>& tvp) {
-      auto vt = vp;
-      unsigned min_extra_cost = vp.size();
-      for (unsigned s = 1; !vt.empty(); ++s) {
-        auto b = ss.PossibleLocations(s);
-        for (unsigned j = 0; j < vt.size(); ++j) {
-          if (b.Inside(tvp[vt[j]])) {
-            vt[j--] = vt.back();
-            vt.pop_back();
-            min_extra_cost = std::max<unsigned>(min_extra_cost, s + vt.size());
-          }
+    void ComputeMinFinalCost(const std::vector<I2Point>& line) {
+      unsigned s = 1;
+      if (covered < line.size()) {
+        for (;; ++s) {
+          if (ss.PossibleLocations(s).Inside(line[covered])) break;
         }
       }
-      // min_final_cost = cost + vp.size();
-      min_final_cost = cost + min_extra_cost;
+      min_final_cost = cost + line.size() - covered + s - 1;
+      // min_final_cost = cost + line.size() - covered;
     }
   };
 
@@ -82,34 +68,21 @@ class DP2 : public BaseSolver {
   };
 
  public:
-  Solution Solve(const TProblem& p) override {
+  static std::string SolveI(const std::vector<I2Point>& line,
+                            unsigned max_time_in_seconds) {
     Timer t;
-    Solution s;
-    s.SetId(p.Id());
-    auto tvp = p.GetPoints();
-
-    // Clean zero
-    for (unsigned i = 0; i < tvp.size(); ++i) {
-      if (tvp[i] == I2Point()) {
-        tvp[i--] = tvp.back();
-        tvp.pop_back();
-      }
-    }
-
-    // Drop dups
-    std::sort(tvp.begin(), tvp.end(), CompareXY<int64_t>);
-    nvector::Unique(tvp);
-
-    // Init heap
     std::unordered_map<size_t, Task> tasks;
     std::vector<HeapMinOnTop<TaskInfo>> vheap;
-    vheap.resize(tvp.size() + 1);
+    std::string best_s;
+    uint64_t hash_conflicts = 0;
+
+    vheap.resize(line.size() + 1);
     Task task_init;
-    task_init.vp = nvector::Enumerate<uint16_t>(0u, tvp.size());
+    task_init.covered = 0;
     task_init.cost = 0;
     task_init.source_hash = 0;
     auto task_init_hash = task_init.Hash();
-    task_init.ComputeMinFinalCost(tvp);
+    task_init.ComputeMinFinalCost(line);
     tasks[task_init_hash] = task_init;
     vheap[0].Add({task_init_hash, task_init.min_final_cost});
 
@@ -122,7 +95,7 @@ class DP2 : public BaseSolver {
         status = 1;
         break;
       }
-      if (tasks.size() * (2 * tvp.size() + 40) > (1ull << 32)) {
+      if (tasks.size() * 80 > (1ull << 32)) {
         // Avoid over memory usage
         status = 2;
         break;
@@ -145,7 +118,7 @@ class DP2 : public BaseSolver {
           continue;
         }
         done = false;
-        if (i == tvp.size()) {
+        if (i == line.size()) {
           // New best solution
           best_solution = vheap[i].Top().min_final_cost;
           std::cout << "New best solution with cost " << best_solution
@@ -163,7 +136,7 @@ class DP2 : public BaseSolver {
             t = t2;
           }
           std::reverse(ss.begin(), ss.end());
-          s.commands = ss;
+          best_s = ss;
           break;
         }
 
@@ -182,27 +155,23 @@ class DP2 : public BaseSolver {
             Task task_new;
             task_new.ss.p = t.ss.p + t.ss.v + idv;
             task_new.ss.v = t.ss.v + idv;
-            task_new.vp = t.vp;
-            unsigned shift = 0;
-            for (unsigned j = 0; j < task_new.vp.size(); ++j) {
-              if (tvp[task_new.vp[j]] == task_new.ss.p) {
-                task_new.vp.erase(task_new.vp.begin() + j);
-                shift += 1;
-                break;
-              }
+            task_new.covered = t.covered;
+            if (line[task_new.covered] == task_new.ss.p) {
+              task_new.covered += 1;
             }
             task_new.cost = t.cost + 1;
             task_new.source_hash = t_hash;
             auto task_new_hash = task_new.Hash();
             auto it = tasks.find(task_new_hash);
             if (it == tasks.end()) {
-              task_new.ComputeMinFinalCost(tvp);
+              task_new.ComputeMinFinalCost(line);
               if (task_new.min_final_cost < t.min_final_cost) {
                 std::cout << "Min final cost should not decrease." << std::endl;
               }
               tasks[task_new_hash] = task_new;
             } else if (it->second.ss != task_new.ss) {
               // Hash conflict, skipping
+              ++hash_conflicts;
               continue;
             } else if (it->second.cost > task_new.cost) {
               // Better path to the same point
@@ -215,14 +184,44 @@ class DP2 : public BaseSolver {
               // Already processed
               continue;
             }
-            vheap[i + shift].Add({task_new_hash, task_new.min_final_cost});
+            vheap[task_new.covered].Add(
+                {task_new_hash, task_new.min_final_cost});
           }
         }
       }
       if (done) break;
     }
+    std::cout << "Status = " << status << "\tCashe size = " << tasks.size()
+              << "\tHash conflicts = " << hash_conflicts << std::endl;
+    return best_s;
+  }
+
+  Solution Solve(const TProblem& p) override {
+    Solution s;
+    s.SetId(p.Id());
+    auto tvp = p.GetPoints();
+
+    // Clean zero
+    for (unsigned i = 0; i < tvp.size(); ++i) {
+      if (tvp[i] == I2Point()) {
+        tvp[i--] = tvp.back();
+        tvp.pop_back();
+      }
+    }
+
+    // Drop dups
+    // std::sort(tvp.begin(), tvp.end(), CompareXY<int64_t>);
+    nvector::Unique(tvp);
+
+    // Construct line
+    //  ...
+
+    // Solve
+    s.commands = SolveI(tvp, max_time_in_seconds);
+
+    // Init heap
     std::cout << p.Id() << "\t" << p.GetPoints().size() << "\t" << tvp.size()
-              << "\t" << s.commands.size() << "\t" << status << std::endl;
+              << "\t" << s.commands.size() << std::endl;
     return s;
   }
 };

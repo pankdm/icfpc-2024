@@ -201,6 +201,9 @@ class DP2A : public BaseSolver {
             auto it = tasks.find(task_new_hash);
             if (it == tasks.end()) {
               task_new.ComputeMinFinalCost(tvp);
+              if (task_new.min_final_cost < t.min_final_cost) {
+                std::cout << "Min final cost should not decrease." << std::endl;
+              }
               tasks[task_new_hash] = task_new;
             } else if (it->second.ss != task_new.ss) {
               // Hash conflict, skipping
