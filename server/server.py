@@ -100,27 +100,28 @@ def get_cached_problem_stats():
     }
     return merged_stats
 
-@app.post("/translate-to-english")
-def post_translate_to_english():
+@app.post("/decode")
+def post_decode():
     text = request.get_json().get('text')
-    return {
-        "text": icfpc_interpreter.run(text)[0]
-    }
+    return icfpc_interpreter.run(text)[0]
 
-@app.post("/translate-to-alien")
-def post_translate_to_alien():
+@app.post("/encode")
+def post_encode():
     text = request.get_json().get('text')
-    return {
-        "text": "S" + icfpc_interpreter.encode_string(text)
-    }
+    return "S" + icfpc_interpreter.encode_string(text)
+
+@app.post("/communicate")
+def post_communicate():
+    text = request.get_json().get('text')
+    return ICFPC.send_raw_msg(text)
 
 @app.get("/problems/stats")
 def handle_get_problems_stats():
     return { 'problems': get_cached_problem_stats() }
 
-@app.get("/problems/<id>")
+@app.get("/problems/<track>/<id>")
 def get_problem(id):
-    return send_from_directory('../problems', id+'.json')
+    return send_from_directory(f'../problems/{track}', id+'.json')
 
 @app.get("/problems/<id>/preview")
 def get_problem_preview(id):
@@ -137,21 +138,15 @@ def get_total_available_problems():
         "total_problems": ICFPC.get_number_of_problems()
     }
 
-@app.get("/problems/download")
-def get_download_all_available_problems():
-    total_problems = ICFPC.get_number_of_problems()
-    print(f'found total of {total_problems} problems available')
-    executor = ThreadPoolExecutor(max_workers=5)
-    futures = []
-    for i in range(total_problems):
-        futures.append(executor.submit(ICFPC.get_problem, i+1))
-    executor.shutdown()
-    print(f'downloaded all {total_problems} problems')
-    for idx, future in enumerate(futures):
-        problem = future.result()
-        with open(f'{root_folder_path("problems/")}{idx+1}.json', 'w') as file:
-            file.write(json.dumps(problem, indent=2))
-    return { "status": "ok", "downloads_count": len(futures) }
+@app.get("/problems/download/<track>/<start>/<end>")
+def get_download_problems(track, start, end):
+    start, end = int(start), int(end)
+    for id in range(start, end+1):
+        msg = 'S'+icfpc_interpreter.encode_string(f'get {track}{id}')
+        resp = ICFPC.send_raw_msg(msg)
+        with open(f'{root_folder_path("problems/")}{track}/raw_{track}{id}.txt', 'w') as file:
+            file.write(resp)
+    return 'downloaded'
 
 @app.get("/problems/<id>/download")
 def get_download_problem(id):

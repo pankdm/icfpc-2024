@@ -6,6 +6,7 @@ import os
 import json
 import requests
 import requests.auth
+from language.interpreter import ICFPInterpreter
 
 from time import time
 import os
@@ -42,6 +43,26 @@ def ensure_auth():
     icfpc_client.expires = datetime.now(tz=timezone.utc) + timedelta(hours=1)
     icfpc_client.session = requests.Session()
     icfpc_client.session.headers.update({'Authorization': f'Bearer {icfpc_client.token}'})
+
+def send_raw_msg(encoded_msg):
+    ensure_auth()
+    request_size = len(encoded_msg)
+    print (f"  >> command size = {request_size}")
+    if (request_size > 10**6):
+        raise Exception("Error: Request is too large!")
+    response = icfpc_client.session.post(
+        "https://boundvariable.space/communicate",
+        data=encoded_msg
+    )
+    response.raise_for_status()
+    print('>>>>>', response.headers)
+    return response.text
+
+def send_msg(msg):
+    interpreter = ICFPInterpreter()
+    encoded_msg = 'S' + interpreter.encode_string(msg)
+    response = send_raw_msg(encoded_msg)
+    return interpreter.run(response)[0]
 
 def submit(username: str, problem: str):
     ensure_auth()
