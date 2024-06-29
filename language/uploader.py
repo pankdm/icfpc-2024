@@ -11,6 +11,8 @@ load_dotenv()
 def read_and_send_solution(name, path, num):
     interpreter = ICFPInterpreter()
     file = f"{path}/{i}.txt"
+    token = os.environ["ICFPC_TOKEN"]
+    print (token)
     if os.path.exists(file):
         print (f"Sending problem #{num} at {file}")
         with open(file, "r") as f:
@@ -33,7 +35,7 @@ def read_and_send_solution(name, path, num):
                 resp = post(
                     "https://boundvariable.space/communicate",
                     data=command,
-                    headers={"Authorization": f"Bearer {os.environ["ICFPC_TOKEN"]}"}
+                    headers={"Authorization": f"Bearer {token}"}
                 )
                 resp.raise_for_status()
                 print (f"  >> got {resp.text}")

@@ -9,6 +9,7 @@
 #include "common/geometry/d2/stl_hash/vector.h"
 #include "common/hash.h"
 #include "common/numeric/utils/abs.h"
+#include "common/stl/hash/vector.h"
 
 namespace spaceship {
 class SpaceShip {
@@ -51,7 +52,8 @@ class SpaceShip {
   };
 
   size_t Hash() const {
-    return HashCombine(std::hash<I2Point>{}(p), std::hash<I2Vector>{}(v));
+    return std::hash<std::vector<int64_t>>{}(
+        std::vector<int64_t>{p.x, p.y, v.dx, v.dy, 17, p.x, p.y, v.dx, v.dy});
   }
 
   bool operator==(const SpaceShip& r) const { return (p == r.p) && (v == r.v); }
