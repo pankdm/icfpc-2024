@@ -73,7 +73,7 @@ def postprocess_input(cells, overwrites):
                 values.append(overwrites[key])
                 continue
             after = postprocess_value(value)
-            print (f" '{value}' -> '{after}' ")
+            # print (f" '{value}' -> '{after}' ")
             values.append(after)
         # print (values)
         # max_dx = max(max_dx, len(values))
@@ -114,9 +114,9 @@ with open(file, "r") as f:
 
     overwrites = parse_labels(cells)
     print (f"overwrites = {overwrites}")
-    print (f"cells = {cells}")
+    # print (f"cells = {cells}")
     data = postprocess_input(cells, overwrites)
-    print (f"data = {data}")
+    # print (f"data = {data}")
 
 
 # max_dy = len(data)
