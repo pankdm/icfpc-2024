@@ -1,6 +1,8 @@
 package icfpc3d;
 
 import java.math.BigInteger;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,48 +14,92 @@ import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 public class Main {
-    record Coord (int x, int y) {
-        public static Coord of(int x, int y) {return new Coord(x, y);}
+
+    record Coord(int x, int y) {
+        public static Coord of(int x, int y) {
+            return new Coord(x, y);
+        }
         public Coord offset(Offset offset) {
             return new Coord(x + offset.dx(), y + offset.dy());
         }
     }
+
     record Offset(int dx, int dy) {
         public static final Offset left = new Offset(-1, 0);
         public static final Offset right = new Offset(1, 0);
         public static final Offset up = new Offset(0, -1);
         public static final Offset down = new Offset(0, 1);
     }
+
     interface Val {
         static Val of(String s) {
-            return s.length() == 1 && !Character.isDigit(s.charAt(0)) ? Op.of(s.charAt(0)) : Int.of(s);
+            return s.length() == 1 && !Character.isDigit(s.charAt(0))
+                ? Op.of(s.charAt(0))
+                : Int.of(s);
         }
-        default Optional<Int> asInt() {return Optional.empty();}
-        default Optional<Op> asOp() {return Optional.empty();}
+
+        default Optional<Int> asInt() {
+            return Optional.empty();
+        }
+
+        default Optional<Op> asOp() {
+            return Optional.empty();
+        }
+
         String toString();
     }
-    record Int(BigInteger value) implements Val {
-        public static Int of(String s) {return new Int(new BigInteger(s));}
-        public static Int of(BigInteger x) {return new Int(x);}
-        public Optional<Int> asInt() {return Optional.of(this);}
-        public String toString() { return value.toString();}
-        public Integer toInteger() {return value.intValue();}
-    }
-    record Op(char opcode) implements Val {
-        public static Op of(char op) {return new Op(op);}
-        public Optional<Op> asOp() {return Optional.of(this);}
-        public String toString() { return "" + opcode;}
 
-        private void arrowOp(Board board, Cell cell, Offset from, Offset to) {
-            cell.read(board, from).ifPresent((val) -> {
-                cell.remove(board, from);
-                cell.write(board, to, val);
-            });
+    record Int(BigInteger value) implements Val {
+        public static Int of(String s) {
+            return new Int(new BigInteger(s));
+        }
+        public static Int of(BigInteger x) {
+            return new Int(x);
+        }
+        public Optional<Int> asInt() {
+            return Optional.of(this);
+        }
+        public String toString() {
+            return value.toString();
+        }
+        public Integer toInteger() {
+            return value.intValue();
+        }
+    }
+
+    record Op(char opcode) implements Val {
+        public static Op of(char op) {
+            return new Op(op);
+        }
+        public Optional<Op> asOp() {
+            return Optional.of(this);
+        }
+        public String toString() {
+            return "" + opcode;
         }
 
-        private void mathOp(Board board, Cell cell, BiFunction<BigInteger, BigInteger, BigInteger> op) {
-            Optional<BigInteger> x = cell.read(board, Offset.left).flatMap(Val::asInt).map(Int::value);
-            Optional<BigInteger> y = cell.read(board, Offset.up).flatMap(Val::asInt).map(Int::value);
+        private void arrowOp(Board board, Cell cell, Offset from, Offset to) {
+            cell
+                .read(board, from)
+                .ifPresent(val -> {
+                    cell.remove(board, from);
+                    cell.write(board, to, val);
+                });
+        }
+
+        private void mathOp(
+            Board board,
+            Cell cell,
+            BiFunction<BigInteger, BigInteger, BigInteger> op
+        ) {
+            Optional<BigInteger> x = cell
+                .read(board, Offset.left)
+                .flatMap(Val::asInt)
+                .map(Int::value);
+            Optional<BigInteger> y = cell
+                .read(board, Offset.up)
+                .flatMap(Val::asInt)
+                .map(Int::value);
             if (x.isPresent() && y.isPresent()) {
                 cell.remove(board, Offset.left);
                 cell.remove(board, Offset.up);
@@ -81,11 +127,27 @@ public class Main {
         // . dt  .
         private void warp(Board board, Cell cell) {
             Optional<Val> v = cell.read(board, Offset.up);
-            Optional<Integer> dx = cell.read(board, Offset.left).flatMap(Val::asInt).map(Int::toInteger);
-            Optional<Integer> dy = cell.read(board, Offset.right).flatMap(Val::asInt).map(Int::toInteger);
-            Optional<Integer> dt = cell.read(board, Offset.down).flatMap(Val::asInt).map(Int::toInteger);
-            if (v.isPresent() && dx.isPresent() && dy.isPresent() && dt.isPresent()) {
-                Coord coord = cell.coord().offset(new Offset(-dx.get(), -dy.get()));
+            Optional<Integer> dx = cell
+                .read(board, Offset.left)
+                .flatMap(Val::asInt)
+                .map(Int::toInteger);
+            Optional<Integer> dy = cell
+                .read(board, Offset.right)
+                .flatMap(Val::asInt)
+                .map(Int::toInteger);
+            Optional<Integer> dt = cell
+                .read(board, Offset.down)
+                .flatMap(Val::asInt)
+                .map(Int::toInteger);
+            if (
+                v.isPresent() &&
+                dx.isPresent() &&
+                dy.isPresent() &&
+                dt.isPresent()
+            ) {
+                Coord coord = cell
+                    .coord()
+                    .offset(new Offset(-dx.get(), -dy.get()));
                 board.warp(dt.get(), coord, v.get());
             }
         }
@@ -93,19 +155,46 @@ public class Main {
         void exec(final Board board, final Cell cell) {
             // `<`, `>`, `^`, `v`, `+`, `-`, `*`, `/`, `%`, `@`, `=`, `#`, `S`, `A`, `B`
             switch (opcode) {
-                case '<': arrowOp(board, cell, Offset.right, Offset.left); break;
-                case '>': arrowOp(board, cell, Offset.left, Offset.right); break;
-                case '^': arrowOp(board, cell, Offset.down, Offset.up); break;
-                case 'v': arrowOp(board, cell, Offset.up, Offset.down); break;
-                case '+': mathOp(board, cell, BigInteger::add); break;
-                case '-': mathOp(board, cell, BigInteger::subtract); break;
-                case '*': mathOp(board, cell, BigInteger::multiply); break;
-                case '/': mathOp(board, cell, BigInteger::divide); break;
-                case '%': mathOp(board, cell, BigInteger::remainder); break;
-                case '=': equalityOp(board, cell, true); break;
-                case '#': equalityOp(board, cell, false); break;
-                case '@': warp(board, cell); break;
-                case 'A', 'B': throw new IllegalStateException("A or B should've been replaced with values after parsing");
+                case '<':
+                    arrowOp(board, cell, Offset.right, Offset.left);
+                    break;
+                case '>':
+                    arrowOp(board, cell, Offset.left, Offset.right);
+                    break;
+                case '^':
+                    arrowOp(board, cell, Offset.down, Offset.up);
+                    break;
+                case 'v':
+                    arrowOp(board, cell, Offset.up, Offset.down);
+                    break;
+                case '+':
+                    mathOp(board, cell, BigInteger::add);
+                    break;
+                case '-':
+                    mathOp(board, cell, BigInteger::subtract);
+                    break;
+                case '*':
+                    mathOp(board, cell, BigInteger::multiply);
+                    break;
+                case '/':
+                    mathOp(board, cell, BigInteger::divide);
+                    break;
+                case '%':
+                    mathOp(board, cell, BigInteger::remainder);
+                    break;
+                case '=':
+                    equalityOp(board, cell, true);
+                    break;
+                case '#':
+                    equalityOp(board, cell, false);
+                    break;
+                case '@':
+                    warp(board, cell);
+                    break;
+                case 'A', 'B':
+                    throw new IllegalStateException(
+                        "A or B should've been replaced with values after parsing"
+                    );
             }
         }
     }
@@ -121,7 +210,9 @@ public class Main {
             board.write(coord.offset(offset), val);
         }
     }
+
     static class Board {
+
         private History history;
 
         private final int t;
@@ -167,23 +258,30 @@ public class Main {
         }
 
         public void replace(char op, int value) {
-            Set<Coord> coords = board.values().stream()
-                    .filter(cell -> cell.val.equals(Op.of(op)))
-                    .map(Cell::coord).collect(Collectors.toSet());
+            Set<Coord> coords = board
+                .values()
+                .stream()
+                .filter(cell -> cell.val.equals(Op.of(op)))
+                .map(Cell::coord)
+                .collect(Collectors.toSet());
             coords.forEach(c -> board.put(c, new Cell(c, Int.of("" + value))));
         }
 
         public Optional<Val> read(Coord coord) {
             return Optional.ofNullable(board.get(coord)).map(Cell::val);
         }
+
         public void remove(Coord coord) {
             removes.add(coord);
         }
+
         public void write(Coord coord, Val val) {
             Cell existing = writes.get(coord);
             Cell update = new Cell(coord, val);
             if (existing != null) {
-                throw new IllegalStateException("Illegal update: " + existing + " to " + update);
+                throw new IllegalStateException(
+                    "Illegal update: " + existing + " to " + update
+                );
             }
             writes.put(coord, update);
         }
@@ -194,36 +292,54 @@ public class Main {
                 Board old = history.get(newTime);
                 warped = new Board(newTime, old.board, history);
             } else if (warped.t != newTime) {
-                throw new IllegalStateException("attempt to warp to two different times: " + warped.t + " and " + newTime);
+                throw new IllegalStateException(
+                    "attempt to warp to two different times: " +
+                    warped.t +
+                    " and " +
+                    newTime
+                );
             }
 
             Cell cell = new Cell(coord, val);
             warped.board.put(coord, new Cell(coord, val));
 
             if (warped.writes.getOrDefault(coord, cell) != cell) {
-                throw new IllegalStateException("attempt to warp two different values: " + warped.writes.get(coord) + " and " + cell);
+                throw new IllegalStateException(
+                    "attempt to warp two different values: " +
+                    warped.writes.get(coord) +
+                    " and " +
+                    cell
+                );
             }
         }
 
         public Board next() {
             // execute all ops
-            board.forEach((coord, cell) -> cell.val().asOp().ifPresent(op -> op.exec(this, cell)));
+            board.forEach(
+                (coord, cell) ->
+                    cell.val().asOp().ifPresent(op -> op.exec(this, cell))
+            );
 
             // create new board using previous board state
             Map<Coord, Cell> next = new HashMap<>(board);
             // execute all removes
             removes.forEach(next::remove);
 
-            Set<Val> results = next.values().stream()
-                    .filter(cell -> cell.val.equals(Op.of('S')))
-                    .map(Cell::coord)
-                    .map(c -> Optional.ofNullable(writes.get(c)))
-                    .flatMap(Optional::stream)
-                    .map(Cell::val).collect(Collectors.toSet());
+            Set<Val> results = next
+                .values()
+                .stream()
+                .filter(cell -> cell.val.equals(Op.of('S')))
+                .map(Cell::coord)
+                .map(c -> Optional.ofNullable(writes.get(c)))
+                .flatMap(Optional::stream)
+                .map(Cell::val)
+                .collect(Collectors.toSet());
 
             // A board can contain multiple submit operators but if more than one are overwritten at the same time, the simulation will crash.
             if (results.size() > 1) {
-                throw new IllegalStateException("More than one result: " + results);
+                throw new IllegalStateException(
+                    "More than one result: " + results
+                );
             }
             results.forEach(history::submit);
 
@@ -250,16 +366,43 @@ public class Main {
             StringBuilder sb = new StringBuilder();
             sb.append("Time: ").append(t).append("\n");
             Val result = history.getResult();
-            Optional.ofNullable(result).ifPresent(r -> sb.append("Result: ").append(result).append("\n"));
+            Optional.ofNullable(result).ifPresent(
+                r -> sb.append("Result: ").append(result).append("\n")
+            );
 
-            int minX = board.values().stream().map(cell -> cell.coord().x).min(Integer::compareTo).orElseThrow();
-            int maxX = board.values().stream().map(cell -> cell.coord().x).max(Integer::compareTo).orElseThrow();
-            int minY = board.values().stream().map(cell -> cell.coord().y()).min(Integer::compareTo).orElseThrow();
-            int maxY = board.values().stream().map(cell -> cell.coord().y()).max(Integer::compareTo).orElseThrow();
+            int minX = board
+                .values()
+                .stream()
+                .map(cell -> cell.coord().x)
+                .min(Integer::compareTo)
+                .orElseThrow();
+            int maxX = board
+                .values()
+                .stream()
+                .map(cell -> cell.coord().x)
+                .max(Integer::compareTo)
+                .orElseThrow();
+            int minY = board
+                .values()
+                .stream()
+                .map(cell -> cell.coord().y())
+                .min(Integer::compareTo)
+                .orElseThrow();
+            int maxY = board
+                .values()
+                .stream()
+                .map(cell -> cell.coord().y())
+                .max(Integer::compareTo)
+                .orElseThrow();
             for (int y = minY; y <= maxY; y++) {
                 for (int x = minX; x <= maxX; x++) {
                     Cell c = board.get(Coord.of(x, y));
-                    sb.append(Optional.ofNullable(c).map(Cell::val).map(Val::toString).orElse("."));
+                    sb.append(
+                        Optional.ofNullable(c)
+                            .map(Cell::val)
+                            .map(Val::toString)
+                            .orElse(".")
+                    );
                     sb.append(" ");
                 }
                 sb.append("\n");
@@ -269,15 +412,17 @@ public class Main {
     }
 
     static class History {
+
         private List<Board> history = new ArrayList<>();
         private Val result;
 
-        public History() {
-        }
+        public History() {}
 
         public void submit(Val result) {
             if (this.result != null) {
-                throw new IllegalStateException("Result has already been submitted");
+                throw new IllegalStateException(
+                    "Result has already been submitted"
+                );
             }
             this.result = result;
         }
@@ -305,28 +450,31 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        Board b = Board.parse(
-                """
-                        . . . . . . . .
-                        . . . . . . . *
-                        . . . . . . ^ S
-                        . . . . 1 > . .
-                        . . < A > . * .
-                        1 = -1 + . . . .
-                        . . . . . 2 @ 3
-                        -6 @ 7 v . . 2 .
-                        . 2 . . . . . .
-                        . . 0 @ 5 . . .
-                        . . . 2 . . . .
-                        """);
-        b.setA(10);
-        int maxTime = 20;
-        while (b.history.getResult() == null && b.t <= maxTime) {
-            System.out.println(b);
-            System.out.println("--------------");
-            b = b.next();
+        if (args.length < 3) {
+            System.err.println("Usage: icfpc.Main input.txt a b");
+            System.exit(-1);
         }
+        String filePath = args[0];
+        int A = Integer.valueOf(args[1]);
+        int B = Integer.valueOf(args[2]);
 
-        System.out.println("Result: " + b.history.getResult());
+        try {
+            byte[] bytes = Files.readAllBytes(Paths.get(filePath));
+            String fileContent = new String(bytes);
+
+            Board b = Board.parse(fileContent);
+            b.setA(A);
+            b.setB(B);
+            int maxTime = 20;
+            while (b.history.getResult() == null && b.t <= maxTime) {
+                System.out.println(b);
+                System.out.println("--------------");
+                b = b.next();
+            }
+
+            System.out.println("Result: " + b.history.getResult());
+        } catch (Throwable t) {
+            System.err.println("oopsie " + t.toString());
+        }
     }
 }
