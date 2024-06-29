@@ -2,6 +2,7 @@
 
 #include "spaceship/map.h"
 
+#include "common/geometry/d2/axis/rectangle.h"
 #include "common/geometry/d2/base.h"
 #include "common/geometry/d2/stl_hash/point.h"
 #include "common/geometry/d2/stl_hash/vector.h"
@@ -20,6 +21,12 @@ class SpaceShip {
     v += _v;
     p += v;
   }
+
+  I2ARectangle PossibleLocations(uint64_t s) const {
+    auto d = (s * (s + 1)) / 2;
+    return I2ARectangle({p.x + s * v.dx - d, p.y + s * v.dy - d},
+                        {p.x + s * v.dx + d, p.y + s * v.dy + d});
+  };
 
   size_t Hash() const {
     return HashCombine(std::hash<I2Point>{}(p), std::hash<I2Vector>{}(v));
