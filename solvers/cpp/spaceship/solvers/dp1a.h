@@ -21,18 +21,18 @@
 #include <vector>
 
 namespace spaceship {
-class Greedy2A : public BaseSolver {
+class DP1A : public BaseSolver {
  public:
   using TBase = BaseSolver;
   using PSolver = TBase::PSolver;
 
  public:
-  Greedy2A() : BaseSolver() {}
-  explicit Greedy2A(unsigned _max_time) : BaseSolver(_max_time) {}
+  DP1A() : BaseSolver() {}
+  explicit DP1A(unsigned _max_time) : BaseSolver(_max_time) {}
 
-  PSolver Clone() const override { return std::make_shared<Greedy2A>(*this); }
+  PSolver Clone() const override { return std::make_shared<DP1A>(*this); }
 
-  std::string Name() const override { return "greedy2a"; }
+  std::string Name() const override { return "dp1a"; }
 
   bool SkipSolutionRead() const override { return true; }
   // bool SkipBest() const override { return true; }
