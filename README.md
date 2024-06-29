@@ -63,27 +63,27 @@ Modules:
 ### To download problems:
 
 ```
-python3 language/downloader.py lambdaman 1 21
-python3 language/downloader.py spaceship 1 25
+python language/downloader.py lambdaman 1 21
+python language/downloader.py spaceship 1 25
 ```
 
 ### To upload solutions:
 
 ```
-python3 language/uploader.py solutions/spaceship/best/ 1 25
+python language/uploader.py solutions/spaceship/best/ 1 25
 ```
 
 
 ### REPL to send commands to their server:
 
 ```
-python3 language/repl.py repl
+python language/repl.py repl
 ```
 
 ### Send a single command:
 
 ```
-python3 language/repl.py send 'get spaceship'
+python language/repl.py send 'get spaceship'
 ```
 
 ### How to submit 3d:
@@ -92,5 +92,5 @@ python3 language/repl.py send 'get spaceship'
 2. Run 
 
 ```
-PYTHONPATH="./language/" python solvers/python/3d/clean2.py solutions/3d/organized/1.input
+PYTHONPATH="./language/" python solvers/3d/clean2.py solutions/3d/organized/1.input
 ```
