@@ -80,6 +80,12 @@ python3 language/uploader.py solutions/spaceship/best/ 1 25
 python3 language/repl.py repl
 ```
 
+### Send a single command:
+
+```
+python3 language/repl.py send 'get spaceship'
+```
+
 ### How to submit 3d:
 
 1. Copy the cells from spreadsheet into N-input.txt file

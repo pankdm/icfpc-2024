@@ -10,6 +10,26 @@ load_dotenv()
 
 interpreter = ICFPInterpreter()
 
+def send(s):
+    command = "S" + interpreter.encode_string(s)
+    print (f"  >> Sending {command}")
+    try:
+        resp = post(
+            "https://boundvariable.space/communicate",
+            data=command,
+            headers={"Authorization": f"Bearer {os.environ["ICFPC_TOKEN"]}"}
+        )
+        resp.raise_for_status()
+        print (f"  << got {resp.text}")
+        encoded = interpreter.decode_string(resp.text[1:])
+        print ()
+        print (encoded)
+        # sleep(3.01)
+    except exceptions.RequestException as e:
+        print("Error: ", e)
+
+
+
 if sys.argv[1] == "decode":
     while True:
         s = input("Enter token to decode:\n")
@@ -23,22 +43,10 @@ if sys.argv[1] == "encode":
 if sys.argv[1] == "repl":
     while True:
         s = input("Enter command to send:\n")
-        command = "S" + interpreter.encode_string(s)
-        print (f"  >> Sending {command}")
-        try:
-            resp = post(
-                "https://boundvariable.space/communicate",
-                data=command,
-                headers={"Authorization": f"Bearer {os.environ["ICFPC_TOKEN"]}"}
-            )
-            resp.raise_for_status()
-            print (f"  << got {resp.text}")
-            encoded = interpreter.decode_string(resp.text[1:])
-            print ()
-            print (encoded)
-            # sleep(3.01)
-        except exceptions.RequestException as e:
-            print("Error: ", e)
-
-
-print(f"Unknown mode: {sys.argv[1]}")
+        send(s)
+if sys.argv[1] == "send":
+    s = sys.argv[2]
+    print (s)
+    send(s)
+else:
+    print(f"Unknown mode: {sys.argv[1]}")
