@@ -1,6 +1,7 @@
 {
   "[python]": {
-    "editor.defaultFormatter": "ms-python.python"
+    "editor.defaultFormatter": "ms-python.python",
+    "editor.tabSize": 4
   },
   "python.formatting.provider": "none",
   "editor.formatOnType": true,
@@ -107,5 +108,5 @@
     "editor.formatOnSave": false
   },
   "cmake.configureOnOpen": false,
-  "editor.tabSize": 2
+  "editor.tabSize": 2,
 }
