@@ -31,7 +31,7 @@ def parse_labels(cells):
         for x, value in enumerate(row):
             if "@" in value:
                 if ">" not in value:
-                    assert False, f"@-value '{value}' without labels!"
+                    assert False, f"Error: @-value '{value}' without '>' label!"
                 label = value.split(">")[1]
                 x0, y0 = label_to_location[label]
 
@@ -46,6 +46,10 @@ def parse_labels(cells):
 def postprocess_value(value):
     if value in ["*", "=", "<", ">"]:
         return value
+    elif value == "add":
+        return "+"
+    elif value == "eq":
+        return "="
     elif "*" in value:
         return "."
     elif "<" in value:

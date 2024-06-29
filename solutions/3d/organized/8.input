@@ -1,0 +1,16 @@
+							1				
+						K*	add	K+1*	>	K+1*	
+						^	K+1*		dx	@ > #K	dt
+						K*				dy	
+						^					
+						K*				A	
+						^	0		B = 0 < #B	eq	B*
+				K*	<	K=2 < #K	add	K*	*	B*	/
+	A*	<	A < #A1	/			K*		B*K *		S
+0	eq			A/K *		A < #A2	%	A%K	add	B*	
+	0*			v					B*		
+dx	@ > #K	dy		A/K *	>	A/K*		dx	@ > #B	dy	
+	dt			v	dx	@ > #A2	dy		dt		
+				A/K*		dt					
+			dx	@ > #A1	dy						
+				dt							
