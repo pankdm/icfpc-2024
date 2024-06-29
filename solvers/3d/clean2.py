@@ -129,6 +129,10 @@ solution = get_solution(data)
 with open(output_file, "w") as out:
     out.write(solution)
 
+prog = parse_prog(solution)
+padded_solution = prog.to_str_padded()
+with open(f"{output_file}.nice", "w") as out:
+    out.write(padded_solution)
 
 print ("")
 print ("[Sending the solution]")
@@ -137,10 +141,8 @@ msg = send_solution(solution, "3d", num)
 if msg is not None and "Correct" in msg:
     score = extract_score(msg)
 
-    prog = parse_prog(solution)
-    padded_solution = prog.to_str_padded()
-
     score_output = f"solutions/3d/organized/{prefix}.score.{score}"
     print (f"Writing to file = {score_output}")
     with open(score_output, "w") as out:
         out.write(padded_solution)
+
