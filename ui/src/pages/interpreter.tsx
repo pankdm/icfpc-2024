@@ -6,55 +6,97 @@ import {
   Text,
   Stack,
   Box,
+  ThemeIcon,
+  Button,
+  Switch,
 } from '@mantine/core'
 import { useState } from 'react'
 import API from '../api'
 import TrafficLight from '../components/TrafficLight'
+import {
+  IconArrowDown,
+  IconArrowLeft,
+  IconArrowRight,
+} from '@tabler/icons-react'
+import { useStore } from '@nanostores/react'
+import { $warpDecodedResponse, Toggle } from '../components/state/toggles'
 
 export default function Interpreter() {
-  const [english, setEnglish] = useState('')
+  const [englishInput, setEnglishInput] = useState('')
   const [loadingEnglish, setLoadingEnglish] = useState(false)
-  const [error, setError] = useState<any>(null)
-  const [alien, setAlien] = useState('')
+  const [alienInput, setAlienInput] = useState('')
   const [loadingAlien, setLoadingAlien] = useState(false)
-  const handleEnglishInput = async (ev: any) => {
-    const english = ev.target.value
-    setEnglish(english)
+  const [error, setError] = useState<any>(null)
+  const handleInput = (lang: 'english' | 'alien') => async (ev: any) => {
+    const input = ev.target.value
+    const [setInput, setLoadingOther, setOtherInput, apiCall] =
+      lang === 'english'
+        ? [setEnglishInput, setLoadingAlien, setAlienInput, API.encode]
+        : [setAlienInput, setLoadingEnglish, setEnglishInput, API.decode]
+    setInput(input)
     setError(null)
-    if (!english) {
-      setAlien('')
+    if (!input) {
+      setOtherInput('')
       return
     }
-    setLoadingAlien(true)
+    setLoadingOther(true)
     try {
-      const { text } = await API.translateToAlien(english)
-      setAlien(text)
+      setOtherInput(await apiCall(input))
     } catch (error) {
       setError(error)
     }
-    setLoadingAlien(false)
+    setLoadingOther(false)
   }
-  const handleAlienInput = async (ev: any) => {
-    const alien = ev.target.value
-    setAlien(alien)
-    setError(null)
-    if (!alien) {
-      setEnglish('')
-      return
-    }
-    setLoadingEnglish(true)
+  const [alienResponse, setAlienResponse] = useState('')
+  const [decodedResponse, setDecodedResponse] = useState('')
+  const [loadingComms, setLoadingComms] = useState(false)
+  const warpDecodedResponse = useStore($warpDecodedResponse)
+  const sendComms = async (ev) => {
+    ev.preventDefault()
+    setLoadingComms(true)
     try {
-      const { text } = await API.translateToEnglish(alien)
-      setEnglish(text)
-    } catch (error) {
-      setError(error)
+      const response = await API.communicate(alienInput)
+      setAlienResponse(response)
+      const decodedResponse = await API.decode(response)
+      setDecodedResponse(decodedResponse)
+    } catch (err) {
+      setDecodedResponse('')
+      setAlienInput(`Error: ${err.message}`)
     }
-    setLoadingEnglish(false)
+    setLoadingComms(false)
   }
   return (
-    <Center h="100%">
-      <Stack w="100%" maw={2000} align='center'>
-        <Group w='100%' position="center" grow>
+    <Center h="100%" pos="relative" component="form" onSubmit={() => sendComms}>
+      <TrafficLight
+        pos="absolute"
+        top={0}
+        right={0}
+        size="8rem"
+        red={!!error}
+        green={!error}
+      />
+      <Stack w="100%" maw={1600} align="center">
+        <Group w="100%" position="center" grow>
+          <Textarea
+            label={
+              <Group>
+                <Text>Earth</Text>
+                {loadingEnglish && <Loader size="xs" />}
+              </Group>
+            }
+            styles={{
+              input: {
+                fontFamily: 'monospace',
+              },
+            }}
+            placeholder="English translation"
+            minRows={5}
+            value={englishInput}
+            onChange={handleInput('english')}
+          />
+          <ThemeIcon sx={{ flex: 0 }} variant="subtle">
+            <IconArrowRight />
+          </ThemeIcon>
           <Textarea
             label={
               <Group>
@@ -68,32 +110,54 @@ export default function Interpreter() {
               },
             }}
             placeholder="Enter gibberish"
-            minRows={15}
-            value={alien}
-            onChange={handleAlienInput}
-          />
-          <Center sx={{ flexGrow: 0 }}>
-            <TrafficLight size="8rem" red={!!error} green={!error} />
-          </Center>
-          <Textarea
-            label={
-              <Group>
-                <Text>English</Text>
-                {loadingEnglish && <Loader size="xs" />}
-              </Group>
-            }
-            styles={{
-              input: {
-                fontFamily: 'monospace',
-              },
-            }}
-            placeholder="English translation"
-            minRows={15}
-            value={english}
-            onChange={handleEnglishInput}
+            minRows={5}
+            value={alienInput}
+            onChange={handleInput('alien')}
           />
         </Group>
-        <Text ff="monospace" color={error ? 'black' : 'gray.3'}>{error?.message || 'No errors' }</Text>
+        <IconArrowDown />
+        <Button onClick={sendComms} type="submit" loading={loadingComms}>
+          Communicate
+        </Button>
+        <Textarea
+          w="100%"
+          label={
+            <Group>
+              <Text>Alien response</Text>
+              {loadingAlien && <Loader size="xs" />}
+            </Group>
+          }
+          styles={{
+            input: {
+              fontFamily: 'monospace',
+              overflow: 'auto',
+              whiteSpace: 'nowrap',
+            },
+          }}
+          placeholder="Gibberish"
+          minRows={3}
+          value={alienResponse}
+        />
+        <IconArrowDown />
+        <Textarea
+          w="100%"
+          label={
+            <Group w="100%" justify="apart">
+              <Text>Decoded response</Text>
+              <Toggle atom={$warpDecodedResponse} label="Warp text" />
+            </Group>
+          }
+          styles={{
+            input: {
+              fontFamily: 'monospace',
+              overflow: 'auto',
+              whiteSpace: warpDecodedResponse === 'y' ? 'normal' : 'nowrap',
+            },
+          }}
+          placeholder="English response"
+          minRows={25}
+          value={decodedResponse}
+        />
       </Stack>
     </Center>
   )

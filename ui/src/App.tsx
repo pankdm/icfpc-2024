@@ -11,7 +11,10 @@ function App() {
     <Routes>
       <Route path="/" element={<AppLayout />}>
         <Route index element={<Root />} />
-        <Route path="/problems/:problemId" element={<ProblemInspector />} />
+        <Route
+          path="/problems/:track/:problemId"
+          element={<ProblemInspector />}
+        />
         <Route path="/problems" element={<Problems />} />
         <Route path="/scoreboard" element={<Scoreboard />} />
         <Route path="/interpreter" element={<Interpreter />} />

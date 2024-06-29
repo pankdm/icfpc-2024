@@ -30,7 +30,11 @@ const fetchAPI = async (
       if (r.status >= 300) {
         throw new Error(await r.text())
       }
-      return await r.json()
+      if (r.headers.get('Content-Type') === 'application/json') {
+        return await r.json()
+      } else {
+        return await r.text()
+      }
     })
     .catch((err) => {
       console.error(err)
@@ -57,13 +61,18 @@ const API = {
     fetchAPI(`/problems/${problemId}/solutions`) as Promise<Solutions>,
   getSolution: async (solutionId: string) =>
     fetchAPI(`/solutions/${solutionId}`) as Promise<Solution>,
-  translateToEnglish: async (text: string) =>
-    fetchAPI(`/translate-to-english`, {
+  decode: async (text: string) =>
+    fetchAPI(`/decode`, {
       method: 'POST',
       body: { text },
     }),
-  translateToAlien: async (text: string) =>
-    fetchAPI(`/translate-to-alien`, {
+  encode: async (text: string) =>
+    fetchAPI(`/encode`, {
+      method: 'POST',
+      body: { text },
+    }),
+  communicate: async (text: string) =>
+    fetchAPI(`/communicate`, {
       method: 'POST',
       body: { text },
     }),
