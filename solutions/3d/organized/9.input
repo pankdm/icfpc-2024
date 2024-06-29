@@ -1,22 +1,22 @@
 							0	
 				A*	>	A*	=	0*
-				^			0* (to #1)	
-				A*		dx=6	@	dy=-15
+				^			0*	
+				A*		dx=6	 @ > #1	dy=-15
 				^			4	
-A*	<	A*	<	A				
+A*	<	A*	<	A < #A				
 v				v	10			
 A*				A	%	A%10*		
 v	10				A%10*			
 A*	/			2	*			
-	A/10* (replace A)				A*			
-dx=-3	@	dy=6		-3	+			
+	A/10*				A*			
+dx=-3	@ > #A	dy=6		-3	+			
 	5				1 | -1 *			
 cnt*	>	cnt*	>	cnt*	+	cnt*		
-^					cnt* (replace cnt)			
-cnt*				dx=5	@	dy=-2		
+^					cnt*			
+cnt*				dx=5	@ > #cnt	dy=-2		
 ^					5			
-cnt=0	>	cnt*						
-	0* (from #1)	+						
+cnt=0 < #cnt	>	cnt*						
+	0* < #1	+						
 cnt*	<	cnt*						
 v	0	#	S					
 S								
