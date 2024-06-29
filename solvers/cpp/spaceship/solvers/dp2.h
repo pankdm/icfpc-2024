@@ -35,7 +35,7 @@ class DP2 : public BaseSolver {
 
   std::string Name() const override { return "dp2"; }
 
-  bool SkipSolutionRead() const override { return true; }
+  // bool SkipSolutionRead() const override { return true; }
   // bool SkipBest() const override { return true; }
 
  protected:
@@ -81,9 +81,6 @@ class DP2 : public BaseSolver {
     }
   };
 
-  std::unordered_map<size_t, Task> tasks;
-  std::vector<HeapMinOnTop<TaskInfo>> vheap;
-
  public:
   Solution Solve(const TProblem& p) override {
     Timer t;
@@ -104,8 +101,8 @@ class DP2 : public BaseSolver {
     nvector::Unique(tvp);
 
     // Init heap
-    tasks.clear();
-    vheap.clear();
+    std::unordered_map<size_t, Task> tasks;
+    std::vector<HeapMinOnTop<TaskInfo>> vheap;
     vheap.resize(tvp.size() + 1);
     Task task_init;
     task_init.vp = nvector::Enumerate<uint16_t>(0u, tvp.size());

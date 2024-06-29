@@ -58,9 +58,6 @@ class DP1 : public BaseSolver {
     bool operator<(const TaskInfo& r) const { return cost < r.cost; }
   };
 
-  std::unordered_map<size_t, Task> tasks;
-  std::vector<HeapMinOnTop<TaskInfo>> vheap;
-
  public:
   Solution Solve(const TProblem& p) override {
     Timer t;
@@ -81,8 +78,8 @@ class DP1 : public BaseSolver {
     nvector::Unique(tvp);
 
     // Init heap
-    tasks.clear();
-    vheap.clear();
+    std::unordered_map<size_t, Task> tasks;
+    std::vector<HeapMinOnTop<TaskInfo>> vheap;
     vheap.resize(tvp.size() + 1);
     Task task_init;
     task_init.vp = tvp;
