@@ -9,6 +9,7 @@
 #include "common/heap.h"
 #include "common/numeric/bits/rotate.h"
 #include "common/stl/hash/array.h"
+#include "common/stl/hash/vector.h"
 #include "common/timer.h"
 
 #include <array>
@@ -56,24 +57,34 @@ class TwoPointsSolver {
   };
 
  protected:
-  // using TKey = uint64_t;
-  using TKey = std::array<int64_t, 6>;
+  using TKey = uint64_t;
+  // using TKey = std::array<int64_t, 6>;
 
   std::unordered_map<TKey, std::pair<char, unsigned>> cache;
-  uint64_t hash_conflicts = 0;
+  uint64_t hash_conflicts1 = 0;
+  uint64_t hash_conflicts2 = 0;
 
  public:
-  // static TKey HKey(const I2Vector& v, const I2Point& p1, const I2Point& p2) {
-  //   return numeric::RotateBitsR(v.dx, 54) + numeric::RotateBitsR(v.dy, 48) +
-  //         numeric::RotateBitsR(p1.x, 36) + numeric::RotateBitsR(p1.y, 24) +
-  //         numeric::RotateBitsR(p2.x - p1.x, 12) + numeric::RotateBitsR(p2.y - p1.y, 0);
-  // }
   static TKey HKey(const I2Vector& v, const I2Point& p1, const I2Point& p2) {
-    return {v.dx, v.dy, p1.x, p1.y, p2.x, p2.y};
+    return std::hash<std::vector<int64_t>>{}(
+        std::vector<int64_t>{int64_t(numeric::RotateBitsR(v.dx, 54) + numeric::RotateBitsR(v.dy, 48) +
+                                     numeric::RotateBitsR(p1.x, 36) + numeric::RotateBitsR(p1.y, 24) +
+                                     numeric::RotateBitsR(p2.x, 12) + numeric::RotateBitsR(p2.y, 0)),
+                             v.dx, v.dy, p1.x, p1.y, p2.x, p2.y});
   }
+  // static TKey HKey(const I2Vector& v, const I2Point& p1, const I2Point& p2) {
+  //   return {v.dx, v.dy, p1.x, p1.y, p2.x, p2.y};
+  // }
 
   size_t CacheSize() const { return cache.size(); }
-  void ResetHashConflicts() { hash_conflicts = 0; }
+  
+  void ResetHashConflicts() {
+    hash_conflicts1 = 0;
+    hash_conflicts2 = 0;
+  }
+
+  uint64_t HashConflicts1() const { return hash_conflicts1; }
+  uint64_t HashConflicts2() const { return hash_conflicts2; }
 
   std::pair<char, unsigned> Solve(const I2Vector& v, const I2Point& p1, const I2Point& p2, unsigned time_in_ms) {
     // Check cache
@@ -140,9 +151,24 @@ class TwoPointsSolver {
               }
               continue;
             }
-            // ...
-            // Check inside cache
-            // ...
+            {
+              auto task_hkey =
+                  HKey(task_new.ss.v, (p1 - task_new.ss.p).ToPoint(),
+                       (p2 - task_new.ss.p).ToPoint());
+              auto task_it = cache.find(task_hkey);
+              if (task_it != cache.end()) {
+                // Solution exist in cache
+                auto min_extra_cost = task_it->second.second;
+                task_new.min_final_cost = task_new.cost + min_extra_cost;
+                if (task_new.min_final_cost < best_solution) {
+                  best_solution = task_new.min_final_cost;
+                  best_solution_task_hash = task_new_hash;
+                  tasks[task_new_hash] = task_new;
+                }
+                continue;
+              }
+            }
+
             task_new.ComputeMinFinalCost(p1, p2);
             if (task_new.min_final_cost < t.min_final_cost) {
               std::cout << "TPS: Min final cost should not decrease." << std::endl;
@@ -150,6 +176,7 @@ class TwoPointsSolver {
             tasks[task_new_hash] = task_new;
           } else if (it->second.ss != task_new.ss) {
             // Hash conflict, skipping
+            ++hash_conflicts1;
             continue;
           } else if (it->second.cost > task_new.cost) {
             // Better path to the same point
@@ -183,11 +210,14 @@ class TwoPointsSolver {
           cache[thkey] = {V2C(t->ss.v - t2->ss.v), best_solution - t2->cost};
         } else {
           if (it2->second != std::make_pair(V2C(t->ss.v - t2->ss.v), best_solution - t2->cost)) {
-            std::cout << "TPS: Different value in cache than expecting." << std::endl;
-            std::cout << "\t" << "Old: " << it2->second.second
-                      << "\tNew:" << best_solution - t2->cost << std::endl;
-            std::cout << "\t" << t2->ss.v << "\t" << p1 - t2->ss.p << "\t"
-                      << p2 - t2->ss.p << std::endl;
+            // Hash conflict, skipping cache update
+            ++hash_conflicts2;
+            // std::cout << "TPS: Different value in cache than expecting."
+            //           << std::endl;
+            // std::cout << "\t" << "Old: " << it2->second.second
+            //           << "\tNew:" << best_solution - t2->cost << std::endl;
+            // std::cout << "\t" << t2->ss.v << "\t" << p1 - t2->ss.p << "\t"
+            //           << p2 - t2->ss.p << std::endl;
           }
         }
         if (t2->cost == 0) {

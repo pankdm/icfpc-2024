@@ -32,19 +32,27 @@ class GreedyLS1 : public BaseSolver {
   // bool SkipBest() const override { return true; }
 
   static std::string SolveI(const std::vector<I2Point>& line, unsigned max_time_in_seconds) {
+    Timer t;
     OnePointSolver ps1;
-    TwoPointsSolver ps2;
+    thread_local TwoPointsSolver ps2;
+    ps2.ResetHashConflicts();
     std::string sr;
     SpaceShip ss;
     unsigned covered = 0;
     unsigned time_per_step = (max_time_in_seconds * 1000) / line.size();
     for (; covered + 1 < line.size();) {
-      auto c = ps2.BestMove(ss.v, (line[covered] - ss.p).ToPoint(), (line[covered + 1] - ss.p).ToPoint(), time_per_step);
+      auto c = (t.GetSeconds() < max_time_in_seconds)
+                   ? ps2.BestMove(ss.v, (line[covered] - ss.p).ToPoint(),
+                                  (line[covered + 1] - ss.p).ToPoint(),
+                                  time_per_step)
+                   : ps1.BestMove(ss.v, (line[covered] - ss.p).ToPoint());
       sr += c;
       auto v = C2V(c);
       ss.v += v;
       ss.p += ss.v;
-      if (ss.p == line[covered]) ++covered;
+      if (ss.p == line[covered]) {
+        ++covered;
+      }
     }
     for (; ss.p != line.back(); ) {
       auto c = ps1.BestMove(ss.v, (line.back() - ss.p).ToPoint());
@@ -53,7 +61,9 @@ class GreedyLS1 : public BaseSolver {
       ss.v += v;
       ss.p += ss.v;
     }
-    std::cout << "\t" << "TPS cache size: " << time_per_step << std::endl;
+    std::cout << "\tTPS cache size: " << ps2.CacheSize()
+              << "\tHash Conflicts: " << ps2.HashConflicts1()
+              << "\t" << ps2.HashConflicts2() << std::endl;
     return sr;
   }
 
