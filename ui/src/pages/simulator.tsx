@@ -161,7 +161,7 @@ export default function Simulator() {
   return (
     <Box w="100%" h="100%" sx={{ overflow: 'auto' }}>
       <Helmet>
-        <title>Leaderboard - {config.HTML_TITLE}</title>
+        <title>3D Simulator - {config.HTML_TITLE}</title>
       </Helmet>
       <Container>
         <Stack w="100%">

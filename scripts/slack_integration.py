@@ -19,7 +19,8 @@ def post_to_slack(s):
 if __name__ == "__main__":
     load_dotenv()
 
-    response = post_to_slack("Hello hackers!")
+    msg = "Hello hackers! :rocket::rocket::rocket:"
+    response = post_to_slack(msg)
     print(response)
     assert response["ok"]
-    assert response["message"]["text"] == "Hello hackers!"
+    assert response["message"]["text"] == msg
