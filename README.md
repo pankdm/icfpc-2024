@@ -119,6 +119,6 @@ PYTHONPATH="./language/" python scripts/check_leaderboard.py
 Monitoring script:
 
 ```
-./scripts/monitor_leaderboard.py
+./scripts/monitor_leaderboard.sh
 ```
 
