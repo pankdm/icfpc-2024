@@ -3,21 +3,7 @@
      width="1000" height="1400.1790121311133" viewBox="-19 -479770 345228 483381">
 <defs>
 </defs>
-<path d="M0,0 L-13,-13" stroke="green" stroke-width="50.0" fill="none" />
-<path d="M-13,-13 L-14,-13" stroke="green" stroke-width="50.0" fill="none" />
-<path d="M-14,-13 L-14,-12" stroke="green" stroke-width="50.0" fill="none" />
-<path d="M-14,-12 L-12,-12" stroke="green" stroke-width="50.0" fill="none" />
-<path d="M-12,-12 L-13,-10" stroke="green" stroke-width="50.0" fill="none" />
-<path d="M-13,-10 L-12,-9" stroke="green" stroke-width="50.0" fill="none" />
-<path d="M-12,-9 L-10,-8" stroke="green" stroke-width="50.0" fill="none" />
-<path d="M-10,-8 L-10,-10" stroke="green" stroke-width="50.0" fill="none" />
-<path d="M-10,-10 L-7,-7" stroke="green" stroke-width="50.0" fill="none" />
-<path d="M-7,-7 L-7,-6" stroke="green" stroke-width="50.0" fill="none" />
-<path d="M-7,-6 L-5,-5" stroke="green" stroke-width="50.0" fill="none" />
-<path d="M-5,-5 L-3,-4" stroke="green" stroke-width="50.0" fill="none" />
-<path d="M-3,-4 L-3,-3" stroke="green" stroke-width="50.0" fill="none" />
-<path d="M-3,-3 L-1,-1" stroke="green" stroke-width="50.0" fill="none" />
-<path d="M-1,-1 L2,-1" stroke="green" stroke-width="50.0" fill="none" />
+<path d="M0,0 L2,-1" stroke="green" stroke-width="50.0" fill="none" />
 <path d="M2,-1 L6,2" stroke="green" stroke-width="50.0" fill="none" />
 <path d="M6,2 L10,4" stroke="green" stroke-width="50.0" fill="none" />
 <path d="M10,4 L13,7" stroke="green" stroke-width="50.0" fill="none" />
@@ -8195,21 +8181,21 @@
 <path d="M345112,-479642 L345143,-479682" stroke="green" stroke-width="50.0" fill="none" />
 <path d="M345143,-479682 L345174,-479723" stroke="green" stroke-width="50.0" fill="none" />
 <path d="M345174,-479723 L345204,-479765" stroke="green" stroke-width="50.0" fill="none" />
+<path d="M345204,-479765 L-14,-13" stroke="green" stroke-width="50.0" fill="none" />
+<path d="M-14,-13 L-13,-13" stroke="green" stroke-width="50.0" fill="none" />
+<path d="M-13,-13 L-12,-12" stroke="green" stroke-width="50.0" fill="none" />
+<path d="M-12,-12 L-10,-10" stroke="green" stroke-width="50.0" fill="none" />
+<path d="M-10,-10 L-7,-7" stroke="green" stroke-width="50.0" fill="none" />
+<path d="M-7,-7 L-5,-5" stroke="green" stroke-width="50.0" fill="none" />
+<path d="M-5,-5 L-3,-4" stroke="green" stroke-width="50.0" fill="none" />
+<path d="M-3,-4 L-3,-3" stroke="green" stroke-width="50.0" fill="none" />
+<path d="M-3,-3 L-1,-1" stroke="green" stroke-width="50.0" fill="none" />
+<path d="M-1,-1 L-7,-6" stroke="green" stroke-width="50.0" fill="none" />
+<path d="M-7,-6 L-10,-8" stroke="green" stroke-width="50.0" fill="none" />
+<path d="M-10,-8 L-12,-9" stroke="green" stroke-width="50.0" fill="none" />
+<path d="M-12,-9 L-13,-10" stroke="green" stroke-width="50.0" fill="none" />
+<path d="M-13,-10 L-14,-12" stroke="green" stroke-width="50.0" fill="none" />
 <circle cx="0" cy="0" r="100" fill="blue" />
-<circle cx="-13" cy="-13" r="100" fill="red" />
-<circle cx="-14" cy="-13" r="100" fill="red" />
-<circle cx="-14" cy="-12" r="100" fill="red" />
-<circle cx="-12" cy="-12" r="100" fill="red" />
-<circle cx="-13" cy="-10" r="100" fill="red" />
-<circle cx="-12" cy="-9" r="100" fill="red" />
-<circle cx="-10" cy="-8" r="100" fill="red" />
-<circle cx="-10" cy="-10" r="100" fill="red" />
-<circle cx="-7" cy="-7" r="100" fill="red" />
-<circle cx="-7" cy="-6" r="100" fill="red" />
-<circle cx="-5" cy="-5" r="100" fill="red" />
-<circle cx="-3" cy="-4" r="100" fill="red" />
-<circle cx="-3" cy="-3" r="100" fill="red" />
-<circle cx="-1" cy="-1" r="100" fill="red" />
 <circle cx="2" cy="-1" r="100" fill="red" />
 <circle cx="6" cy="2" r="100" fill="red" />
 <circle cx="10" cy="4" r="100" fill="red" />
@@ -16388,4 +16374,18 @@
 <circle cx="345143" cy="-479682" r="100" fill="red" />
 <circle cx="345174" cy="-479723" r="100" fill="red" />
 <circle cx="345204" cy="-479765" r="100" fill="red" />
+<circle cx="-14" cy="-13" r="100" fill="red" />
+<circle cx="-13" cy="-13" r="100" fill="red" />
+<circle cx="-12" cy="-12" r="100" fill="red" />
+<circle cx="-10" cy="-10" r="100" fill="red" />
+<circle cx="-7" cy="-7" r="100" fill="red" />
+<circle cx="-5" cy="-5" r="100" fill="red" />
+<circle cx="-3" cy="-4" r="100" fill="red" />
+<circle cx="-3" cy="-3" r="100" fill="red" />
+<circle cx="-1" cy="-1" r="100" fill="red" />
+<circle cx="-7" cy="-6" r="100" fill="red" />
+<circle cx="-10" cy="-8" r="100" fill="red" />
+<circle cx="-12" cy="-9" r="100" fill="red" />
+<circle cx="-13" cy="-10" r="100" fill="red" />
+<circle cx="-14" cy="-12" r="100" fill="red" />
 </svg>

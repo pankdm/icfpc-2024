@@ -3,105 +3,105 @@
      width="1000" height="918.9189189189188" viewBox="-7 -166 185 170">
 <defs>
 </defs>
-<path d="M0,0 L-2,-1" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M-2,-1 L-2,-2" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M-2,-2 L1,-4" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M1,-4 L1,-5" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M1,-5 L2,-8" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M2,-8 L4,-11" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M4,-11 L6,-17" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M6,-17 L6,-20" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M6,-20 L11,-25" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M11,-25 L12,-29" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M12,-29 L18,-34" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M18,-34 L21,-38" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M21,-38 L29,-44" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M29,-44 L35,-48" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M35,-48 L41,-53" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M41,-53 L48,-57" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M48,-57 L55,-60" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M55,-60 L59,-63" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M59,-63 L63,-65" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M63,-65 L70,-68" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M70,-68 L74,-68" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M74,-68 L79,-69" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M79,-69 L85,-70" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M85,-70 L87,-73" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M87,-73 L90,-74" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M90,-74 L94,-78" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M94,-78 L96,-80" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M96,-80 L97,-84" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M97,-84 L100,-88" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M100,-88 L103,-94" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M103,-94 L105,-96" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M105,-96 L107,-102" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M107,-102 L109,-105" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M109,-105 L112,-111" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M112,-111 L114,-113" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M114,-113 L116,-117" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M116,-117 L118,-121" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M118,-121 L122,-125" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M122,-125 L126,-128" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M126,-128 L129,-133" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M129,-133 L133,-136" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M133,-136 L137,-140" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M137,-140 L141,-144" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M141,-144 L143,-147" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M143,-147 L149,-152" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M149,-152 L153,-154" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M153,-154 L156,-156" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M156,-156 L161,-158" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M161,-158 L165,-160" stroke="green" stroke-width="0.25" fill="none" />
-<path d="M165,-160 L173,-161" stroke="green" stroke-width="0.25" fill="none" />
-<circle cx="0" cy="0" r="0.5" fill="blue" />
-<circle cx="-2" cy="-1" r="0.5" fill="red" />
-<circle cx="-2" cy="-2" r="0.5" fill="red" />
-<circle cx="1" cy="-4" r="0.5" fill="red" />
-<circle cx="1" cy="-5" r="0.5" fill="red" />
-<circle cx="2" cy="-8" r="0.5" fill="red" />
-<circle cx="4" cy="-11" r="0.5" fill="red" />
-<circle cx="6" cy="-17" r="0.5" fill="red" />
-<circle cx="6" cy="-20" r="0.5" fill="red" />
-<circle cx="11" cy="-25" r="0.5" fill="red" />
-<circle cx="12" cy="-29" r="0.5" fill="red" />
-<circle cx="18" cy="-34" r="0.5" fill="red" />
-<circle cx="21" cy="-38" r="0.5" fill="red" />
-<circle cx="29" cy="-44" r="0.5" fill="red" />
-<circle cx="35" cy="-48" r="0.5" fill="red" />
-<circle cx="41" cy="-53" r="0.5" fill="red" />
-<circle cx="48" cy="-57" r="0.5" fill="red" />
-<circle cx="55" cy="-60" r="0.5" fill="red" />
-<circle cx="59" cy="-63" r="0.5" fill="red" />
-<circle cx="63" cy="-65" r="0.5" fill="red" />
-<circle cx="70" cy="-68" r="0.5" fill="red" />
-<circle cx="74" cy="-68" r="0.5" fill="red" />
-<circle cx="79" cy="-69" r="0.5" fill="red" />
-<circle cx="85" cy="-70" r="0.5" fill="red" />
-<circle cx="87" cy="-73" r="0.5" fill="red" />
-<circle cx="90" cy="-74" r="0.5" fill="red" />
-<circle cx="94" cy="-78" r="0.5" fill="red" />
-<circle cx="96" cy="-80" r="0.5" fill="red" />
-<circle cx="97" cy="-84" r="0.5" fill="red" />
-<circle cx="100" cy="-88" r="0.5" fill="red" />
-<circle cx="103" cy="-94" r="0.5" fill="red" />
-<circle cx="105" cy="-96" r="0.5" fill="red" />
-<circle cx="107" cy="-102" r="0.5" fill="red" />
-<circle cx="109" cy="-105" r="0.5" fill="red" />
-<circle cx="112" cy="-111" r="0.5" fill="red" />
-<circle cx="114" cy="-113" r="0.5" fill="red" />
-<circle cx="116" cy="-117" r="0.5" fill="red" />
-<circle cx="118" cy="-121" r="0.5" fill="red" />
-<circle cx="122" cy="-125" r="0.5" fill="red" />
-<circle cx="126" cy="-128" r="0.5" fill="red" />
-<circle cx="129" cy="-133" r="0.5" fill="red" />
-<circle cx="133" cy="-136" r="0.5" fill="red" />
-<circle cx="137" cy="-140" r="0.5" fill="red" />
-<circle cx="141" cy="-144" r="0.5" fill="red" />
-<circle cx="143" cy="-147" r="0.5" fill="red" />
-<circle cx="149" cy="-152" r="0.5" fill="red" />
-<circle cx="153" cy="-154" r="0.5" fill="red" />
-<circle cx="156" cy="-156" r="0.5" fill="red" />
-<circle cx="161" cy="-158" r="0.5" fill="red" />
-<circle cx="165" cy="-160" r="0.5" fill="red" />
-<circle cx="173" cy="-161" r="0.5" fill="red" />
+<path d="M0,0 L-2,-1" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M-2,-1 L1,-4" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M1,-4 L173,-161" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M173,-161 L165,-160" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M165,-160 L161,-158" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M161,-158 L156,-156" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M156,-156 L153,-154" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M153,-154 L149,-152" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M149,-152 L143,-147" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M143,-147 L141,-144" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M141,-144 L137,-140" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M137,-140 L133,-136" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M133,-136 L129,-133" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M129,-133 L126,-128" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M126,-128 L122,-125" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M122,-125 L118,-121" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M118,-121 L116,-117" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M116,-117 L114,-113" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M114,-113 L112,-111" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M112,-111 L109,-105" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M109,-105 L107,-102" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M107,-102 L105,-96" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M105,-96 L103,-94" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M103,-94 L100,-88" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M100,-88 L97,-84" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M97,-84 L96,-80" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M96,-80 L94,-78" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M94,-78 L90,-74" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M90,-74 L87,-73" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M87,-73 L85,-70" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M85,-70 L79,-69" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M79,-69 L74,-68" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M74,-68 L70,-68" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M70,-68 L63,-65" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M63,-65 L59,-63" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M59,-63 L55,-60" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M55,-60 L48,-57" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M48,-57 L41,-53" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M41,-53 L35,-48" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M35,-48 L29,-44" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M29,-44 L21,-38" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M21,-38 L18,-34" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M18,-34 L12,-29" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M12,-29 L11,-25" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M11,-25 L6,-20" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M6,-20 L6,-17" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M6,-17 L4,-11" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M4,-11 L2,-8" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M2,-8 L1,-5" stroke="green" stroke-width="0.5" fill="none" />
+<path d="M1,-5 L-2,-2" stroke="green" stroke-width="0.5" fill="none" />
+<circle cx="0" cy="0" r="1" fill="blue" />
+<circle cx="-2" cy="-1" r="1" fill="red" />
+<circle cx="1" cy="-4" r="1" fill="red" />
+<circle cx="173" cy="-161" r="1" fill="red" />
+<circle cx="165" cy="-160" r="1" fill="red" />
+<circle cx="161" cy="-158" r="1" fill="red" />
+<circle cx="156" cy="-156" r="1" fill="red" />
+<circle cx="153" cy="-154" r="1" fill="red" />
+<circle cx="149" cy="-152" r="1" fill="red" />
+<circle cx="143" cy="-147" r="1" fill="red" />
+<circle cx="141" cy="-144" r="1" fill="red" />
+<circle cx="137" cy="-140" r="1" fill="red" />
+<circle cx="133" cy="-136" r="1" fill="red" />
+<circle cx="129" cy="-133" r="1" fill="red" />
+<circle cx="126" cy="-128" r="1" fill="red" />
+<circle cx="122" cy="-125" r="1" fill="red" />
+<circle cx="118" cy="-121" r="1" fill="red" />
+<circle cx="116" cy="-117" r="1" fill="red" />
+<circle cx="114" cy="-113" r="1" fill="red" />
+<circle cx="112" cy="-111" r="1" fill="red" />
+<circle cx="109" cy="-105" r="1" fill="red" />
+<circle cx="107" cy="-102" r="1" fill="red" />
+<circle cx="105" cy="-96" r="1" fill="red" />
+<circle cx="103" cy="-94" r="1" fill="red" />
+<circle cx="100" cy="-88" r="1" fill="red" />
+<circle cx="97" cy="-84" r="1" fill="red" />
+<circle cx="96" cy="-80" r="1" fill="red" />
+<circle cx="94" cy="-78" r="1" fill="red" />
+<circle cx="90" cy="-74" r="1" fill="red" />
+<circle cx="87" cy="-73" r="1" fill="red" />
+<circle cx="85" cy="-70" r="1" fill="red" />
+<circle cx="79" cy="-69" r="1" fill="red" />
+<circle cx="74" cy="-68" r="1" fill="red" />
+<circle cx="70" cy="-68" r="1" fill="red" />
+<circle cx="63" cy="-65" r="1" fill="red" />
+<circle cx="59" cy="-63" r="1" fill="red" />
+<circle cx="55" cy="-60" r="1" fill="red" />
+<circle cx="48" cy="-57" r="1" fill="red" />
+<circle cx="41" cy="-53" r="1" fill="red" />
+<circle cx="35" cy="-48" r="1" fill="red" />
+<circle cx="29" cy="-44" r="1" fill="red" />
+<circle cx="21" cy="-38" r="1" fill="red" />
+<circle cx="18" cy="-34" r="1" fill="red" />
+<circle cx="12" cy="-29" r="1" fill="red" />
+<circle cx="11" cy="-25" r="1" fill="red" />
+<circle cx="6" cy="-20" r="1" fill="red" />
+<circle cx="6" cy="-17" r="1" fill="red" />
+<circle cx="4" cy="-11" r="1" fill="red" />
+<circle cx="2" cy="-8" r="1" fill="red" />
+<circle cx="1" cy="-5" r="1" fill="red" />
+<circle cx="-2" cy="-2" r="1" fill="red" />
 </svg>
