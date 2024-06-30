@@ -167,3 +167,7 @@ cython_debug/
 # Temp files
 tmp/
 solvers/cpp/*.solver
+
+
+# leaderboard
+__leaderboard.txt
