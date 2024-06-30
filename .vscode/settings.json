@@ -5,7 +5,7 @@
   },
   "python.formatting.provider": "none",
   "editor.formatOnType": true,
-  "editor.formatOnSave": true,
+  "editor.formatOnSave": false,
   "files.associations": {
     "array": "cpp",
     "bitset": "cpp",
@@ -102,7 +102,11 @@
     "valarray": "cpp",
     "ranges": "cpp",
     "charconv": "cpp",
-    "execution": "cpp"
+    "execution": "cpp",
+    "numbers": "cpp",
+    "semaphore": "cpp",
+    "stop_token": "cpp",
+    "cinttypes": "cpp"
   },
   "test": {
     "editor.formatOnSave": false
