@@ -20,3 +20,7 @@ kotlin {
 application {
     mainClass.set("dev.icfpc.icfpc2024.RunnerKt")
 }
+
+val run by tasks.getting(JavaExec::class) {
+    standardInput = System.`in`
+}

@@ -36,14 +36,14 @@ data object Submit: Value {
 sealed class Op: Value {
     abstract val opcode: Char
 
-    abstract fun apply(builder: History.Builder, cell: Point)
+    abstract fun apply(builder: Session.HistoryBuilder, cell: Point)
 
     class Arrow(
         override val opcode: Char,
         val from: Offset,
         val to: Offset,
     ) : Op() {
-        override fun apply(builder: History.Builder, cell: Point) {
+        override fun apply(builder: Session.HistoryBuilder, cell: Point) {
             builder[cell + from]?.let { value ->
                 builder[cell + to] = value
                 builder[cell + from] = null
@@ -55,7 +55,7 @@ sealed class Op: Value {
         override val opcode: Char,
         val func: (Int, Int) -> Int,
     ) : Op() {
-        override fun apply(builder: History.Builder, cell: Point) {
+        override fun apply(builder: Session.HistoryBuilder, cell: Point) {
             val first = builder[cell + Offset.LEFT] as? Num ?: return
             val second = builder[cell + Offset.UP] as? Num ?: return
 
@@ -72,7 +72,7 @@ sealed class Op: Value {
         override val opcode: Char,
         val expect: Boolean,
     ) : Op() {
-        override fun apply(builder: History.Builder, cell: Point) {
+        override fun apply(builder: Session.HistoryBuilder, cell: Point) {
             val first = builder[cell + Offset.LEFT]
             val second = builder[cell + Offset.UP]
             if (first !is Num && first !is Op) return
@@ -90,7 +90,7 @@ sealed class Op: Value {
     class Warp(
         override val opcode: Char,
     ) : Op() {
-        override fun apply(builder: History.Builder, cell: Point) {
+        override fun apply(builder: Session.HistoryBuilder, cell: Point) {
             val value = builder[cell + Offset.UP]
             if (value !is Num && value !is Op) return
             val dx = builder[cell + Offset.LEFT] as? Num ?: return

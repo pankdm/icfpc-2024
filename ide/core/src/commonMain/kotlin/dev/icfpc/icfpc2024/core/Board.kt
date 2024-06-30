@@ -5,6 +5,11 @@ class Board internal constructor(
 ) {
     operator fun get(point: Point) = cells[point]
 
+    val minX = cells.keys.minOf { it.x }
+    val maxX = cells.keys.maxOf { it.x }
+    val minY = cells.keys.minOf { it.y }
+    val maxY = cells.keys.maxOf { it.y }
+
     class Builder internal constructor(
         cells: Map<Point, Value>
     ) {
@@ -51,11 +56,6 @@ class Board internal constructor(
     }
 
     override fun toString(): String {
-        val minX = cells.keys.minOf { it.x }
-        val maxX = cells.keys.maxOf { it.x }
-        val minY = cells.keys.minOf { it.y }
-        val maxY = cells.keys.maxOf { it.y }
-
         return buildString((maxY - minY + 1) * (maxX - minX + 1) * 2) {
             (minY..maxY).forEach { y ->
                 (minX..maxX).forEach { x ->
