@@ -1,0 +1,325 @@
+{
+    "scores": {
+        "3d1": {
+            "your": "6600",
+            "best": "2982"
+        },
+        "3d2": {
+            "your": "2409",
+            "best": "1620"
+        },
+        "3d3": {
+            "your": "2460",
+            "best": "1225"
+        },
+        "3d4": {
+            "your": "5616",
+            "best": "1872"
+        },
+        "3d5": {
+            "your": "8640",
+            "best": "3352"
+        },
+        "3d6": {
+            "your": "5243",
+            "best": "3200"
+        },
+        "3d7": {
+            "your": "12096",
+            "best": "7452"
+        },
+        "3d8": {
+            "your": "46410",
+            "best": "31824"
+        },
+        "3d9": {
+            "your": "29580",
+            "best": "17545"
+        },
+        "3d10": {
+            "your": 0,
+            "best": "40261"
+        },
+        "3d11": {
+            "your": 0,
+            "best": "109296"
+        },
+        "3d12": {
+            "your": 0,
+            "best": "27000"
+        },
+        "lambdaman1": {
+            "your": "33",
+            "best": "33"
+        },
+        "lambdaman2": {
+            "your": "44",
+            "best": "44"
+        },
+        "lambdaman3": {
+            "your": "58",
+            "best": "58"
+        },
+        "lambdaman4": {
+            "your": "132",
+            "best": "112"
+        },
+        "lambdaman5": {
+            "your": "132",
+            "best": "105"
+        },
+        "lambdaman6": {
+            "your": "73",
+            "best": "73"
+        },
+        "lambdaman7": {
+            "your": "132",
+            "best": "111"
+        },
+        "lambdaman8": {
+            "your": "136",
+            "best": "113"
+        },
+        "lambdaman9": {
+            "your": "114",
+            "best": "109"
+        },
+        "lambdaman10": {
+            "your": "133",
+            "best": "113"
+        },
+        "lambdaman11": {
+            "your": "306",
+            "best": "147"
+        },
+        "lambdaman12": {
+            "your": "305",
+            "best": "147"
+        },
+        "lambdaman13": {
+            "your": "305",
+            "best": "147"
+        },
+        "lambdaman14": {
+            "your": "333",
+            "best": "147"
+        },
+        "lambdaman15": {
+            "your": "333",
+            "best": "143"
+        },
+        "lambdaman16": {
+            "your": "395",
+            "best": "153"
+        },
+        "lambdaman17": {
+            "your": "137",
+            "best": "113"
+        },
+        "lambdaman18": {
+            "your": "201",
+            "best": "141"
+        },
+        "lambdaman19": {
+            "your": "5121",
+            "best": "237"
+        },
+        "lambdaman20": {
+            "your": "201",
+            "best": "193"
+        },
+        "lambdaman21": {
+            "your": "201",
+            "best": "114"
+        },
+        "spaceship1": {
+            "your": "5",
+            "best": "5"
+        },
+        "spaceship2": {
+            "your": "49",
+            "best": "49"
+        },
+        "spaceship3": {
+            "your": "10",
+            "best": "10"
+        },
+        "spaceship4": {
+            "your": "99",
+            "best": "99"
+        },
+        "spaceship5": {
+            "your": "116",
+            "best": "116"
+        },
+        "spaceship6": {
+            "your": "117",
+            "best": "117"
+        },
+        "spaceship7": {
+            "your": "94",
+            "best": "94"
+        },
+        "spaceship8": {
+            "your": "90",
+            "best": "90"
+        },
+        "spaceship9": {
+            "your": "219",
+            "best": "206"
+        },
+        "spaceship10": {
+            "your": "306",
+            "best": "304"
+        },
+        "spaceship11": {
+            "your": "8192",
+            "best": "8192"
+        },
+        "spaceship12": {
+            "your": "8192",
+            "best": "8192"
+        },
+        "spaceship13": {
+            "your": "28199",
+            "best": "23791"
+        },
+        "spaceship14": {
+            "your": "210",
+            "best": "137"
+        },
+        "spaceship15": {
+            "your": "39",
+            "best": "39"
+        },
+        "spaceship16": {
+            "your": "1706",
+            "best": "1373"
+        },
+        "spaceship17": {
+            "your": "516",
+            "best": "408"
+        },
+        "spaceship18": {
+            "your": "2602",
+            "best": "1817"
+        },
+        "spaceship19": {
+            "your": "13757",
+            "best": "11279"
+        },
+        "spaceship20": {
+            "your": "3065",
+            "best": "2342"
+        },
+        "spaceship21": {
+            "your": "3086",
+            "best": "2376"
+        },
+        "spaceship22": {
+            "your": "1417",
+            "best": "1136"
+        },
+        "spaceship23": {
+            "your": "208597",
+            "best": "157613"
+        },
+        "spaceship24": {
+            "your": "659389",
+            "best": "498329"
+        },
+        "spaceship25": {
+            "your": "739253",
+            "best": "513862"
+        }
+    },
+    "ranks": {
+        "3d": [
+            "",
+            "22",
+            "Snakes,Monkeys,andTwoSmokingLambdas",
+            "35",
+            "22",
+            "30",
+            "26",
+            "29",
+            "25",
+            "14",
+            "7",
+            "11",
+            "",
+            "",
+            "",
+            ""
+        ],
+        "lambdaman": [
+            "",
+            "7",
+            "Snakes,Monkeys,andTwoSmokingLambdas",
+            "1",
+            "1",
+            "1",
+            "7",
+            "10",
+            "1",
+            "7",
+            "14",
+            "8",
+            "7",
+            "8",
+            "7",
+            "7",
+            "7",
+            "7",
+            "15",
+            "6",
+            "9",
+            "27",
+            "2",
+            "8",
+            ""
+        ],
+        "spaceship": [
+            "",
+            "10",
+            "Snakes,Monkeys,andTwoSmokingLambdas",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "16",
+            "11",
+            "1",
+            "1",
+            "14",
+            "15",
+            "1",
+            "13",
+            "13",
+            "13",
+            "6",
+            "13",
+            "13",
+            "13",
+            "12",
+            "4",
+            "9",
+            ""
+        ],
+        "": [
+            "",
+            "9",
+            "Snakes,Monkeys,andTwoSmokingLambdas",
+            "1",
+            "7",
+            "10",
+            "22",
+            "1",
+            ""
+        ]
+    }
+}

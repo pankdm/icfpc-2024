@@ -77,11 +77,11 @@ python language/repl.py send 'get spaceship'
 
 ### How to submit 3d:
 
-1. For problem `N`, copy the cells from spreadsheet into `N-something.input` file (for example `1.input`)
+1. For problem `N`, copy the cells from spreadsheet into `N-something.raw` file (for example `1.raw`)
 2. Run
 
 ```
-PYTHONPATH="./language/" python solvers/3d/clean2.py solutions/3d/organized/1.input
+PYTHONPATH="./language/" python solvers/3d/clean2.py solutions/3d/organized/1.raw
 ```
 
 ### How to java

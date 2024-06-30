@@ -210,7 +210,7 @@ export default function Simulator() {
               {spaceUsed && (
                 <Group position='apart'>
                 <Group>
-                  <Text>Ticks used: {spaceUsed?.ticks}</Text>
+                  <Text>Time used: {spaceUsed?.ticks}</Text>
                   <Text>
                     Space used: {spaceUsed.x} x {spaceUsed.y}
                   </Text>
