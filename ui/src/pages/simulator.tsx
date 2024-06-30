@@ -74,6 +74,18 @@ const Cell: React.FC<
     } as Coord)?.val
       ? COLORS.BINARY
       : undefined
+  const equalityColor = (equality: boolean) => {
+    const A = snapshot.board.get({
+      x: x - 1,
+      y,
+    } as Coord)?.val
+    const B = snapshot.board.get({
+      x: x,
+      y: y - 1,
+    } as Coord)?.val
+    return A && B && (A.value === B.value) === equality ? COLORS.BINARY : undefined
+  }
+
   return (
     <Center
       sx={{ border: '1px solid #ddd' }}
@@ -91,8 +103,8 @@ const Cell: React.FC<
         '*': <IconX color={arithmeticsColor()} />,
         '/': <IconDivide color={arithmeticsColor()} />,
         '%': <IconPercentage color={arithmeticsColor()} />,
-        '=': <Text color={arithmeticsColor()}>=</Text>,
-        '#': <Text color={arithmeticsColor()}>#</Text>,
+        '=': <Text color={equalityColor(true)}>=</Text>,
+        '#': <Text color={equalityColor(false)}>#</Text>,
         '@': (
           <ThemeIcon
             variant={
