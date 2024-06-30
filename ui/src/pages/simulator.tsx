@@ -35,6 +35,7 @@ import {
   IconZoomIn,
   IconZoomOut,
 } from '@tabler/icons-react'
+import { useHotkeys } from '@mantine/hooks'
 
 const $input = persistentAtom<string>('icfpc-2024:simulation-input', '')
 const $varA = persistentAtom<string>('icfpc-2024:simulation-varA', '1')
@@ -116,6 +117,7 @@ const SnapshotPreview = ({
     verticalSpacing={0}
     w={spaceUsed.x * 50 * zoom}
     h={spaceUsed.y * 50 * zoom}
+    sx={{ flexShrink: 0 }}
   >
     {...range(spaceUsed.minY, spaceUsed.maxY + 1)
       .map((y) => range(spaceUsed.minX, spaceUsed.maxX + 1).map((x) => [x, y]))
@@ -132,8 +134,6 @@ export default function Simulator() {
   const varB = useStore($varB)
   const [snapshots, setSnapshots] = useState<any[]>()
   const [step, setStep] = useState(0)
-  // const maxStep = (snapshots && snapshots.length - 1) || 0
-  // const decrStep = () => setStep(Math.max((step -= 1), 0))
   const currentSnapshot = snapshots?.[step]
   const [finalBoard, setFinalBoard] = useState('')
   const [spaceUsed, setSpaceUsed] = useState<any>()
@@ -148,7 +148,16 @@ export default function Simulator() {
     setStep(historicalBoards.length - 1)
     setFinalBoard(finalBoard)
   }
-  const [zoom, setZoom] = useState(1);
+  const [zoom, setZoom] = useState(1)
+  const zoomIn = () => setZoom(zoom*1.2)
+  const zoomOut = () => setZoom(zoom/1.2)
+  useHotkeys([
+    ['-', () => zoomOut()],
+    ['=', () => zoomIn()],
+    ['Backspace', () => setStep(0)],
+    ['ArrowLeft', () => setStep(Math.max(step - 1, 0))],
+    ['ArrowRight', () => setStep(Math.min(step + 1, snapshots?.length - 1))],
+  ])
   return (
     <Box w="100%" h="100%" sx={{ overflow: 'auto' }}>
       <Helmet>
@@ -199,11 +208,18 @@ export default function Simulator() {
                 </Group>
               </Group>
               {spaceUsed && (
+                <Group position='apart'>
                 <Group>
                   <Text>Ticks used: {spaceUsed?.ticks}</Text>
                   <Text>
                     Space used: {spaceUsed.x} x {spaceUsed.y}
                   </Text>
+                  </Group>
+                  <Group c='gray'>
+                    <Text>Scrub with</Text>
+                    <IconArrowLeft/>
+                    <IconArrowRight/> and Backspace
+                  </Group>
                 </Group>
               )}
             </>
@@ -215,7 +231,7 @@ export default function Simulator() {
             value={step + 1}
             onChange={(v) => setStep(v - 1)}
           />
-          <Text align='center'>Time {currentSnapshot?.t}</Text>
+          <Text align="center">Time {currentSnapshot?.t}</Text>
           {finalBoard && spaceUsed && (
             <Center>
               <SnapshotPreview
