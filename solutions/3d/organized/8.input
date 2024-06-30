@@ -1,16 +1,15 @@
-							1				
-						K*	add	K+1*	>	K+1*	
-						^	K+1*		dx	@ > #K	dt
-						K*				dy	
-						^					
-						K*				A	
-						^	0		B = 0 < #B	eq	B*
-				K*	<	K=2 < #K	add	K*	*	B*	/
-	A*	<	A < #A1	/			K*		B*K *		S
-0	eq			A/K *		A < #A2	%	A%K	add	B*	
-	0*			v					B*		
-dx	@ > #K	dy		A/K *	>	A/K*		dx	@ > #B	dy	
-	dt			v	dx	@ > #A2	dy		dt		
-				A/K*		dt					
-			dx	@ > #A1	dy						
-				dt							
+									0* < #return							
+								K*	add	S						
+					A			^	1		0* < #gate					
+					v	K=2 <#K	>	K*	add	K+1*	add	K+1*	>	K+1*		
+	A*	<	A*	<	A* < #A1			v	K+1*		K+1*		dx	@ > #K	dy	
+	v				v	K*	<	K*						4		
+	A*				A*	/		v	0		B*	<	B*			
+0	eq					A/K *		K*	add	K*	*		^			
+	0*					v			K*		B*K *		B*=0 < #B	<	B	
+dx	@ > #gate	dy		A/K*	<	A/K *		A* < #A2	%	A%K*	add	B*	v	A		
+	4		dx	@ > #A2	dy	v		^			B*		B*	eq	B*	
+				5		A/K*		A		dx	@ > #B	dy		B*	-	
+					dx	@ > #A1	dy				5				0*	
+						5								dx	@ > #return	dy
+															3	
