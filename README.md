@@ -100,3 +100,9 @@ cd solvers/3d
 brew install maven openjdk
 ... make sure java is on your path and resolves (use jenv or whatever).
 mvn compile exec:java -Dexec.mainClass="icfpc3d.Main" -Dexec.args="../../solutions/3d/organized/1.output 5 0"
+
+### How to Kotlin
+`cd ide`
+From CLI run `./gradlew :cli:run --args="<input> <a> <b>"`
+
+Relative path is resolved to `cli`, so it should be something like `../../solutions/3d/organized/2.output`.
