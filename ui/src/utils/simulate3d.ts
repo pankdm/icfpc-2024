@@ -507,7 +507,15 @@ export const simulate = (
   return {
     finalBoard: board,
     historicalBoards,
-    spaceUsed: { minX, maxX, minY, maxY, maxT },
+    spaceUsed: {
+      minX,
+      maxX,
+      minY,
+      maxY,
+      x: maxX - minX + 1,
+      y: maxY - minY + 1,
+      ticks: maxT,
+    },
   }
 }
 
