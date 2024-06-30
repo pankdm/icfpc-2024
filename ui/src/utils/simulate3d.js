@@ -1,6 +1,3 @@
-// const fs = require('fs');
-// const BigNumber = require('bignumber.js');
-
 export class Coord {
   constructor(x, y) {
     this.x = x;
@@ -13,6 +10,10 @@ export class Coord {
 
   offset(offset) {
     return new Coord(this.x + offset.dx, this.y + offset.dy);
+  }
+
+  copy() {
+    return new Coord(this.x, this.y)
   }
 }
 
@@ -52,6 +53,10 @@ export class Val {
 
   asOp() {
     return null;
+  }
+
+  copy() {
+    return Val.of(this.toString())
   }
 }
 
@@ -202,15 +207,23 @@ export class Cell {
   write(board, offset, val) {
     board.write(this.coord.offset(offset), val);
   }
+
+  copy() {
+    return new Cell(this.coord.copy(), this.val.copy())
+  }
 }
 
-export class CoordMap extends Map {
+export class BoardMap extends Map {
   constructor(...args) {
     super(...args)
   }
 
-  set(coord, cell) {
-    super.set(`${[coord.x, coord.y]}`, cell)
+  has(coord) {
+    super.has(`${[coord.x, coord.y]}`)
+  }
+
+  set(cell) {
+    super.set(`${[cell.coord.x, cell.coord.y]}`, cell)
   }
 
   get(coord) {
@@ -220,38 +233,30 @@ export class CoordMap extends Map {
   delete(coord) {
     return super.delete(`${[coord.x, coord.y]}`)
   }
-}
 
-export class CoordSet extends Set {
-  constructor(...args) {
-    super(...args)
-  }
-
-  has(coord) {
-    return super.has(`${[coord.x, coord.y]}`)
-  }
-
-  set(coord, cell) {
-    return super.set(`${[coord.x, coord.y]}`, cell)
-  }
-
-  get(coord) {
-    return super.get(`${[coord.x, coord.y]}`)
+  copy() {
+    const newMap = new BoardMap()
+    Array.from(this.values()).forEach((cell) => {
+      newMap.set(cell)
+    })
+    return newMap
   }
 }
 
-export class Board {
-  constructor(t, boardState, history) {
+export class BoardStatus {
+  constructor(t, board, history) {
     this.t = t;
-    this.boardState = boardState;
+    this.board = board;
+    this.snapshot = null;
     this.history = history;
     this.removes = new Set();
-    this.writes = new CoordMap();
+    this.writes = new BoardMap();
     this.warped = null;
+    this.result = null
   }
 
   static parse(s) {
-    const board = new CoordMap();
+    const board = new BoardMap();
     const rows = s.trim().split('\n');
     for (let i = 0; i < rows.length; i++) {
       const row = rows[i];
@@ -262,12 +267,13 @@ export class Board {
           continue;
         }
         const coord = Coord.of(j, i);
-        board.set(coord, new Cell(coord, Val.of(cell)));
+        board.set(new Cell(coord, Val.of(cell)));
       }
     }
     const history = new History();
-    const result = new Board(1, board, history);
+    const result = new BoardStatus(1, board, history);
     history.append(result);
+    // result.saveSnapshot()
     return result;
   }
 
@@ -280,13 +286,13 @@ export class Board {
   }
 
   replace(op, value) {
-    Array.from(this.boardState.values())
+    Array.from(this.board.values())
       .filter(cell => cell.val.opcode && cell.val.opcode === op)
       .forEach(cell => cell.val = Int.of('' + value))
   }
 
   read(coord) {
-    return this.boardState.get(coord)?.val || null;
+    return this.board.get(coord)?.val || null;
   }
 
   remove(coord) {
@@ -297,20 +303,20 @@ export class Board {
     if (this.writes.has(coord)) {
       throw new Error(`Illegal update: ${this.writes.get(coord)} to ${new Cell(coord, val)}`);
     }
-    this.writes.set(coord, new Cell(coord, val));
+    this.writes.set(new Cell(coord, val));
   }
 
   warp(dt, coord, val) {
     const newTime = this.t - dt;
     if (!this.warped) {
       const old = this.history.get(newTime);
-      this.warped = new Board(newTime, old.boardState, this.history);
+      this.warped = new BoardStatus(newTime, old.board, this.history);
     } else if (this.warped.t !== newTime) {
       throw new Error(`attempt to warp to two different times: ${this.warped.t} and ${newTime}`);
     }
 
     const cell = new Cell(coord, val);
-    this.warped.boardState.set(coord, cell);
+    this.warped.board.set(cell);
 
     if (this.warped.writes.get(coord) && this.warped.writes.get(coord) !== cell) {
       throw new Error(`attempt to warp two different values: ${this.warped.writes.get(coord)} and ${cell}`);
@@ -318,13 +324,17 @@ export class Board {
   }
 
   next() {
-    this.boardState.forEach((cell, coord) => {
+    this.board.forEach((cell, coord) => {
       cell.val.asOp()?.exec(this, cell);
     });
 
     // console.log('>>> compute next board')
-    const nextBoard = new CoordMap();
-    Array.from(this.boardState.values()).forEach(cell => nextBoard.set(cell.coord, cell))
+
+    // const nextBoard = new BoardMap();
+    // Array.from(this.board.values()).forEach(cell => nextBoard.set(cell.coord, cell))
+
+    const nextBoard = this.board.copy()
+
     // console.log('nextBoard', nextBoard)
     // console.log('removes', this.removes)
     this.removes.forEach(coord => nextBoard.delete(coord));
@@ -353,19 +363,104 @@ export class Board {
     // console.log('writes', this.writes)
     nextBoard.forEach((cell, coord) => {
       this.writes.forEach((writeCell) => {
-        nextBoard.set(writeCell.coord, writeCell);
+        nextBoard.set(writeCell);
       });
     });
     // console.log('nextBoard', nextBoard)
     // console.log('<<< compute next board')
 
-    const newBoard = new Board(this.t + 1, nextBoard, this.history);
+    const newBoard = new BoardStatus(this.t + 1, nextBoard, this.history);
     this.history.append(newBoard);
+    if (results[0]) {
+      newBoard.result = results[0] || null
+    }
+    // newBoard.saveSnapshot()
     return newBoard;
   }
 
   getHistory() {
     return this.history;
+  }
+
+  getBoundingRect() {
+    const coords = Array.from(this.board.values()).map(cell => cell.coord);
+    const minX = Math.min(...coords.map(coord => coord.x));
+    const maxX = Math.max(...coords.map(coord => coord.x));
+    const minY = Math.min(...coords.map(coord => coord.y));
+    const maxY = Math.max(...coords.map(coord => coord.y));
+    return {
+      minX, minY, maxX, maxY
+    }
+  }
+
+  // saveSnapshot() {
+  //   // const coords = Array.from(this.board.values()).map(cell => cell.coord);
+  //   // const minX = Math.min(...coords.map(coord => coord.x));
+  //   // const maxX = Math.max(...coords.map(coord => coord.x));
+  //   // const minY = Math.min(...coords.map(coord => coord.y));
+  //   // const maxY = Math.max(...coords.map(coord => coord.y));
+
+  //   this.snapshot = new BoardMap()
+  //   Array.from(this.board.values()).forEach(cell =>
+  //     this.snapshot.set(
+  //       Coord.of(cell.coord.x, cell.coord.y),
+  //       new Cell(
+  //         Coord.of(cell.coord.x, cell.coord.y),
+  //         Val.of(cell.value.toString())
+  //       )
+  //     )
+  //   );
+
+  //   // for (let y = minY; y <= maxY; y++) {
+  //   //   for (let x = minX; x <= maxX; x++) {
+  //   //     const cell = this.board.get(Coord.of(x, y));
+  //   //     snapshot.push({
+  //   //       x: cell? cell.val.toString() : '.')
+  //   //   }
+  //   // }
+  //   // this.snapshot = snapshot
+  // }
+
+  // snapshotToString() {
+  //   const minX = Math.min(...this.snapshot.map(c => c.x));
+  //   const maxX = Math.max(...this.snapshot.map(c => c.x));
+  //   const minY = Math.min(...this.snapshot.map(c => c.y));
+  //   const maxY = Math.max(...this.snapshot.map(c => c.y));
+
+  //   let sb = ''
+  //   for (let y = minY; y <= maxY; y++) {
+  //     for (let x = minX; x <= maxX; x++) {
+  //       const cell = this.board.get(Coord.of(x, y));
+  //       snapshot.push({
+  //         x: cell? cell.val.toString() : '.')
+  //     }
+  //   }
+  //   for (const row of this.snapshot) {
+  //     for (const item of row) {
+  //       sb += item + ' ';
+  //     }
+  //     sb += '\n';
+  //   }
+  //   return sb
+  // }
+
+  boardToString() {
+    let sb = ''
+
+    const coords = Array.from(this.board.values()).map(cell => cell.coord);
+    const minX = Math.min(0, ...coords.map(coord => coord.x));
+    const maxX = Math.max(...coords.map(coord => coord.x));
+    const minY = Math.min(0, ...coords.map(coord => coord.y));
+    const maxY = Math.max(...coords.map(coord => coord.y));
+    for (let y = minY; y <= maxY; y++) {
+      for (let x = minX; x <= maxX; x++) {
+        const cell = this.board.get(Coord.of(x, y));
+        sb += cell ? cell.val.toString() : '.'
+        sb += ' '
+      }
+      sb += '\n'
+    }
+    return sb
   }
 
   toString() {
@@ -375,20 +470,8 @@ export class Board {
       sb += `Result: ${result}\n`;
     }
 
-    // console.log('>>>', this.boardState)
-    const coords = Array.from(this.boardState.values()).map(cell => cell.coord);
-    const minX = Math.min(...coords.map(coord => coord.x));
-    const maxX = Math.max(...coords.map(coord => coord.x));
-    const minY = Math.min(...coords.map(coord => coord.y));
-    const maxY = Math.max(...coords.map(coord => coord.y));
+    sb += this.boardToString()
 
-    for (let y = minY; y <= maxY; y++) {
-      for (let x = minX; x <= maxX; x++) {
-        const cell = this.boardState.get(Coord.of(x, y));
-        sb += (cell ? cell.val.toString() : '.') + ' ';
-      }
-      sb += '\n';
-    }
     return sb;
   }
 }
@@ -420,18 +503,20 @@ export class History {
   }
 }
 
-export const simulate = (inputBoard, A, B) => {
+export const simulate = (inputBoard, A, B, maxIterations=1e3) => {
   try {
-    let board = Board.parse(inputBoard);
-    let historicalBoards = []
+    let board = BoardStatus.parse(inputBoard);
     board.setA(A);
     board.setB(B);
+    let historicalBoards = []
     const maxTime = 20;
-    while (!board.history.result && board.t <= maxTime) {
+    let iterationsLeft = maxIterations
+    while (!board.history.result && board.t <= maxTime && iterationsLeft > 0) {
       console.log(board.toString());
       console.log('--------------');
       historicalBoards.push(board)
       board = board.next();
+      iterationsLeft -= 1
     }
 
     console.log(`Result: ${board.history.result}`);

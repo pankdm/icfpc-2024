@@ -23,17 +23,10 @@ export default function HeaderBar({ children, ...props }: GroupProps) {
         </Title>
       </NavLink>
       <Group sx={{ flexGrow: 1 }} position="center">
-        <NavLink to="/problems">
+        <NavLink to="/simulator">
           {({ isActive }) => (
             <Text fw="bolder" td={isActive ? 'underline' : 'none'}>
-              Problems
-            </Text>
-          )}
-        </NavLink>
-        <NavLink to="/scoreboard">
-          {({ isActive }) => (
-            <Text fw="bolder" td={isActive ? 'underline' : 'none'}>
-              Scoreboard
+              3D Simulator
             </Text>
           )}
         </NavLink>
