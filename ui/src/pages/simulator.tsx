@@ -235,6 +235,7 @@ export default function Simulator() {
             onChange={(v) => setStep(v - 1)}
           />
           <Text align="center">Time {currentSnapshot?.t}</Text>
+          <Text align="center">Tick {step}</Text>
           {finalBoard && spaceUsed && (
             <Center>
               <SnapshotPreview
