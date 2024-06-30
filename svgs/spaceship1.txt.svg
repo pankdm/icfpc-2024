@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-     width="1000" height="1583.3333333333333" viewBox="-6.0 -9.5 12 19">
+     width="1000" height="1583.3333333333333" viewBox="-4 -15 12 19">
 <defs>
 </defs>
-<circle cx="1" cy="-1" r="1" fill="red" />
-<circle cx="1" cy="-3" r="1" fill="red" />
-<circle cx="2" cy="-5" r="1" fill="red" />
-<circle cx="2" cy="-8" r="1" fill="red" />
-<circle cx="3" cy="-10" r="1" fill="red" />
+<circle cx="0" cy="0" r="0.5" fill="blue" />
+<circle cx="1" cy="-1" r="0.5" fill="red" />
+<circle cx="1" cy="-3" r="0.5" fill="red" />
+<circle cx="2" cy="-5" r="0.5" fill="red" />
+<circle cx="2" cy="-8" r="0.5" fill="red" />
+<circle cx="3" cy="-10" r="0.5" fill="red" />
 </svg>

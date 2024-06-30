@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-     width="1000" height="1000.0" viewBox="-504.5 -504.5 1009 1009">
+     width="1000" height="1000.0" viewBox="-5 -5 1009 1009">
 <defs>
 </defs>
+<circle cx="0" cy="0" r="1" fill="blue" />
 <circle cx="984" cy="341" r="1" fill="red" />
 <circle cx="106" cy="563" r="1" fill="red" />
 <circle cx="833" cy="559" r="1" fill="red" />

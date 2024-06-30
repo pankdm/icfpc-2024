@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="1000" height="1583.3333333333333" viewBox="-4 -15 12 19">
+<defs>
+</defs>
+<path d="M0,0 L1,-1" stroke="green" stroke-width="0.25" fill="none" />
+<path d="M1,-1 L1,-3" stroke="green" stroke-width="0.25" fill="none" />
+<path d="M1,-3 L2,-5" stroke="green" stroke-width="0.25" fill="none" />
+<path d="M2,-5 L2,-8" stroke="green" stroke-width="0.25" fill="none" />
+<path d="M2,-8 L3,-10" stroke="green" stroke-width="0.25" fill="none" />
+<circle cx="0" cy="0" r="0.5" fill="blue" />
+<circle cx="1" cy="-1" r="0.5" fill="red" />
+<circle cx="1" cy="-3" r="0.5" fill="red" />
+<circle cx="2" cy="-5" r="0.5" fill="red" />
+<circle cx="2" cy="-8" r="0.5" fill="red" />
+<circle cx="3" cy="-10" r="0.5" fill="red" />
+</svg>
