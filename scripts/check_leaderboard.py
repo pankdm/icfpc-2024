@@ -224,8 +224,8 @@ def send_update_to_slack(diff_stats):
             "```",
         ]))
     if len(diff_stats.ranks) > 0:
-        lines = []
         for (name_id, old, new) in diff_stats.ranks:
+            lines = []
             lines.extend([
                 f"Before: {' | '.join(old)}",
                 f"After:  {' | '.join(new)}",
