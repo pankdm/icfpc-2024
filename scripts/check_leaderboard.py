@@ -200,7 +200,7 @@ def compute_diff_ranks(old, new):
         old_entry = old[name_id]
         if any_smaller(old_entry, new_entry):
             diff.append((name_id, old_entry, new_entry))
-    diff.sort()
+    # diff.sort()
     return diff
 
 
