@@ -103,13 +103,13 @@ mvn compile exec:java -Dexec.mainClass="icfpc3d.Main" -Dexec.args="../../solutio
 
 ### How to Kotlin
 `cd ide`
-From CLI run `./gradlew :cli:run --args="<input> <a> <b>"`
+From CLI run `./gradlew :cli:run --args="-- <mode> <input> <a> <b>"`
 
 Relative path is resolved to `cli`, so it should be something like `../../solutions/3d/organized/2.output`.
 
 Example:
 ```
-./gradlew :cli:run --args="../../solutions/3d/organized/2.output 2 0"
+./gradlew :cli:run --args="-- run ../../solutions/3d/organized/2.output 2 0"
 ```
 
 
@@ -126,4 +126,3 @@ Monitoring script:
 ```
 ./scripts/monitor_leaderboard.sh
 ```
-
