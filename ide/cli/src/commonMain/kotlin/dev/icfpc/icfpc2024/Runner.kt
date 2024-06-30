@@ -7,6 +7,7 @@ import com.github.ajalt.clikt.parameters.arguments.help
 import com.github.ajalt.clikt.parameters.types.file
 import com.github.ajalt.clikt.parameters.types.int
 import dev.icfpc.icfpc2024.core.Board
+import dev.icfpc.icfpc2024.core.History
 
 class Runner : CliktCommand(
     printHelpOnEmptyArgs = true,
@@ -18,11 +19,13 @@ class Runner : CliktCommand(
     override fun run() {
         println("Running ${input.canonicalPath} with A=$a and B=$b")
 
-        val board = Board(
-            source = input.readText(),
-        )
+        val board = input.useLines { lines -> Board.Builder.fromLines(lines) }
+            .withA(a)
+            .withB(b)
+            .build()
 
-        println(board)
+        val history = History(board)
+        println(history.current)
     }
 }
 
