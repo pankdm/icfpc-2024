@@ -19,7 +19,7 @@ export default function Root() {
         />
         <Title order={2}>Welcome to ICFPC-2024!</Title>
         <Text>Team: Snakes, Monkeys and Two Smoking Lambdas</Text>
-        <Link to="/problems">
+        <Link to="/simulator">
           <Text>Go solve some problems</Text>
         </Link>
       </Stack>
