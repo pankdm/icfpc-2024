@@ -2,6 +2,7 @@
 
 #include "spaceship/map.h"
 #include "spaceship/solvers/base.h"
+#include "spaceship/utils/drop_dups.h"
 
 #include "common/solvers/solver.h"
 
@@ -82,7 +83,7 @@ class Greedy1 : public BaseSolver {
   Solution Solve(const TProblem& p) override {
     Solution s;
     s.SetId(p.Id());
-    s.commands = SolveI(p.GetPoints());
+    s.commands = SolveI(DropDups(p.GetPoints(), true));
     std::cout << p.Id() << "\t" << p.GetPoints().size() << "\t"
               << s.commands.size() << std::endl;
     return s;

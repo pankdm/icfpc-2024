@@ -3,6 +3,7 @@
 #include "spaceship/map.h"
 #include "spaceship/solvers/base.h"
 #include "spaceship/solvers/greedy1.h"
+#include "spaceship/utils/drop_dups.h"
 
 #include "common/geometry/d2/distance/distance_linf.h"
 #include "common/solvers/solver.h"
@@ -32,7 +33,7 @@ class Greedy1D : public BaseSolver {
     Solution s;
     s.SetId(p.Id());
     I2Point last;
-    auto vp = p.GetPoints();
+    auto vp = DropDups(p.GetPoints());
     for (; !vp.empty();) {
       for (unsigned i = 0; i < vp.size() - 1; ++i) {
         if (DistanceLInf(last, vp[i]) < DistanceLInf(last, vp.back())) {

@@ -3,6 +3,7 @@
 #include "spaceship/map.h"
 #include "spaceship/solvers/base.h"
 #include "spaceship/solvers/greedy1.h"
+#include "spaceship/utils/drop_dups.h"
 
 #include "common/geometry/d2/compare/point_xy.h"
 #include "common/geometry/d2/compare/point_yx.h"
@@ -26,13 +27,13 @@ class Greedy1S : public BaseSolver {
 
   std::string Name() const override { return "greedy1s"; }
 
-  // bool SkipSolutionRead() const override { return true; }
-  // bool SkipBest() const override { return true; }
+  bool SkipSolutionRead() const override { return true; }
+  bool SkipBest() const override { return true; }
 
   Solution Solve(const TProblem& p) override {
     Solution s;
     s.SetId(p.Id());
-    auto vp = p.GetPoints();
+    auto vp = DropDups(p.GetPoints());
     std::sort(vp.begin(), vp.end(), CompareXY<int64_t>);
     auto s1 = Greedy1::SolveI(vp);
     std::sort(vp.begin(), vp.end(), CompareYX<int64_t>);
