@@ -2,8 +2,9 @@
 
 #include "spaceship/map.h"
 #include "spaceship/solvers/base.h"
+#include "spaceship/spaceship.h"
+#include "spaceship/utils/drop_dups.h"
 
-#include "common/geometry/d2/compare/point_xy.h"
 #include "common/geometry/d2/distance/distance_linf.h"
 #include "common/geometry/d2/point_io.h"
 #include "common/geometry/d2/stl_hash/point.h"
@@ -14,7 +15,6 @@
 #include "common/stl/hash/vector.h"
 #include "common/timer.h"
 #include "common/vector/enumerate.h"
-#include "common/vector/unique.h"
 
 #include <algorithm>
 #include <string>
@@ -86,19 +86,7 @@ class DP2 : public BaseSolver {
     Timer t;
     Solution s;
     s.SetId(p.Id());
-    auto tvp = p.GetPoints();
-
-    // Clean zero
-    for (unsigned i = 0; i < tvp.size(); ++i) {
-      if (tvp[i] == I2Point()) {
-        tvp[i--] = tvp.back();
-        tvp.pop_back();
-      }
-    }
-
-    // Drop dups
-    std::sort(tvp.begin(), tvp.end(), CompareXY<int64_t>);
-    nvector::Unique(tvp);
+    auto tvp = DropDups(p.GetPoints());
 
     // Init heap
     std::unordered_map<size_t, Task> tasks;
@@ -115,6 +103,7 @@ class DP2 : public BaseSolver {
 
     unsigned best_solution = 10000000;
     unsigned status = 0;
+    uint64_t hash_conflicts = 0;
     std::vector<unsigned> best_candidate(vheap.size() + 1, best_solution);
     for (;;) {
       if (t.GetSeconds() > max_time_in_seconds) {
@@ -203,6 +192,7 @@ class DP2 : public BaseSolver {
               tasks[task_new_hash] = task_new;
             } else if (it->second.ss != task_new.ss) {
               // Hash conflict, skipping
+              ++hash_conflicts;
               continue;
             } else if (it->second.cost > task_new.cost) {
               // Better path to the same point
@@ -221,8 +211,9 @@ class DP2 : public BaseSolver {
       }
       if (done) break;
     }
-    std::cout << p.Id() << "\t" << p.GetPoints().size() << "\t" << tvp.size()
-              << "\t" << s.commands.size() << "\t" << status << std::endl;
+    std::cout << "\tStatus = " << status << "\tCashe size = " << tasks.size()
+              << "\tHash conflicts = " << hash_conflicts << std::endl;
+    std::cout << p.Id() << "\t" << p.GetPoints().size() << "\t" << s.commands.size() << std::endl;
     return s;
   }
 };

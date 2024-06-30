@@ -2,8 +2,9 @@
 
 #include "spaceship/map.h"
 #include "spaceship/solvers/base.h"
+#include "spaceship/spaceship.h"
+#include "spaceship/utils/drop_dups.h"
 
-#include "common/geometry/d2/compare/point_xy.h"
 #include "common/geometry/d2/distance/distance_linf.h"
 #include "common/geometry/d2/point_io.h"
 #include "common/geometry/d2/stl_hash/point.h"
@@ -13,7 +14,6 @@
 #include "common/solvers/solver.h"
 #include "common/stl/hash/vector.h"
 #include "common/timer.h"
-#include "common/vector/unique.h"
 
 #include <algorithm>
 #include <string>
@@ -34,7 +34,7 @@ class DP1A : public BaseSolver {
 
   std::string Name() const override { return "dp1a"; }
 
-  bool SkipSolutionRead() const override { return true; }
+  // bool SkipSolutionRead() const override { return true; }
   // bool SkipBest() const override { return true; }
 
  protected:
@@ -63,26 +63,13 @@ class DP1A : public BaseSolver {
     Timer t;
     Solution s;
     s.SetId(p.Id());
-    auto tvp = p.GetPoints();
-
-    // Clean zero
-    for (unsigned i = 0; i < tvp.size(); ++i) {
-      if (tvp[i] == I2Point()) {
-        tvp[i--] = tvp.back();
-        tvp.pop_back();
-      }
-    }
-
-    // Drop dups
-    std::sort(tvp.begin(), tvp.end(), CompareXY<int64_t>);
-    nvector::Unique(tvp);
+    auto tvp = DropDups(p.GetPoints());
 
     // Init heap
     std::unordered_map<size_t, Task> tasks;
     std::vector<HeapMinOnTop<TaskInfo>> vheap;
     vheap.resize(tvp.size() + 1);
     Task task_init;
-    // task_init.vp = tvp;
     task_init.visited = std::vector<uint8_t>(tvp.size(), false);
     task_init.cost = 0;
     task_init.source_hash = 0;
@@ -91,17 +78,18 @@ class DP1A : public BaseSolver {
     vheap[0].Add({task_init_hash, task_init.cost});
 
     unsigned best_solution = 10000000;
-    unsigned code = 0;
+    unsigned status = 0;
+    uint64_t hash_conflicts = 0;
     std::vector<unsigned> best_candidate(vheap.size() + 1, best_solution);
     for (;;) {
       if (t.GetSeconds() > max_time_in_seconds) {
         // Time to stop
-        code = 1;
+        status = 1;
         break;
       }
       if (tasks.size() * (tvp.size() + 40) > (1ull << 32)) {
         // Avoid over memory usage
-        code = 2;
+        status = 2;
         break;
       }
       for (unsigned i = vheap.size(); i-- > 0;) {
@@ -112,16 +100,6 @@ class DP1A : public BaseSolver {
       }
       bool done = true;
       for (unsigned i = 0; i < vheap.size(); ++i) {
-        // if (t.GetSeconds() > max_time_in_seconds) {
-        //   // Time to stop
-        //   code = 1;
-        //   break;
-        // }
-        // if (tasks.size() * (16 * tvp.size()) > (1ull << 32)) {
-        //   // Avoid over memory usage
-        //   code = 2;
-        //   break;
-        // }
         if (vheap[i].Empty()) continue;
         auto best_i = vheap[i].Top().cost;
         if (best_i + tvp.size() - i >= best_solution) {
@@ -181,6 +159,7 @@ class DP1A : public BaseSolver {
                 tasks[task_new_hash] = task_new;
               } else if (it->second.ss != task_new.ss) {
                 // Hash conflict, skipping
+                ++hash_conflicts;
                 continue;
               } else if (it->second.cost > task_new.cost) {
                 it->second.cost = task_new.cost;
@@ -196,8 +175,9 @@ class DP1A : public BaseSolver {
       }
       if (done) break;
     }
-    std::cout << p.Id() << "\t" << p.GetPoints().size() << "\t"
-              << s.commands.size() << "\t" << code << std::endl;
+    std::cout << "\tStatus = " << status << "\tCashe size = " << tasks.size()
+              << "\tHash conflicts = " << hash_conflicts << std::endl;
+    std::cout << p.Id() << "\t" << p.GetPoints().size() << "\t" << s.commands.size() << std::endl;
     return s;
   }
 };

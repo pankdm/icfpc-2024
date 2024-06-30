@@ -2,8 +2,9 @@
 
 #include "spaceship/map.h"
 #include "spaceship/solvers/base.h"
+#include "spaceship/spaceship.h"
+#include "spaceship/utils/drop_dups.h"
 
-#include "common/geometry/d2/compare/point_xy.h"
 #include "common/geometry/d2/distance/distance_linf.h"
 #include "common/geometry/d2/point_io.h"
 #include "common/geometry/d2/stl_hash/point.h"
@@ -13,7 +14,6 @@
 #include "common/solvers/solver.h"
 #include "common/stl/hash/vector.h"
 #include "common/timer.h"
-#include "common/vector/unique.h"
 
 #include <algorithm>
 #include <string>
@@ -63,19 +63,7 @@ class DP1 : public BaseSolver {
     Timer t;
     Solution s;
     s.SetId(p.Id());
-    auto tvp = p.GetPoints();
-
-    // Clean zero
-    for (unsigned i = 0; i < tvp.size(); ++i) {
-      if (tvp[i] == I2Point()) {
-        tvp[i--] = tvp.back();
-        tvp.pop_back();
-      }
-    }
-
-    // Drop dups
-    std::sort(tvp.begin(), tvp.end(), CompareXY<int64_t>);
-    nvector::Unique(tvp);
+    auto tvp = DropDups(p.GetPoints());
 
     // Init heap
     std::unordered_map<size_t, Task> tasks;
@@ -90,18 +78,18 @@ class DP1 : public BaseSolver {
     vheap[0].Add({task_init_hash, task_init.cost});
 
     unsigned best_solution = 10000000;
-    bool optimal = true;
+    unsigned status = 0;
     for (;;) {
       if (t.GetSeconds() > max_time_in_seconds) {
         // Time to stop
-        optimal = false;
+        status = 1;
         break;
       }
       bool done = true;
       for (unsigned i = 0; i < vheap.size(); ++i) {
         if (tasks.size() * (16 * tvp.size()) > (1ull << 32)) {
           // Avoid over memory usage
-          optimal = false;
+          status = 2;
           break;
         }
         if (vheap[i].Empty()) continue;
@@ -198,8 +186,8 @@ class DP1 : public BaseSolver {
       }
       if (done) break;
     }
-    std::cout << p.Id() << "\t" << p.GetPoints().size() << "\t"
-              << s.commands.size() << "\t" << optimal << std::endl;
+    std::cout << "\tStatus = " << status << "\tCashe size = " << tasks.size() << std::endl;
+    std::cout << p.Id() << "\t" << p.GetPoints().size() << "\t" << s.commands.size() << std::endl;
     return s;
   }
 };
