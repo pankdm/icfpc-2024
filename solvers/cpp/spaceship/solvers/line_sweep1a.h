@@ -2,15 +2,15 @@
 
 #include "spaceship/map.h"
 #include "spaceship/solvers/base.h"
+#include "spaceship/spaceship.h"
+#include "spaceship/utils/drop_dups.h"
 
-#include "common/geometry/d2/compare/point_xy.h"
 #include "common/geometry/d2/distance/distance_l1.h"
 #include "common/hash.h"
 #include "common/heap.h"
 #include "common/solvers/solver.h"
 #include "common/timer.h"
 #include "common/vector/enumerate.h"
-#include "common/vector/unique.h"
 
 #include <algorithm>
 #include <string>
@@ -78,7 +78,6 @@ class LineSweep1A : public BaseSolver {
     std::unordered_map<size_t, Task> tasks;
     std::vector<HeapMinOnTop<TaskInfo>> vheap;
     std::string best_s;
-    uint64_t hash_conflicts = 0;
 
     vheap.resize(line.size() + 1);
     Task task_init;
@@ -92,6 +91,7 @@ class LineSweep1A : public BaseSolver {
 
     unsigned best_solution = 10000000;
     unsigned status = 0;
+    uint64_t hash_conflicts = 0;
     std::vector<unsigned> best_candidate(vheap.size() + 1, best_solution);
     for (;;) {
       if (t.GetSeconds() > max_time_in_seconds) {
@@ -195,7 +195,7 @@ class LineSweep1A : public BaseSolver {
       }
       if (done) break;
     }
-    std::cout << "Status = " << status << "\tCashe size = " << tasks.size()
+    std::cout << "\tStatus = " << status << "\tCashe size = " << tasks.size()
               << "\tHash conflicts = " << hash_conflicts << std::endl;
     return best_s;
   }
@@ -257,19 +257,7 @@ class LineSweep1A : public BaseSolver {
   Solution Solve(const TProblem& p) override {
     Solution s;
     s.SetId(p.Id());
-    auto tvp = p.GetPoints();
-
-    // Clean zero
-    for (unsigned i = 0; i < tvp.size(); ++i) {
-      if (tvp[i] == I2Point()) {
-        tvp[i--] = tvp.back();
-        tvp.pop_back();
-      }
-    }
-
-    // Drop dups
-    std::sort(tvp.begin(), tvp.end(), CompareXY<int64_t>);
-    nvector::Unique(tvp);
+    auto tvp = DropDups(p.GetPoints());
 
     // Construct line
     auto line = FindLine(tvp);
@@ -279,13 +267,11 @@ class LineSweep1A : public BaseSolver {
     std::reverse(line.begin(), line.end());
     auto s2 = SolveI(line, max_time_in_seconds / 2);
     s.commands = (s2.empty()                 ? s1
-                  : s1.empty()               ? s2
+                  : s1.empty()               ? s2 
                   : (s1.size() <= s2.size()) ? s1
                                              : s2);
 
-    // Init heap
-    std::cout << p.Id() << "\t" << p.GetPoints().size() << "\t" << tvp.size()
-              << "\t" << s.commands.size() << std::endl;
+    std::cout << p.Id() << "\t" << p.GetPoints().size() << "\t" << s.commands.size() << std::endl;
     return s;
   }
 };
