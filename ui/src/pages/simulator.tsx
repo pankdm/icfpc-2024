@@ -48,12 +48,30 @@ const COLORS = {
   BINARY: '#f20',
 }
 
-const Cell: React.FC<
+const GridPos: React.FC<
+  {
+    cellSize: number
+    coord: { x: number; y: number }
+  } & BoxProps
+> = ({ cellSize, coord: { x, y }, children, ...props }) => (
+  <Center
+    pos="absolute"
+    left={cellSize * x}
+    top={cellSize * y}
+    w={cellSize}
+    h={cellSize}
+    {...props}
+  >
+    {children}
+  </Center>
+)
+
+const CellValue: React.FC<
   {
     snapshot: BoardStatus
     coord: Partial<Coord>
   } & BoxProps
-> = ({ snapshot, coord: { x, y }, ...props }) => {
+> = ({ snapshot, coord: { x, y }, w, h, ...props }) => {
   const val: string =
     snapshot.board.get({ x, y } as Coord)?.val?.toString() || '.'
   const moveColor = (mx, my) =>
@@ -83,21 +101,27 @@ const Cell: React.FC<
       x: x,
       y: y - 1,
     } as Coord)?.val
-    return A && B && (A.value === B.value) === equality ? COLORS.BINARY : undefined
+    return A && B && (A.value === B.value) === equality
+      ? COLORS.BINARY
+      : undefined
   }
-
   return (
     <Center
-      sx={{ border: '1px solid #ddd' }}
       ff="monospace"
       fw="bold"
+      sx={{
+        backgroundColor: 'rgba(255,255,255,0.75)',
+        boxShadow: '0px 0px 5px 5px rgba(255,255,255,0.75)',
+        lineHeight: 1,
+        borderRadius: '50%',
+      }}
       {...props}
     >
       {{
         '>': <IconArrowRight color={moveColor(1, 0)} />,
         '<': <IconArrowLeft color={moveColor(-1, 0)} />,
-        '^': <IconArrowUp color={moveColor(0, 1)} />,
-        v: <IconArrowDown color={moveColor(0, -1)} />,
+        '^': <IconArrowUp color={moveColor(0, -1)} />,
+        v: <IconArrowDown color={moveColor(0, 1)} />,
         '+': <IconPlus color={arithmeticsColor()} />,
         '-': <IconMinus color={arithmeticsColor()} />,
         '*': <IconX color={arithmeticsColor()} />,
@@ -130,23 +154,62 @@ const SnapshotPreview = ({
   snapshot: BoardStatus
   spaceUsed: any
   zoom: number
-}) => (
-  <Stack sx={{ flexShrink: 0 }} spacing={0}>
-    {...range(spaceUsed.minY, spaceUsed.maxY + 1).map((y) => (
-      <Group spacing={0}>
-        {...range(spaceUsed.minX, spaceUsed.maxX + 1).map((x) => (
-          <Cell
-            key={`${x},${y}`}
-            snapshot={snapshot}
-            coord={{ x, y }}
-            w={50 * zoom}
-            h={50 * zoom}
-          />
-        ))}
-      </Group>
-    ))}
-  </Stack>
-)
+}) => {
+  const meta = {
+    warpDestinations: [...snapshot.board.values()]
+      .filter((cell) => cell.val.opcode === '@')
+      .map((cell) => ({
+        from: cell.coord,
+        to: {
+          x:
+            cell.coord.x -
+            snapshot.board.get([cell.coord.x - 1, cell.coord.y]).val.value,
+          y:
+            cell.coord.y -
+            snapshot.board.get([cell.coord.x + 1, cell.coord.y]).val.value,
+        },
+      })),
+  }
+  const cellSize = 50 * zoom
+  return (
+    <Box
+      pos="relative"
+      sx={{ border: '1px solid gray', flexShrink: 0 }}
+      w={cellSize * spaceUsed.x}
+      h={cellSize * spaceUsed.y}
+    >
+      {...range(spaceUsed.minY, spaceUsed.maxY + 1).map((y) => (
+        <>
+          {...range(spaceUsed.minX, spaceUsed.maxX + 1).map((x) => (
+            <GridPos key={`${x},${y}`} cellSize={cellSize} coord={{ x, y }}>
+              <Box
+                sx={{ border: '1px solid gray' }}
+                w={cellSize}
+                h={cellSize}
+              />
+            </GridPos>
+          ))}
+        </>
+      ))}
+      {meta.warpDestinations.map(({ to }) => (
+        <GridPos key={`${to.x},${to.y}`} cellSize={cellSize} coord={to}>
+          <ThemeIcon variant="gradient" color="yellow" opacity={0.2} size="xl">
+            <IconClock />
+          </ThemeIcon>
+        </GridPos>
+      ))}
+      {Array.from(snapshot.board.values()).map((cell) => (
+        <GridPos
+          key={`${cell.coord.x},${cell.coord.y}`}
+          cellSize={cellSize}
+          coord={cell.coord}
+        >
+          <CellValue snapshot={snapshot} coord={cell.coord} />
+        </GridPos>
+      ))}
+    </Box>
+  )
+}
 
 export default function Simulator() {
   const input = useStore($input)

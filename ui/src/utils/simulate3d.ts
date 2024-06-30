@@ -234,7 +234,10 @@ export class BoardMap extends Map {
     return super.set(`${[cell.coord.x, cell.coord.y]}`, cell)
   }
 
-  get(coord: Coord) {
+  get(coord: Coord | [number, number]) {
+    if (Array.isArray(coord)) {
+      return super.get(`${[...coord]}`)
+    }
     return super.get(`${[coord.x, coord.y]}`)
   }
 
