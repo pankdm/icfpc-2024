@@ -181,8 +181,13 @@ def compute_diff_scores(old, new):
 
 def any_smaller(old, new):
     for (a, b) in zip(new, old):
-        if a < b:
-            return True
+        try:
+            a = int(a)
+            b = int(b)
+            if a < b:
+                return True
+        except:
+            pass
     return False
 
 
@@ -227,7 +232,7 @@ def send_update_to_slack(diff_stats):
             ])
 
             msgs.append("\n".join([
-                f"Problem `{name_id or "global"}`, rank going up:"
+                f"Problem `{name_id or "global"}`, rank improvement:"
                 "```",
                 "\n".join(lines),
                 "```",
