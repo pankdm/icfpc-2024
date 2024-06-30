@@ -24,8 +24,13 @@ class Runner : CliktCommand(
             .withB(b)
             .build()
 
-        val history = History(board)
-        println(history.current)
+        var history = History(board)
+        while (history.output == null) {
+            println(history.current)
+            history = history.tick()
+        }
+
+        println(history.output)
     }
 }
 
