@@ -48,6 +48,9 @@ def encode_sol(sol, task_i):
     # assert sol == run_fast(str(expr))
     return str(cat(f"solve lambdaman{task_i} ", expr))
 
+def encode_sol2(sol, task_i):
+    return interpreter.encode_string(f"solve lambdaman{task_i} {sol}")
+
 for i in range(1, 22):
     # ret = comm(f"S{interpreter.encode_string(f'get lambdaman{i}')}")
     with open(f"problems/lambdaman/raw_lambdaman{i}.txt", "rt") as f:
@@ -55,6 +58,7 @@ for i in range(1, 22):
     l1 = len(rle(maze))
     maze = maze.split()
     sol = encode_sol(solve_maze(maze), i)
+    sol2 = encode_sol2(solve_maze(maze), i)
     with open(f"solutions/lambdaman/trivial/{i}.txt", "wt") as f:
         f.write(sol)
-    print(i, len(maze), len(sol))
+    print(i, len(maze), len(maze[0]), len(sol), len(sol2))

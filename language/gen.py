@@ -49,8 +49,8 @@ class Expr:
     def tail(self, other):
         return Expr(["BD"], [other, self])
 
-    def __call__(self, *args):
-        return Expr(["B$"] * len(args), [self, *args])
+    def __call__(self, *args, eager=False):
+        return Expr(["B!" if eager else "B$"] * len(args), [self, *args])
 
     def __neg__(self):
         return Expr(["U-"], [self])
@@ -98,7 +98,7 @@ def If(cond, then, els):
 def cat(self, other):
     return Expr(["B."], [self, other])
 
-Yc = lam(lambda f: lam(lambda x: f(x(x)))(lam(lambda x: f(x(x)))))
+Yc = lam(lambda f: lam(lambda g: g(g))(lam(lambda x: f(x(x)))))
 
 def str2expr(s):
     return Expr([f"S{interpreter.encode_string(s)}"])
