@@ -107,6 +107,11 @@ From CLI run `./gradlew :cli:run --args="<input> <a> <b>"`
 
 Relative path is resolved to `cli`, so it should be something like `../../solutions/3d/organized/2.output`.
 
+Example:
+```
+./gradlew :cli:run --args="../../solutions/3d/organized/2.output 2 0"
+```
+
 
 ### Monitor leaderboard
 
