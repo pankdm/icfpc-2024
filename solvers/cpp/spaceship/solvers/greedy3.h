@@ -2,11 +2,11 @@
 
 #include "spaceship/map.h"
 #include "spaceship/solvers/base.h"
+#include "spaceship/spaceship.h"
+#include "spaceship/utils/drop_dups.h"
 
-#include "common/geometry/d2/compare/point_xy.h"
 #include "common/geometry/d2/distance/distance_linf.h"
 #include "common/solvers/solver.h"
-#include "common/vector/unique.h"
 
 #include <algorithm>
 #include <random>
@@ -94,19 +94,7 @@ class Greedy3 : public BaseSolver {
   Solution Solve(const TProblem& p) override {
     Solution s;
     s.SetId(p.Id());
-    auto tvp = p.GetPoints();
-
-    // Clean zero
-    for (unsigned i = 0; i < tvp.size(); ++i) {
-      if (tvp[i] == I2Point()) {
-        tvp[i--] = tvp.back();
-        tvp.pop_back();
-      }
-    }
-
-    // Drop dups
-    std::sort(tvp.begin(), tvp.end(), CompareXY<int64_t>);
-    nvector::Unique(tvp);
+    auto tvp = DropDups(p.GetPoints());
 
     // Shuffle and use random seeds
     std::shuffle(tvp.begin(), tvp.end(), std::mt19937(17));
