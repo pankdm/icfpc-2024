@@ -100,7 +100,7 @@ parts = file.split("/")
 prefix = parts[-1].split(".")[0]
 num = prefix.split("-")[0]
 
-output_file = f"solutions/3d/organized/{prefix}.output"
+output_file = f"solutions/3d/organized/{prefix}.txt"
 
 
 
@@ -145,7 +145,7 @@ msg = send_solution(solution, "3d", num)
 if msg is not None and "Correct" in msg:
     score = extract_score(msg)
 
-    score_output = f"solutions/3d/organized/{prefix}.score.{score}"
+    score_output = f"solutions/3d/organized/{prefix}.txt.{score}"
     print (f"Writing to file = {score_output}")
     with open(score_output, "w") as out:
         out.write(padded_solution)
