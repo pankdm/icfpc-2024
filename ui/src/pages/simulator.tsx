@@ -214,6 +214,9 @@ export default function Simulator() {
                   <Text>
                     Space used: {spaceUsed.x} x {spaceUsed.y}
                   </Text>
+                  <Text>
+                      Total ticks: {snapshots?.length}
+                  </Text>
                   </Group>
                   <Group c='gray'>
                     <Text>Scrub with</Text>
