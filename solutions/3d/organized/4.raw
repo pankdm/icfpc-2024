@@ -1,12 +1,11 @@
 				A
-	X*	<	X=0	+
+	X*	<	X=0 < #X2	+
 1	+			X + A*
 	X+1 (replaces X)*		B	=
-dx=-2	@	dy=3		S
-	2			
-				B
-	X*	<	X=0	+
+dx=-2	@ > #X2	dy=3		S
+	2			B
+	X*	<	X=0 < #X1	+
 1	+			X+B*
 	X+1 (replaces X)*		A	=
-dx=-2	@	dy=3		S
+dx=-2	@ >#X1	dy=3		S
 	2			
