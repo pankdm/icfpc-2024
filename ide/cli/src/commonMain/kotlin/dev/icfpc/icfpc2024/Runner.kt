@@ -27,10 +27,12 @@ class Runner : CliktCommand(
         var history = History(board)
         while (history.output == null) {
             println(history.current)
+            println()
             history = history.tick()
         }
 
-        println(history.output)
+        println("FINAL HISTORY STATE:\n")
+        println(history)
     }
 }
 

@@ -1,8 +1,15 @@
 package dev.icfpc.icfpc2024.core
 
+/**
+ * @param boards all boards in the current history that you could manipulate / warp to.
+ * Note that you could have multiple histories for debugging, undo/redo, etc.
+ * @param output When not null means that execution ended ut and returned [output], further [tick] are no-op.
+ * @param ticks total amount of ticks spent, regardless of warps.
+ */
 class History private constructor(
     val boards: List<Board>,
     val output: Int? = null,
+    val ticks: Int = 0,
 ) {
     constructor(board: Board): this(listOf(board))
 
@@ -15,6 +22,8 @@ class History private constructor(
     operator fun get(time: Int) = boards[time]
 
     fun tick(): History {
+        if (output != null) return this
+
         val builder = Builder(this)
 
         current.cells.forEach { (point, value) ->
@@ -27,7 +36,16 @@ class History private constructor(
     }
 
     override fun toString(): String {
-        return boards.joinToString("\n\n===\n\n")
+        return buildString {
+            boards.forEach { board ->
+                append(board)
+                append("\n\n---===---\n\n")
+            }
+            append("Total ticks: $ticks\n")
+            output?.let {
+                append("Output: $output")
+            }
+        }
     }
 
     class Builder(
@@ -87,6 +105,7 @@ class History private constructor(
                     History(
                         boards = from.boards,
                         output = output,
+                        ticks = from.ticks + 1,
                     )
                 }
                 warpDelta != null -> {
@@ -95,7 +114,8 @@ class History private constructor(
                         cells = sourceBoard.cells + warps,
                     )
                     History(
-                        boards = from.boards.dropLast(warpDelta + 1) + newBoard
+                        boards = from.boards.dropLast(warpDelta + 1) + newBoard,
+                        ticks = from.ticks + 1,
                     )
                 }
                 else -> {
@@ -106,7 +126,8 @@ class History private constructor(
                         }
                     )
                     History(
-                        boards = from.boards + newBoard
+                        boards = from.boards + newBoard,
+                        ticks = from.ticks + 1,
                     )
                 }
             }

@@ -64,7 +64,9 @@ class Board internal constructor(
                         append("\t")
                     }
                 }
-                append("\n")
+                if (y != maxY) {
+                    append("\n")
+                }
             }
         }
     }
