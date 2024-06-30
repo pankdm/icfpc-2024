@@ -11,34 +11,23 @@ Core solvers are implemented in Python.
 Assistive tech include:
  - UI and visualizer via React, Vite and Mantine
  - Helper server via Flask
-
-## Setup
-
-To get up and running you need Python ^3.10, Poetry and Docker.
-
-On a Mac, simply run:
-
-```zsh
-git clone https://github.com/pankdm/icfpc-2024
-cd ./icfpc-2024
-./install_macos.sh
-
-Install Python deps? [y,n]y
->>>>>> Installing Python deps
-installed Python deps.
-
-Install Docker deps? [y,n]y
->>>>>> Installing Docker
-Docker already installed.
-````
+ - Million other tools and scripts for the win
 
 ## Tools
 
-To start the server and UI, use
+To start the server and UI, make sure Docker is installed and running on your system.
+Then use:
 
 ```
 make start
 ```
+
+The UI is mostly useful with it's 3D task visualizer.
+Type in formatted board setup and click "Simulate".
+Use arrow keys and other hotkeys to scrub and navigate.
+
+https://github.com/pankdm/icfpc-2024/assets/3831006/b7cd6295-011f-49b9-b0aa-694848fadd64
+
 
 To execute one-off scripts, use preloaded Python repl via
 
