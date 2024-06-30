@@ -10,6 +10,9 @@ class Board internal constructor(
     val minY = cells.keys.minOf { it.y }
     val maxY = cells.keys.maxOf { it.y }
 
+    val width = maxX - minX + 1
+    val height = maxY - minY + 1
+
     class Builder internal constructor(
         cells: Map<Point, Value>
     ) {

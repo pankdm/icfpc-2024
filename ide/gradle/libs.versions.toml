@@ -1,10 +1,12 @@
 [versions]
 clikt = "4.2.2"
 compose-plugin = "1.6.11"
+filekit = "0.6.1"
 kotlin = "2.0.0"
 
 [libraries]
 clikt = { module = "com.github.ajalt.clikt:clikt", version.ref = "clikt" }
+filekit-compose = { module = "io.github.vinceglb:filekit-compose", version.ref = "filekit" }
 
 [plugins]
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
