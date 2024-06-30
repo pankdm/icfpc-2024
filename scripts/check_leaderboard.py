@@ -216,14 +216,12 @@ def send_update_to_slack(diff_stats):
         
             # Example message: * [3d1] Your score: 6600. Best score: 2982.
             lines.append(
-                f"* [{prob_id}] Your score: {old["your"]} -> {new["your"]}. Best score: {new["best"]}."
+                f" * `[{prob_id}]` Your score: `{old["your"]}` -> `{new["your"]}`. Best score: `{new["best"]}`."
             )
 
         msgs.append("\n".join([
-            "New solutions detected:"
-            "```",
+            "New solutions detected:",
             "\n".join(lines),
-            "```",
         ]))
     if len(diff_stats.ranks) > 0:
         for (name_id, old, new) in diff_stats.ranks:
