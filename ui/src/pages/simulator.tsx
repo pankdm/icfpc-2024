@@ -1,4 +1,5 @@
 import {
+  ActionIcon,
   Box,
   Button,
   Center,
@@ -31,11 +32,18 @@ import {
   IconPercentage,
   IconPlus,
   IconX,
+  IconZoomIn,
+  IconZoomOut,
 } from '@tabler/icons-react'
 
 const $input = persistentAtom<string>('icfpc-2024:simulation-input', '')
 const $varA = persistentAtom<string>('icfpc-2024:simulation-varA', '1')
 const $varB = persistentAtom<string>('icfpc-2024:simulation-varB', '0')
+
+const COLORS = {
+  MOVE: '#f20',
+  BINARY: '#f20',
+}
 
 const Cell = ({
   snapshot,
@@ -46,13 +54,36 @@ const Cell = ({
 }) => {
   const val: string =
     snapshot.board.get({ x, y } as Coord)?.val?.toString() || '.'
+  const moveColor = (mx, my) =>
+    snapshot.board.get({
+      x: x - mx,
+      y: y - my,
+    } as Coord)?.val
+      ? COLORS.MOVE
+      : undefined
+  const arithmeticsColor = () =>
+    snapshot.board.get({
+      x: x - 1,
+      y,
+    } as Coord)?.val &&
+    snapshot.board.get({
+      x: x,
+      y: y - 1,
+    } as Coord)?.val
+      ? COLORS.BINARY
+      : undefined
   return (
     <Center sx={{ border: '1px solid #ddd' }}>
       {{
-        '>': <IconArrowRight />,
-        '<': <IconArrowLeft />,
-        '^': <IconArrowUp />,
-        v: <IconArrowDown />,
+        '>': <IconArrowRight color={moveColor(1, 0)} />,
+        '<': <IconArrowLeft color={moveColor(-1, 0)} />,
+        '^': <IconArrowUp color={moveColor(0, 1)} />,
+        v: <IconArrowDown color={moveColor(0, -1)} />,
+        '+': <IconPlus color={arithmeticsColor()} />,
+        '-': <IconMinus color={arithmeticsColor()} />,
+        '*': <IconX color={arithmeticsColor()} />,
+        '/': <IconDivide color={arithmeticsColor()} />,
+        '%': <IconPercentage color={arithmeticsColor()} />,
         '@': (
           <ThemeIcon
             variant={
@@ -65,15 +96,35 @@ const Cell = ({
             <IconClock />
           </ThemeIcon>
         ),
-        '*': <IconX />,
-        '/': <IconDivide />,
-        '%': <IconPercentage />,
-        '+': <IconPlus />,
-        '-': <IconMinus />,
       }[val] || val}
     </Center>
   )
 }
+
+const SnapshotPreview = ({
+  snapshot,
+  spaceUsed,
+  zoom,
+}: {
+  snapshot: BoardStatus
+  spaceUsed: any
+  zoom: number
+}) => (
+  <SimpleGrid
+    cols={spaceUsed.x}
+    spacing={0}
+    verticalSpacing={0}
+    w={spaceUsed.x * 50 * zoom}
+    h={spaceUsed.y * 50 * zoom}
+  >
+    {...range(spaceUsed.minY, spaceUsed.maxY + 1)
+      .map((y) => range(spaceUsed.minX, spaceUsed.maxX + 1).map((x) => [x, y]))
+      .flat()
+      .map(([x, y]) => (
+        <Cell key={`${x},${y}`} snapshot={snapshot} coord={{ x, y }} />
+      ))}
+  </SimpleGrid>
+)
 
 export default function Simulator() {
   const input = useStore($input)
@@ -97,6 +148,7 @@ export default function Simulator() {
     setStep(historicalBoards.length - 1)
     setFinalBoard(finalBoard)
   }
+  const [zoom, setZoom] = useState(1);
   return (
     <Box w="100%" h="100%" sx={{ overflow: 'auto' }}>
       <Helmet>
@@ -126,53 +178,26 @@ export default function Simulator() {
           </Group>
           <Button onClick={handleClickSimulate}>Simulate</Button>
 
-          {finalBoard && spaceUsed && (
-            <Center>
-              <SimpleGrid
-                cols={spaceUsed.x}
-                spacing={0}
-                verticalSpacing={0}
-                w={spaceUsed.x * 50}
-                h={spaceUsed.y * 50}
-              >
-                {...range(spaceUsed.minY, spaceUsed.maxY + 1)
-                  .map((y) =>
-                    range(spaceUsed.minX, spaceUsed.maxX + 1).map((x) => [x, y])
-                  )
-                  .flat()
-                  .map(([x, y]) => (
-                    <Cell
-                      key={`${x},${y}`}
-                      snapshot={currentSnapshot}
-                      coord={{ x, y }}
-                    />
-                  ))}
-              </SimpleGrid>
-            </Center>
-          )}
-          <Textarea
-            styles={{ input: { fontFamily: 'monospace' } }}
-            contentEditable={false}
-            label={`Time ${currentSnapshot?.t}`}
-            placeholder="Output will show here"
-            value={currentSnapshot && currentSnapshot.board.toString()}
-            minRows={15}
-          />
-          <Slider
-            disabled={!snapshots?.length}
-            min={1}
-            max={snapshots?.length}
-            value={step + 1}
-            onChange={(v) => setStep(v - 1)}
-          />
           {finalBoard && (
             <>
-              <Title order={3}>
-                Answer:{' '}
-                {finalBoard?.history?.result
-                  ? finalBoard.history.result.value
-                  : 'N/A'}
-              </Title>
+              <Group position="apart">
+                <Title order={3}>
+                  Answer:{' '}
+                  {finalBoard?.history?.result
+                    ? finalBoard.history.result.value
+                    : 'N/A'}
+                </Title>
+                <Group>
+                  <Text>Zoom:</Text>
+                  <ActionIcon onClick={() => setZoom(zoom / 1.2)}>
+                    <IconZoomOut />
+                  </ActionIcon>
+                  <Text>{zoom.toFixed(2)}</Text>
+                  <ActionIcon onClick={() => setZoom(zoom * 1.2)}>
+                    <IconZoomIn />
+                  </ActionIcon>
+                </Group>
+              </Group>
               {spaceUsed && (
                 <Group>
                   <Text>Ticks used: {spaceUsed?.ticks}</Text>
@@ -183,6 +208,31 @@ export default function Simulator() {
               )}
             </>
           )}
+          <Slider
+            disabled={!snapshots?.length}
+            min={1}
+            max={snapshots?.length}
+            value={step + 1}
+            onChange={(v) => setStep(v - 1)}
+          />
+          <Text align='center'>Time {currentSnapshot?.t}</Text>
+          {finalBoard && spaceUsed && (
+            <Center>
+              <SnapshotPreview
+                snapshot={currentSnapshot}
+                spaceUsed={spaceUsed}
+                zoom={zoom}
+              />
+            </Center>
+          )}
+          <Textarea
+            styles={{ input: { fontFamily: 'monospace' } }}
+            contentEditable={false}
+            label={`Time ${currentSnapshot?.t}`}
+            placeholder="Output will show here"
+            value={currentSnapshot && currentSnapshot.board.toString()}
+            minRows={15}
+          />
         </Stack>
       </Container>
     </Box>
