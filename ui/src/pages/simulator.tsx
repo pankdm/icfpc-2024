@@ -1,8 +1,10 @@
 import {
   ActionIcon,
   Box,
+  BoxProps,
   Button,
   Center,
+  CenterProps,
   Container,
   Group,
   SimpleGrid,
@@ -46,13 +48,12 @@ const COLORS = {
   BINARY: '#f20',
 }
 
-const Cell = ({
-  snapshot,
-  coord: { x, y },
-}: {
-  snapshot: BoardStatus
-  coord: Partial<Coord>
-}) => {
+const Cell: React.FC<
+  {
+    snapshot: BoardStatus
+    coord: Partial<Coord>
+  } & BoxProps
+> = ({ snapshot, coord: { x, y }, ...props }) => {
   const val: string =
     snapshot.board.get({ x, y } as Coord)?.val?.toString() || '.'
   const moveColor = (mx, my) =>
@@ -74,7 +75,12 @@ const Cell = ({
       ? COLORS.BINARY
       : undefined
   return (
-    <Center sx={{ border: '1px solid #ddd' }}>
+    <Center
+      sx={{ border: '1px solid #ddd' }}
+      ff="monospace"
+      fw="bold"
+      {...props}
+    >
       {{
         '>': <IconArrowRight color={moveColor(1, 0)} />,
         '<': <IconArrowLeft color={moveColor(-1, 0)} />,
@@ -85,6 +91,8 @@ const Cell = ({
         '*': <IconX color={arithmeticsColor()} />,
         '/': <IconDivide color={arithmeticsColor()} />,
         '%': <IconPercentage color={arithmeticsColor()} />,
+        '=': <Text color={arithmeticsColor()}>=</Text>,
+        '#': <Text color={arithmeticsColor()}>#</Text>,
         '@': (
           <ThemeIcon
             variant={
@@ -111,21 +119,21 @@ const SnapshotPreview = ({
   spaceUsed: any
   zoom: number
 }) => (
-  <SimpleGrid
-    cols={spaceUsed.x}
-    spacing={0}
-    verticalSpacing={0}
-    w={spaceUsed.x * 50 * zoom}
-    h={spaceUsed.y * 50 * zoom}
-    sx={{ flexShrink: 0 }}
-  >
-    {...range(spaceUsed.minY, spaceUsed.maxY + 1)
-      .map((y) => range(spaceUsed.minX, spaceUsed.maxX + 1).map((x) => [x, y]))
-      .flat()
-      .map(([x, y]) => (
-        <Cell key={`${x},${y}`} snapshot={snapshot} coord={{ x, y }} />
-      ))}
-  </SimpleGrid>
+  <Stack sx={{ flexShrink: 0 }} spacing={0}>
+    {...range(spaceUsed.minY, spaceUsed.maxY + 1).map((y) => (
+      <Group spacing={0}>
+        {...range(spaceUsed.minX, spaceUsed.maxX + 1).map((x) => (
+          <Cell
+            key={`${x},${y}`}
+            snapshot={snapshot}
+            coord={{ x, y }}
+            w={50 * zoom}
+            h={50 * zoom}
+          />
+        ))}
+      </Group>
+    ))}
+  </Stack>
 )
 
 export default function Simulator() {
@@ -149,8 +157,8 @@ export default function Simulator() {
     setFinalBoard(finalBoard)
   }
   const [zoom, setZoom] = useState(1)
-  const zoomIn = () => setZoom(zoom*1.2)
-  const zoomOut = () => setZoom(zoom/1.2)
+  const zoomIn = () => setZoom(zoom * 1.2)
+  const zoomOut = () => setZoom(zoom / 1.2)
   useHotkeys([
     ['-', () => zoomOut()],
     ['=', () => zoomIn()],
@@ -208,23 +216,21 @@ export default function Simulator() {
                 </Group>
               </Group>
               {spaceUsed && (
-                <Group position='apart'>
-                <Group>
-                  <Text>Time used: {spaceUsed?.ticks}</Text>
-                  <Text>
-                    Space used: {spaceUsed.x} x {spaceUsed.y}
-                  </Text>
-                  <Text>
+                <Group position="apart">
+                  <Group>
+                    <Text>Time used: {spaceUsed?.ticks}</Text>
+                    <Text>
+                      Space used: {spaceUsed.x} x {spaceUsed.y}
+                    </Text>
+                    <Text>
                       Volume: {spaceUsed.x * spaceUsed.y * spaceUsed?.ticks}
-                  </Text>
-                  <Text>
-                      Total ticks: {snapshots?.length}
-                  </Text>
+                    </Text>
+                    <Text>Total ticks: {snapshots?.length - 1}</Text>
                   </Group>
-                  <Group c='gray'>
+                  <Group c="gray">
                     <Text>Scrub with</Text>
-                    <IconArrowLeft/>
-                    <IconArrowRight/> and Backspace
+                    <IconArrowLeft />
+                    <IconArrowRight /> and Backspace
                   </Group>
                 </Group>
               )}
