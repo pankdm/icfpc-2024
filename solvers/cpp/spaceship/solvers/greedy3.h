@@ -34,7 +34,7 @@ class Greedy3 : public BaseSolver {
   bool SkipSolutionRead() const override { return true; }
   // bool SkipBest() const override { return true; }
 
-  std::string GetPath(SpaceShip& ss, const I2Point& dest, unsigned s) const {
+  static std::string GetPath(SpaceShip& ss, const I2Point& dest, unsigned s, unsigned max_speed_at_stop) {
     std::string sr;
     for (; s-- > 0;) {
       ss.p += ss.v;
@@ -81,7 +81,7 @@ class Greedy3 : public BaseSolver {
           }
         }
         if (found) {
-          sr += GetPath(ss, vp[best_i], s);
+          sr += GetPath(ss, vp[best_i], s, max_speed_at_stop);
           vp[best_i] = vp.back();
           vp.pop_back();
           break;

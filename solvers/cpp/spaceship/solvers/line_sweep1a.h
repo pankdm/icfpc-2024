@@ -32,7 +32,7 @@ class LineSweep1A : public BaseSolver {
 
   std::string Name() const override { return "ls1a"; }
 
-  bool SkipSolutionRead() const override { return true; }
+  // bool SkipSolutionRead() const override { return true; }
   // bool SkipBest() const override { return true; }
 
  protected:

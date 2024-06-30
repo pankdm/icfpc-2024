@@ -15,6 +15,7 @@
 #include "spaceship/solvers/greedy2a.h"
 #include "spaceship/solvers/greedy2b.h"
 #include "spaceship/solvers/greedy3.h"
+#include "spaceship/solvers/greedy3ls.h"
 #include "spaceship/solvers/line_sweep1.h"
 #include "spaceship/solvers/line_sweep1a.h"
 
@@ -52,6 +53,8 @@ spaceship::BaseSolver::PSolver CreateSolver(const files::CommandLine& cmd,
   } else if (solver_name == "greedy3") {
     return std::make_shared<spaceship::Greedy3>(
         cmd.GetInt("max_speed_at_stop"));
+  } else if (solver_name == "greedy3ls") {
+    return std::make_shared<spaceship::Greedy3LS>(timelimit);
   } else if (solver_name == "dp1") {
     return std::make_shared<spaceship::DP1>(timelimit);
   } else if (solver_name == "dp1a") {
