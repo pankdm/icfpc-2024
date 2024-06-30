@@ -50,6 +50,8 @@ def postprocess_value(value):
         return "+"
     elif value == "eq":
         return "="
+    elif value == "neq":
+        return "#"
     elif "*" in value:
         return "."
     elif "<" in value:
