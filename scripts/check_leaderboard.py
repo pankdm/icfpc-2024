@@ -206,7 +206,7 @@ def compute_diff_ranks(old, new):
 
 def send_update_to_slack(diff_stats):
     msgs = [
-        ":rocket::rocket:rocket:"
+        ":rocket::rocket::rocket:"
     ]
     if len(diff_stats.scores) > 0:
         lines = []
