@@ -215,6 +215,9 @@ export default function Simulator() {
                     Space used: {spaceUsed.x} x {spaceUsed.y}
                   </Text>
                   <Text>
+                      Volume: {spaceUsed.x * spaceUsed.y * spaceUsed?.ticks}
+                  </Text>
+                  <Text>
                       Total ticks: {snapshots?.length}
                   </Text>
                   </Group>
