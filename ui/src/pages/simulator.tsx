@@ -5,12 +5,13 @@ import {
   Group,
   Slider,
   Stack,
+  Text,
   TextInput,
   Textarea,
   Title,
 } from '@mantine/core'
 import { Helmet } from 'react-helmet'
-import { simulate } from '../utils/simulate3d.js'
+import { simulate } from '../utils/simulate3d'
 import config from '../config'
 import { useState } from 'react'
 import { persistentAtom } from '@nanostores/persistent'
@@ -30,12 +31,14 @@ export default function Simulator() {
   // const decrStep = () => setStep(Math.max((step -= 1), 0))
   const currentSnapshot = snapshots?.[step]
   const [finalBoard, setFinalBoard] = useState('')
+  const [spaceUsed, setSpaceUsed] = useState<any>()
   const handleClickSimulate = () => {
-    const { finalBoard, historicalBoards } = simulate(
+    const { finalBoard, historicalBoards, spaceUsed } = simulate(
       input,
       parseInt(varA),
       parseInt(varB)
     )
+    setSpaceUsed(spaceUsed)
     setSnapshots(historicalBoards)
     setStep(historicalBoards.length - 1)
     setFinalBoard(finalBoard)
@@ -70,11 +73,10 @@ export default function Simulator() {
           <Button onClick={handleClickSimulate}>Simulate</Button>
           <Textarea
             styles={{ input: { fontFamily: 'monospace' } }}
-            // disabled
             contentEditable={false}
             label={`Time ${currentSnapshot?.t}`}
             placeholder="Output will show here"
-            value={currentSnapshot && currentSnapshot.boardToString()}
+            value={currentSnapshot && currentSnapshot.board.toString()}
             minRows={15}
           />
           <Slider
@@ -85,9 +87,23 @@ export default function Simulator() {
             onChange={(v) => setStep(v - 1)}
           />
           {finalBoard && (
-            <Title order={3}>
-              Answer: {finalBoard?.result ? finalBoard?.result.value : 'N/A'}
-            </Title>
+            <>
+              <Title order={3}>
+                Answer:{' '}
+                {finalBoard?.history?.result
+                  ? finalBoard.history.result.value
+                  : 'N/A'}
+              </Title>
+              {spaceUsed && (
+                <Group>
+                  <Text>Ticks used: {spaceUsed?.maxT}</Text>
+                  <Text>
+                    Space used: {spaceUsed.maxX - spaceUsed.minX} x{' '}
+                    {spaceUsed.maxY - spaceUsed.minY}
+                  </Text>
+                </Group>
+              )}
+            </>
           )}
         </Stack>
       </Container>
