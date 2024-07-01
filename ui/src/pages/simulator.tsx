@@ -164,15 +164,17 @@ const SnapshotPreview = ({
       .filter((cell) => cell.val.opcode === '@')
       .map((cell) => ({
         from: cell.coord,
-        to: {
-          x:
-            cell.coord.x -
-            snapshot.board.get([cell.coord.x - 1, cell.coord.y]).val.value,
-          y:
-            cell.coord.y -
-            snapshot.board.get([cell.coord.x + 1, cell.coord.y]).val.value,
-        },
-      })),
+        to: snapshot.board.get([cell.coord.x - 1, cell.coord.y]) &&
+          snapshot.board.get([cell.coord.x + 1, cell.coord.y]) && {
+            x:
+              cell.coord.x -
+              snapshot.board.get([cell.coord.x - 1, cell.coord.y]).val.value,
+            y:
+              cell.coord.y -
+              snapshot.board.get([cell.coord.x + 1, cell.coord.y]).val.value,
+          },
+      }))
+      .filter((wd) => wd.to),
   }
   const cellSize = 50 * zoom
   return (
@@ -220,7 +222,7 @@ export default function Simulator() {
   const tsvInput = useStore($tsvInput)
   const varA = useStore($varA)
   const varB = useStore($varB)
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(null)
   const [snapshots, setSnapshots] = useState<any[]>()
   const [step, setStep] = useState(0)
   const currentSnapshot = snapshots?.[step]
@@ -294,7 +296,9 @@ export default function Simulator() {
           <Button onClick={handleClickSimulate}>Simulate</Button>
           {error && (
             <Alert color="red">
-              <Text ff="monospace" sx={{whiteSpace: 'pre'}}>{error.stack}</Text>
+              <Text ff="monospace" sx={{ whiteSpace: 'pre' }}>
+                {error.stack}
+              </Text>
             </Alert>
           )}
           <Group>

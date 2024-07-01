@@ -19,6 +19,7 @@ function parseLabels(cells: string[][]) {
       let value = row[x]
       if (value.includes('@')) {
         if (!value.includes('>')) {
+          continue
           throw new Error(`Error: @-value '${value}' without '>' label!`)
         }
         let label = value.split('>')[1]
