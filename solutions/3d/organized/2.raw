@@ -1,11 +1,7 @@
-	A	
--1	*	
-	A*	
-X*	=	S
-^	A	
-X=0 < #loop	=	S
-v	1	
-X*	+	
-	X*	
-1	@ > #loop	4
-	2	
+	A
+A	add	2a*
+	2a*
+	@ > #loop
+	1		2		A
+2a* < #loop	add	2a+1*	%	1 / -1 *	*
+	2a+1*		1 / -1 *		S

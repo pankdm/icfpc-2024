@@ -1,7 +1,7 @@
-	X*	<	X=0 < #loop	>	X*	
-B	add	B*	v	1	add	X1*
-	B*		X*		X1*	
-A	eq	A	add	A*	v	
-	S		A*		X1*	
-	B	B	eq		@ > #loop	
-A	eq	S	S		3	
+	10		0		B
+10	*	99 < #acc	add	acc*	eq
+	acc*	<	acc*		S
+A	eq	-1	add
+	S		acc*
+	B	dx	@ > #acc	dy
+A	eq	S	2
