@@ -12,6 +12,9 @@ from time import time
 import os
 from collections import defaultdict
 
+from dotenv import load_dotenv
+load_dotenv()
+
 WEBSITE_ROOT = 'https://www.icfpcontest.com'
 API_ROOT = 'https://boundvariable.space'
 CDN_ROOT = 'https://cdn.icfpcontest.com'
@@ -55,8 +58,10 @@ def send_raw_msg(encoded_msg):
         data=encoded_msg
     )
     response.raise_for_status()
-    print('>>>>>', response.headers)
     return response.text
+
+def communicate(encoded_msg):
+    return send_raw_msg(encoded_msg)
 
 def send_msg(msg):
     interpreter = ICFPInterpreter()
