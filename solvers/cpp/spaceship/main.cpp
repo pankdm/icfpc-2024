@@ -20,6 +20,7 @@
 #include "spaceship/solvers/line_sweep1.h"
 #include "spaceship/solvers/line_sweep1a.h"
 #include "spaceship/solvers/line_sweep2.h"
+#include "spaceship/solvers/line_sweep2a.h"
 
 #include "common/files/command_line.h"
 #include "common/solvers/ext/run_n.h"
@@ -74,6 +75,8 @@ spaceship::BaseSolver::PSolver CreateSolver(const files::CommandLine& cmd,
     return std::make_shared<spaceship::LineSweep1A>(timelimit);
   } else if (solver_name == "ls2") {
     return std::make_shared<spaceship::LineSweep2>(timelimit, cmd.GetInt("max_steps_between_points"));
+  } else if (solver_name == "ls2a") {
+    return std::make_shared<spaceship::LineSweep2A>(timelimit, cmd.GetInt("max_steps_between_points"));
   } else {
     std::cerr << "Unknown solver type: " << solver_name << std::endl;
     exit(-1);

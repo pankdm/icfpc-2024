@@ -34,7 +34,7 @@ class LineSweep2 : public BaseSolver {
 
  public:
   LineSweep2() : BaseSolver() {}
-  explicit LineSweep2(unsigned _max_time, unsigned _max_steps_between_points) : BaseSolver(_max_time), max_steps_between_points(_max_steps_between_points) {}
+  LineSweep2(unsigned _max_time, unsigned _max_steps_between_points) : BaseSolver(_max_time), max_steps_between_points(_max_steps_between_points) {}
 
   PSolver Clone() const override {
     return std::make_shared<LineSweep2>(*this);
@@ -104,7 +104,7 @@ class LineSweep2 : public BaseSolver {
     return vv;
   }
 
-  std::string SolveI(const std::vector<I2Point>& line, unsigned max_time_in_seconds) {
+  std::string SolveI(const std::vector<I2Point>& line, unsigned max_time_in_seconds, bool silent = false) {
     Timer t;
     std::vector<std::unordered_map<I2Vector, Task>> tasks;
     std::vector<HeapMinOnTop<TaskInfo>> vheap;
@@ -154,22 +154,10 @@ class LineSweep2 : public BaseSolver {
           solution_exist = true;
           best_solution = vheap[i].Top().final_cost;
           best_solution_v = vheap[i].Top().v;
-          std::cout << "New best solution with cost " << best_solution
-                    << std::endl;
-          // std::string ss;
-          // auto t_hash = vheap[i].Top().hash;
-          // auto t = &(tasks[t_hash]);
-          // if (t->cost != t->min_final_cost) {
-          //   std::cout << "\tUnexpected cost diff:\t" << t->cost << "\t"
-          //             << t->min_final_cost << std::endl;
-          // }
-          // for (; t->cost > 0;) {
-          //   auto t2 = &(tasks[t->source_hash]);
-          //   ss += V2C(t->ss.v - t2->ss.v);
-          //   t = t2;
-          // }
-          // std::reverse(ss.begin(), ss.end());
-          // best_s = ss;
+          if (!silent) {
+            std::cout << "New best solution with cost " << best_solution
+                      << std::endl;
+          }
           break;
         }
 
@@ -238,11 +226,13 @@ class LineSweep2 : public BaseSolver {
       }
       if (done) break;
     }
-    size_t cache_size = 0, cache_psat_size = 0;
-    for (auto& it : tasks) cache_size += it.size();
-    for (auto& it : cache_psat) cache_psat_size += it.size();
-    std::cout << "\tStatus = " << status << "\tCashe size = " << cache_size << "\tPSAT cashe size = " << cache_psat_size
-              << std::endl;
+    if (!silent) {
+      size_t cache_size = 0, cache_psat_size = 0;
+      for (auto& it : tasks) cache_size += it.size();
+      for (auto& it : cache_psat) cache_psat_size += it.size();
+      std::cout << "\tStatus = " << status << "\tCashe size = " << cache_size << "\tPSAT cashe size = " << cache_psat_size
+                << std::endl;
+    }
     
     // Reconstruct solution
     if (!solution_exist) return "";
@@ -311,19 +301,22 @@ class LineSweep2 : public BaseSolver {
   Solution Solve(const TProblem& p) override {
     Solution s;
     s.SetId(p.Id());
-    auto tvp = DropDups(p.GetPoints());
 
-    // Construct line
-    auto line = ConstructLine(tvp);
+    // Regular solution
+    auto line = ConstructLine(DropDups(p.GetPoints()));
 
     // Solve
     auto s1 = SolveI(line, max_time_in_seconds / 2);
     std::reverse(line.begin(), line.end());
     auto s2 = SolveI(line, max_time_in_seconds / 2);
     s.commands = (s2.empty()                 ? s1
-                  : s1.empty()               ? s2 
+                  : s1.empty()               ? s2
                   : (s1.size() <= s2.size()) ? s1
                                              : s2);
+
+    // // Alternative
+    // auto line = DropDups(p.GetPoints(), true);
+    // s.commands = SolveI(line, max_time_in_seconds);
 
     std::cout << p.Id() << "\t" << p.GetPoints().size() << "\t" << s.commands.size() << std::endl;
     return s;
