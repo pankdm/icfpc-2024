@@ -4,6 +4,9 @@ from uploader import send_solution
 import re
 from runner import parse_prog
 
+SUBMIT = True
+
+
 def extract_score(input_string):
     pattern = r'(\d+)!'  # This pattern captures one or more digits followed by an exclamation mark
     match = re.search(pattern, input_string)
@@ -34,6 +37,10 @@ def parse_labels(cells):
                     print (f"Error!!: @-value '{value}' without '>' label!")
                 else:
                     label = value.split(">")[1]
+                    if label not in label_to_location:
+                        print(f"Error! missing label {label}")
+                        continue
+
                     x0, y0 = label_to_location[label]
 
                     dx = x - x0
@@ -136,20 +143,25 @@ solution = get_solution(data)
 with open(output_file, "w") as out:
     out.write(solution)
 
-prog = parse_prog(solution)
-padded_solution = prog.to_str_padded()
-with open(f"{output_file}.nice", "w") as out:
-    out.write(padded_solution)
 
-print ("")
-print ("[Sending the solution]")
-msg = send_solution(solution, "3d", num)
 
-if msg is not None and "Correct" in msg:
-    score = extract_score(msg)
-
-    score_output = f"solutions/3d/organized/{prefix}.txt.{score}"
-    print (f"Writing to file = {score_output}")
-    with open(score_output, "w") as out:
+if SUBMIT:
+    prog = parse_prog(solution)
+    padded_solution = prog.to_str_padded()
+    with open(f"{output_file}.nice", "w") as out:
         out.write(padded_solution)
+
+    print ("")
+    print ("[Sending the solution]")
+    msg = send_solution(solution, "3d", num)
+
+    if msg is not None and "Correct" in msg:
+        score = extract_score(msg)
+
+        score_output = f"solutions/3d/organized/{prefix}.txt.{score}"
+        print (f"Writing to file = {score_output}")
+        with open(score_output, "w") as out:
+            out.write(padded_solution)
+
+
 

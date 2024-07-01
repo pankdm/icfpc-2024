@@ -1,34 +1,44 @@
-				10								
-	A*	<	A < #A1	/	A/10*	>	A*					
-0	eq			A/10*			v					
-	0*				A*	<	A*	>	A*			
-	v				v				v			
-	0*				d*				d*			
-dx	@ > #gate	dy		dx	@ > #A1	dy		dx	@ > #A2	dy		
-	dt=3				dt=5				dt=5			
-					10						4	
-				A < #A2	%	d = A%10*	>	d*	>	d*	eq	
-	d*	<	d*	<	d = A%10*	>	d*				d*	
-1	eq		v	3		2	eq				v	
-	d*		d*	eq			d*				d*	
-	v			d*			v			dx	@ > #2or4	dy
-	d*			v			d*				dt=5	
-dx	@ > #1or3	dy		d*			v					
-	dt=5		dx	@ > #1or3	dy		d*					
-				dt=5		dx	@ > #2or4	dy				
-							dt=5					
-				10		d* < #2or4						
-	B*	<	B=0 < #B1	*	B*10*	add	B*					
-0* < #gate	add	0*		B*10*		B*	>	B*				
-	B*	-	B*			v	dx	@ > #B1	dy			
-0	#	B*	/			B*		dt=3			d* < #1or3	
-	S		S		dx	@ > #B2	dy			-1	add	?*
-						dt=3			10		d-1*	
-						B*	<	B=0 < #B2	%	B%10*	#	d-1*
-						v	10		?*		B*	
-						B*	/	B/10*			v	B*
-							B/10*	>	B*		B*	-
-							v	dx	@ > #B1	dy		S
-							B*		dt=4			
-						dx	@ > #B2	dy				
-							dt=4					
+					d* < #d2												
+B < #B1				1	add												
+^ < #right1	0* < #check		10		d* + 1		0										
+B*	add	B*	%	B%10*	eq	B*	neq	S									
+		v			B*					A*	<	A*	<	A < #A2			
+		B*								^ < #right2			10				
+		v	10							A*	>	A*	/	A/10*			
+		B*	/										A/10*				
+			B/10*									dx	@ > #A2	dy			
+		dx	@ > #B	dy									dt=5				
+			dt=5						A < #A								
+									v < #left2	10		2				0	
+	A*	<	A*	<	A*	<	A*	<	A*	%	d = A%10*	%	mod*	>	0|1*	eq	0*
+dx	@ > #A3	dy	v					d*	<	d = A%10*		mod*		0	neq	0|1*	@ > #check
+	dt=5		A*					v		v					0*		dt=5
+		dx	@ > #A2	dy		d*	<	d*		d*	>	d*		dx	@ > #update	dy	
+			dt=5		dx	@ > #d2	dy					v			dt=5		
+						dt=5						d*	>				
+					B*	<	B*	<	B < #B		dx	@ > #d1	dy				
+					v < #left1							dt=5					
+	B*	<	B*	<	B*	>	B*	>	B*								
+dx	@ > #B1	dy						dx	@ > #B2	dy							
+	dt=5								dt=5								
+					^ < #meta2	>											
+							v										
+		<		<		<		>		>		>					
+dx	@ > #left1	dy	v						v			dx	@ > #meta1	dy			
+	dt=5												dt=5				
+		dx	@ > #left2	dy													
+			dt=5														
+					v < #meta1	>											
+							v										
+		<		<		<		>		>		>					
+dx	@ > #right1	dy	v						v			dx	@ > #meta2	dy			
+	dt=5												dt=5				
+		dx	@ > #right2	dy				dx	@ > #right3	dy							
+			dt=5						dt=5								
+					B < #B2												
+					^ < #right3	0* < #update		10				d* < #d1					
+	0		B*	<	B*	add	B*	*	B*10	>	B*	add	B*10 + d				
+A < #A3	eq	0*	add	B*								B*10 + d					
+			B*	>	B*						dx	@ > #B	dy				
+		0	neq	B*	/							dt =5					
+			S		S												
