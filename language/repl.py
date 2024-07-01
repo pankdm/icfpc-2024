@@ -17,7 +17,7 @@ def send(s):
         resp = post(
             "https://boundvariable.space/communicate",
             data=command,
-            headers={"Authorization": f"Bearer {os.environ["ICFPC_TOKEN"]}"}
+            headers={"Authorization": f"Bearer {os.environ['ICFPC_TOKEN']}"}
         )
         resp.raise_for_status()
         print (f"  << got {resp.text}")
