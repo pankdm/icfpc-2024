@@ -19,6 +19,7 @@
 #include "spaceship/solvers/greedyls1.h"
 #include "spaceship/solvers/line_sweep1.h"
 #include "spaceship/solvers/line_sweep1a.h"
+#include "spaceship/solvers/line_sweep2.h"
 
 #include "common/files/command_line.h"
 #include "common/solvers/ext/run_n.h"
@@ -31,6 +32,7 @@ void InitCommaneLine(files::CommandLine& cmd) {
   cmd.AddArg("solver", "greedy1");
   cmd.AddArg("timelimit", 125);
   cmd.AddArg("max_speed_at_stop", 100);
+  cmd.AddArg("max_steps_between_points", 100);
   cmd.AddArg("nthreads", 4);
   cmd.AddArg("first_problem", 1);
   cmd.AddArg("last_problem", spaceship::last_problem);
@@ -70,6 +72,8 @@ spaceship::BaseSolver::PSolver CreateSolver(const files::CommandLine& cmd,
     return std::make_shared<spaceship::LineSweep1>(timelimit);
   } else if (solver_name == "ls1a") {
     return std::make_shared<spaceship::LineSweep1A>(timelimit);
+  } else if (solver_name == "ls2") {
+    return std::make_shared<spaceship::LineSweep2>(timelimit, cmd.GetInt("max_steps_between_points"));
   } else {
     std::cerr << "Unknown solver type: " << solver_name << std::endl;
     exit(-1);

@@ -6,6 +6,7 @@
 #include "common/geometry/d2/base.h"
 #include "common/geometry/d2/point.h"
 #include "common/geometry/d2/vector.h"
+#include "common/numeric/utils/abs.h"
 
 #include <iostream>
 #include <utility>
@@ -44,6 +45,36 @@ class OnePointSolver {
 
   static char BestMove(const I2Vector& v, const I2Point& p) {
     return Solve(v, p).first;
+  }
+
+  static std::string GetPath(const I2Vector& v, const I2Point& p) {
+    if (p == I2Point()) return "";
+    auto cv = v;
+    auto cp = p;
+    std::string output;
+    for (auto s = MinSteps(v, p); s-- > 0;) {
+      auto d = MaxDistance(s);
+      cp -= cv;
+      bool found = false;
+      for (int idx = -1; (idx <= 1) && !found; ++idx) {
+        for (int idy = -1; (idy <= 1) && !found; ++idy) {
+          I2Vector idv(idx, idy);
+          cp -= idv;
+          cv += idv;
+          if ((Abs(cp.x - cv.dx * s) <= d) && (Abs(cp.y - cv.dy * s) <= d)) {
+            found = true;
+            output += V2C(idv);
+          } else {
+            cp += idv;
+            cv -= idv;
+          }
+        }
+      }
+      if (!found) {
+        std::cout << "Ops" << std::endl;
+      }
+    }
+    return output;
   }
 };
 }  // namespace spaceship
