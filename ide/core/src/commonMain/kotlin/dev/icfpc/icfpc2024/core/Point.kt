@@ -13,10 +13,6 @@ data class Point(
         x = x - offset.point.x,
         y = y - offset.point.y,
     )
-
-    override fun toString(): String {
-        return super.toString()
-    }
 }
 
 @JvmInline
