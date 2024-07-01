@@ -64,7 +64,8 @@ class Board internal constructor(
                 (minX..maxX).forEach { x ->
                     append(cells[Point(x, y)] ?: ".")
                     if (x != maxX) {
-                        append("\t")
+                        // append("\t")
+                        append(" ")
                     }
                 }
                 if (y != maxY) {
