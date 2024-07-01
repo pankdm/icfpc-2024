@@ -98,6 +98,7 @@ sealed class Op: Value {
             val dt = builder[cell + Offset.DOWN] as? Num ?: return
 
             builder.warp(
+                source = cell,
                 timeDelta = dt.value,
                 point = cell - Offset(x = dx.value, y = dy.value),
                 value = value,

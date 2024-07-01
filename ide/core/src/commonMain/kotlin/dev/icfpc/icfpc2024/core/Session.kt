@@ -112,25 +112,24 @@ class Session(
             if (warps.isNotEmpty()) return
 
             if (value != null) {
-                require(writes.getOrPut(point) { value } == value) {
-                    "Trying to write different values to point $point"
-                }
+                require(point !in writes) { "Trying to write different values to point $point" }
+                writes[point] = value
             } else {
                 removes += point
             }
         }
 
-        fun warp(timeDelta: Int, point: Point, value: Value) {
+        fun warp(source: Point, timeDelta: Int, point: Point, value: Value) {
             // No need to warp if we're outputting values
             if (output != null) return
 
-            require(timeDelta > 0) { "Expect to warp at least one tick into past" }
-            require(timeDelta < from.time) { "Can't warp past Big Bang" }
+            require(timeDelta > 0) { "Expect to warp at least one tick into past for cell $source" }
+            require(timeDelta < from.time) { "Can't warp past Big Bang for cell $source" }
             require(warpDelta == null || warpDelta == timeDelta) {
-                "Unable to warp to $warpDelta and $timeDelta at the same time"
+                "Unable to warp to $warpDelta and $timeDelta at the same time for cell $source"
             }
             require(warps.getOrPut(point) { value } == value) {
-                "Trying to write different values to point $point when warping"
+                "Trying to write different values to point $point when warping for cell $source"
             }
 
             warpDelta = timeDelta
