@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-     width="1000" height="1994.8453608247423" viewBox="-97.0 -193.5 194 387">
+     width="1000" height="2010.3092783505156" viewBox="-173 -5 194 390">
 <defs>
 </defs>
 <circle cx="-9" cy="53" r="1" fill="red" />
@@ -88,4 +88,5 @@
 <circle cx="-145" cy="369" r="1" fill="red" />
 <circle cx="-76" cy="265" r="1" fill="red" />
 <circle cx="4" cy="31" r="1" fill="red" />
+<circle cx="0" cy="0" r="1" fill="blue" />
 </svg>
