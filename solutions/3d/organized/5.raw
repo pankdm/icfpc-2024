@@ -1,9 +1,8 @@
-				A		0	
-	kB*	<	B < #B	%	B*	eq	
-0* < #gate	add		v	B*		0*	
-	S		kB*		dx	@ > #gate	dy
-			v	B		dt = 2	
-			kB*	add	?*		
-				kB*			
-			dx	@ > #B	dy		
-				dt=3			
+		A		0
+	B < #B	%	B*	eq	0*
+	v	B*		0*
+	B*	>	B*	add	S
+B	add	B+*		B
+	B+*		A	eq	S
+dx	@ > #B	dy
+	dt=2
