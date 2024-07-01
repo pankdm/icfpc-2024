@@ -52,8 +52,9 @@ class LineSweep2B : public LineSweep2 {
     s.SetId(p.Id());
 
     TProblem pl;
-    for (unsigned i = 0; i < 1; ++i) {
-      if (pl.Load(p.Id(), "../../problems/spaceship_lkh_euc/spaceship" + p.Id() + ".txt")) {
+    for (int i = -1; i < 30; ++i) {
+      if (pl.Load(p.Id(), "../../problems/spaceship_lkh_euc/spaceship" + p.Id() + ".txt" + ((i >= 0) ? (".v" + std::to_string(i)) : ""))) {
+      // if (pl.Load(p.Id(), "../../problems/spaceship_lkh_max/spaceship" + p.Id() + ".txt" + ((i >= 0) ? (".v" + std::to_string(i)) : ""))) {
         auto line = DropDups(pl.GetPoints(), true);
         auto st = SolveI(line, max_time_in_seconds);
         if (!st.empty() && (s.commands.empty() || (s.commands.size() > st.size()))) {
@@ -62,6 +63,7 @@ class LineSweep2B : public LineSweep2 {
       }
     }
 
+    std::cout << p.Id() << "\t" << p.GetPoints().size() << "\t" << s.commands.size() << std::endl;
     return s;
   }
 };

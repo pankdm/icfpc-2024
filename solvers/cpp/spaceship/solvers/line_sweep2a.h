@@ -74,6 +74,9 @@ class LineSweep2A : public LineSweep2 {
       std::reverse(line.begin() + 44, line.begin() + 60);
       std::reverse(line.begin() + 52, line.begin() + 94);
       std::reverse(line.begin() + 36, line.begin() + 59);
+      std::reverse(line.begin() + 79, line.begin() + 81);
+      std::reverse(line.begin() + 12, line.begin() + 18);
+      std::reverse(line.begin() + 9, line.begin() + 13);
     }
 
     s.commands = SolveI(line, max_time_in_seconds, true);
@@ -84,7 +87,7 @@ class LineSweep2A : public LineSweep2 {
     int64_t max_distance = 100;
     if (p.Id() == "18") max_distance = 1000;
 
-    for (bool stop = false; !stop;) {
+    for (bool stop = true; !stop;) {
       stop = true;
       auto best_new = s.commands.size();
       std::string best_s;
