@@ -32,6 +32,7 @@ void InitCommaneLine(files::CommandLine& cmd) {
   cmd.AddArg("solution", "best");
   cmd.AddArg("solver", "greedy1");
   cmd.AddArg("timelimit", 125);
+  cmd.AddArg("max_extra", 5);
   cmd.AddArg("max_speed_at_stop", 100);
   cmd.AddArg("max_steps_between_points", 100);
   cmd.AddArg("nthreads", 4);
@@ -74,9 +75,9 @@ spaceship::BaseSolver::PSolver CreateSolver(const files::CommandLine& cmd,
   } else if (solver_name == "ls1a") {
     return std::make_shared<spaceship::LineSweep1A>(timelimit);
   } else if (solver_name == "ls2") {
-    return std::make_shared<spaceship::LineSweep2>(timelimit, cmd.GetInt("max_steps_between_points"));
+    return std::make_shared<spaceship::LineSweep2>(timelimit, cmd.GetInt("max_steps_between_points"), cmd.GetInt("max_extra"));
   } else if (solver_name == "ls2a") {
-    return std::make_shared<spaceship::LineSweep2A>(timelimit, cmd.GetInt("max_steps_between_points"));
+    return std::make_shared<spaceship::LineSweep2A>(timelimit, cmd.GetInt("max_steps_between_points"), cmd.GetInt("max_extra"));
   } else {
     std::cerr << "Unknown solver type: " << solver_name << std::endl;
     exit(-1);

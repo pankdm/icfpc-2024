@@ -31,10 +31,12 @@ class LineSweep2 : public BaseSolver {
 
  protected:
   unsigned max_steps_between_points;
+  unsigned max_extra;
 
  public:
   LineSweep2() : BaseSolver() {}
-  LineSweep2(unsigned _max_time, unsigned _max_steps_between_points) : BaseSolver(_max_time), max_steps_between_points(_max_steps_between_points) {}
+  LineSweep2(unsigned _max_time, unsigned _max_steps_between_points, unsigned _max_extra) : 
+    BaseSolver(_max_time), max_steps_between_points(_max_steps_between_points), max_extra(_max_extra) {}
 
   PSolver Clone() const override {
     return std::make_shared<LineSweep2>(*this);
@@ -52,6 +54,7 @@ class LineSweep2 : public BaseSolver {
     I2Vector vfrom;
 
     unsigned cost;
+    unsigned min_extra;
     unsigned extra;
     unsigned final_cost;
   };
@@ -114,7 +117,8 @@ class LineSweep2 : public BaseSolver {
     Task task_init;
     task_init.v = I2Vector();
     task_init.cost = 0;
-    task_init.extra = OnePointSolver::MinSteps(task_init.v, line[0]);
+    task_init.min_extra = OnePointSolver::MinSteps(task_init.v, line[0]);
+    task_init.extra = task_init.min_extra;
     task_init.final_cost = task_init.cost + task_init.extra;
     if (task_init.extra <= max_steps_between_points) {
       tasks[0][task_init.v] = task_init;
@@ -196,7 +200,8 @@ class LineSweep2 : public BaseSolver {
                   task_new.v = new_v;
                   task_new.vfrom = t.v;
                   task_new.cost = t.final_cost;
-                  task_new.extra = OnePointSolver::MinSteps(task_new.v, (line[i + 1] - line[i]).ToPoint());
+                  task_new.min_extra = OnePointSolver::MinSteps(task_new.v, (line[i + 1] - line[i]).ToPoint());
+                  task_new.extra = task_new.min_extra;
                   task_new.final_cost = task_new.cost + task_new.extra;
                   if (task_new.extra <= max_steps_between_points) {
                     tasks[i + 1][task_new.v] = task_new;
@@ -207,7 +212,7 @@ class LineSweep2 : public BaseSolver {
                     // Better cost, reset node
                     it->second.vfrom = t.v;
                     it->second.cost = t.final_cost;
-                    it->second.extra = OnePointSolver::MinSteps(it->second.v, (line[i + 1] - line[i]).ToPoint());
+                    it->second.extra = it->second.min_extra;
                     it->second.final_cost = it->second.cost + it->second.extra;
                     vheap[i + 1].Add({it->second.v, it->second.cost, it->second.final_cost});
                   }
@@ -218,7 +223,7 @@ class LineSweep2 : public BaseSolver {
         }
 
         // Increase search window
-        if (t.extra < max_steps_between_points) {
+        if ((t.extra < max_steps_between_points) && (t.extra < t.min_extra + max_extra)) {
           tasks[i][t_v].extra += 1;
           tasks[i][t_v].final_cost += 1;
           vheap[i].Add({t.v, t.cost, t.final_cost + 1});

@@ -35,7 +35,8 @@ class LineSweep2A : public LineSweep2 {
 
  public:
   LineSweep2A() : LineSweep2() {}
-  LineSweep2A(unsigned _max_time, unsigned _max_steps_between_points) : LineSweep2(_max_time, _max_steps_between_points) {}
+  LineSweep2A(unsigned _max_time, unsigned _max_steps_between_points, unsigned _max_extra) :
+    LineSweep2(_max_time, _max_steps_between_points, _max_extra) {}
 
   PSolver Clone() const override {
     return std::make_shared<LineSweep2A>(*this);
@@ -53,6 +54,9 @@ class LineSweep2A : public LineSweep2 {
     // Construct initial line
     auto line = ConstructLine(DropDups(p.GetPoints()));
 
+    if (Abs(line[0].x) + Abs(line[0].y) > Abs(line.back().x) + Abs(line.back().y))
+      std::reverse(line.begin(), line.end());
+
     if (p.Id() == "17") {
       std::reverse(line.begin() + 40, line.begin() + 93);
       std::reverse(line.begin() + 40, line.begin() + 43);
@@ -60,10 +64,12 @@ class LineSweep2A : public LineSweep2 {
       std::reverse(line.begin() + 18, line.begin() + 97);
       std::reverse(line.begin() + 26, line.begin() + 30);
       std::reverse(line.begin() + 32, line.begin() + 55);
+      std::reverse(line.begin() + 67, line.begin() + 69);
+      std::reverse(line.begin() + 0, line.begin() + 74);
     }
-
-    if (Abs(line[0].x) + Abs(line[0].y) > Abs(line.back().x) + Abs(line.back().y))
-      std::reverse(line.begin(), line.end());
+    if (p.Id() == "18") {
+      std::reverse(line.begin() + 24, line.begin() + 47);
+    }
 
     s.commands = SolveI(line, max_time_in_seconds, true);
     std::cout << p.Id() << "\t" << p.GetPoints().size() << "\t"
