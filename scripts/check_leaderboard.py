@@ -229,8 +229,8 @@ def send_update_to_slack(diff_stats):
         for (name_id, old, new) in diff_stats.ranks:
             lines = []
             lines.extend([
-                f"After:  {' | '.join(new)}",
                 f"Before: {' | '.join(old)}",
+                f"After:  {' | '.join(new)}",
             ])
 
             msgs.append("\n".join([
