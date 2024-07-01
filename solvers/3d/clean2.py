@@ -31,15 +31,16 @@ def parse_labels(cells):
         for x, value in enumerate(row):
             if "@" in value:
                 if ">" not in value:
-                    assert False, f"Error: @-value '{value}' without '>' label!"
-                label = value.split(">")[1]
-                x0, y0 = label_to_location[label]
+                    print (f"Error!!: @-value '{value}' without '>' label!")
+                else:
+                    label = value.split(">")[1]
+                    x0, y0 = label_to_location[label]
 
-                dx = x - x0
-                dy = y - y0
+                    dx = x - x0
+                    dy = y - y0
 
-                overwrites[ (x - 1, y)] = str(dx)
-                overwrites[ (x + 1, y)] = str(dy)
+                    overwrites[ (x - 1, y)] = str(dx)
+                    overwrites[ (x + 1, y)] = str(dy)
     
     return overwrites
 

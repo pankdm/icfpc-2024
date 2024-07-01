@@ -5,6 +5,6 @@
 	A*	<	A < #A	>	A*	*	acc*
 1	=	-1	+	A-1*		acc* (replaces acc)
 	1* (to #1)		A-1*	v	dx=2	@ > #acc	dy=3
-dx=-6	@ > #1	dy=7		A-1* (replaces A)		2
+dx=-6	@	dy=7		A-1* (replaces A)		2
 	2		dx=1	@ > #A	dy=4
 				2
