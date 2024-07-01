@@ -1,3 +1,7 @@
-	A		1		2		0
-A	add	2A*	add	2A+1*	%	A	eq
-					S		S
+	A
+A	add	2a*	0
+	2a*	A	eq
+	@ > #loop		S
+	1		2
+2a* < #loop	add	2a+1*	%
+	2a+1*		S
