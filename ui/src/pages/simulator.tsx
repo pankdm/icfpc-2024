@@ -227,8 +227,13 @@ export default function Simulator() {
   const [finalBoard, setFinalBoard] = useState<any>()
   const [spaceUsed, setSpaceUsed] = useState<any>()
   const handleClickFormatTsvToInput = () => {
-    const input = tsvToBoard(tsvInput)
-    $boardInput.set(input)
+    setError(null)
+    try {
+      const input = tsvToBoard(tsvInput)
+      $boardInput.set(input)
+    } catch (err) {
+      setError(err)
+    }
   }
   const handleClickSimulate = () => {
     setError(null)
