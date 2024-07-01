@@ -1,5 +1,6 @@
 import {
   ActionIcon,
+  Alert,
   Box,
   BoxProps,
   Button,
@@ -219,6 +220,7 @@ export default function Simulator() {
   const tsvInput = useStore($tsvInput)
   const varA = useStore($varA)
   const varB = useStore($varB)
+  const [error, setError] = useState(null);
   const [snapshots, setSnapshots] = useState<any[]>()
   const [step, setStep] = useState(0)
   const currentSnapshot = snapshots?.[step]
@@ -229,15 +231,20 @@ export default function Simulator() {
     $boardInput.set(input)
   }
   const handleClickSimulate = () => {
-    const { finalBoard, historicalBoards, spaceUsed } = simulate(
-      boardInput,
-      parseInt(varA),
-      parseInt(varB)
-    )
-    setSpaceUsed(spaceUsed)
-    setSnapshots(historicalBoards)
-    setStep(0)
-    setFinalBoard(finalBoard)
+    setError(null)
+    try {
+      const { finalBoard, historicalBoards, spaceUsed } = simulate(
+        boardInput,
+        parseInt(varA),
+        parseInt(varB)
+      )
+      setSpaceUsed(spaceUsed)
+      setSnapshots(historicalBoards)
+      setStep(0)
+      setFinalBoard(finalBoard)
+    } catch (err) {
+      setError(err)
+    }
   }
   const [zoom, setZoom] = useState(1)
   const zoomIn = () => setZoom(zoom * 1.2)
@@ -280,6 +287,11 @@ export default function Simulator() {
             />
           </Group>
           <Button onClick={handleClickSimulate}>Simulate</Button>
+          {error && (
+            <Alert color="red">
+              <Text ff="monospace" sx={{whiteSpace: 'pre'}}>{error.stack}</Text>
+            </Alert>
+          )}
           <Group>
             <TextInput
               label="Variable A"

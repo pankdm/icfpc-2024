@@ -506,6 +506,7 @@ export const simulate = (
     console.log(`Result: ${board.history.result}`)
   } catch (t) {
     console.error('oopsie', t)
+    throw t
   }
   return {
     finalBoard: board,

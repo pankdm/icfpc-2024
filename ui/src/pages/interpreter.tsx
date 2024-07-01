@@ -66,7 +66,7 @@ export default function Interpreter() {
     setLoadingComms(false)
   }
   return (
-    <Center h="100%" pos="relative" component="form" onSubmit={() => sendComms}>
+    <Center mih="100%" pos="relative" component="form" onSubmit={() => sendComms}>
       <TrafficLight
         pos="absolute"
         top={0}
