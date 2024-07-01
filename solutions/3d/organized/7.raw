@@ -1,12 +1,11 @@
-						A		
-			0		B* 	=	B* 	
-A*	>	A*	=	S	^	B* 	/	1*
-^			0*		B = 0 < #B		S	
-A*				10	*	B*10*		
-^			10		B*10*			
-A < #A	>	A*	%	A%10*	+	B* 		
-v	10		A%10*		B* (replace B)			
-A*	/	A/10*		0	@ > #B	5		
-	A*	>	A/10* (replace A)		3			
-		1	@ > #A	6				
-			3					
+			0		A
+A*	>	A*	=	B* 	=	B*
+^			S	^	10 / B*	/	S
+A*				B = 0 < #B	*	B*10*
+^			10		B*10*
+A < #A	>	A*	%	A%10*	+	B*
+v	10		A%10*		B* (replace B)
+A*	/	A/10*		dx	@ > #B	dy
+	A*	>	A/10* (replace A)		dt=3
+		1	@ > #A	6
+			dt=3

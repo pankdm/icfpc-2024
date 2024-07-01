@@ -1,10 +1,7 @@
-							1* < #1
-						acc*	*
-						^	S
-				acc=1 < #acc	>	acc*
-	A*	<	A < #A	>	A*	*	acc*
-1	=	-1	+	A-1*		acc* (replaces acc)
-	1* (to #1)		A-1*	v	dx=2	@ > #acc	dy=3
-dx=-6	@	dy=7		A-1* (replaces A)		2
-	2		dx=1	@ > #A	dy=4
-				2
+				1 < #acc
+	m*	<	m = 1 < #mult	*	acc*	>	acc*
+1	add	m1*	v	acc*	v	dx	@ > #acc	dy
+	m1*		m*		acc*		2
+-2	@	A	eq	A*	neq	S	2
+	2	^	A*	1		A	eq
+3	>		A	eq	S		S
