@@ -66,9 +66,14 @@ class LineSweep2A : public LineSweep2 {
       std::reverse(line.begin() + 32, line.begin() + 55);
       std::reverse(line.begin() + 67, line.begin() + 69);
       std::reverse(line.begin() + 0, line.begin() + 74);
-    }
-    if (p.Id() == "18") {
-      std::reverse(line.begin() + 24, line.begin() + 47);
+      std::reverse(line.begin() + 0, line.begin() + 23);
+      std::reverse(line.begin() + 9, line.begin() + 11);
+      std::reverse(line.begin() + 9, line.begin() + 16);
+      std::reverse(line.begin() + 83, line.begin() + 85);
+      std::reverse(line.begin() + 9, line.begin() + 20);
+      std::reverse(line.begin() + 44, line.begin() + 60);
+      std::reverse(line.begin() + 52, line.begin() + 94);
+      std::reverse(line.begin() + 36, line.begin() + 59);
     }
 
     s.commands = SolveI(line, max_time_in_seconds, true);

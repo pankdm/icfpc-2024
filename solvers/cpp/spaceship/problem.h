@@ -19,6 +19,7 @@ class Problem : public solvers::Problem {
   bool Load(const std::string& _id) {
     return Load(_id, "../../problems/spaceship/spaceship" + _id + ".txt");
     // return Load(_id, "../../problems/spaceship_christofides_serdyukov/spaceship" + _id + ".txt");
+    // return Load(_id, "../../problems/spaceship_lkh_euc/spaceship" + _id + ".txt");
   }
 
   bool Load(const std::string& _id, const std::string& filename) {
