@@ -36,8 +36,13 @@ import {
   IconZoomOut,
 } from '@tabler/icons-react'
 import { useHotkeys } from '@mantine/hooks'
+import { tsvToBoard } from '../utils/tsv_import'
 
-const $input = persistentAtom<string>('icfpc-2024:simulation-input', '')
+const $tsvInput = persistentAtom<string>('icfpc-2024:simulation-tsvInput', '')
+const $boardInput = persistentAtom<string>(
+  'icfpc-2024:simulation-boardInput',
+  ''
+)
 const $varA = persistentAtom<string>('icfpc-2024:simulation-varA', '1')
 const $varB = persistentAtom<string>('icfpc-2024:simulation-varB', '0')
 
@@ -210,23 +215,28 @@ const SnapshotPreview = ({
 }
 
 export default function Simulator() {
-  const input = useStore($input)
+  const boardInput = useStore($boardInput)
+  const tsvInput = useStore($tsvInput)
   const varA = useStore($varA)
   const varB = useStore($varB)
   const [snapshots, setSnapshots] = useState<any[]>()
   const [step, setStep] = useState(0)
   const currentSnapshot = snapshots?.[step]
-  const [finalBoard, setFinalBoard] = useState('')
+  const [finalBoard, setFinalBoard] = useState<any>()
   const [spaceUsed, setSpaceUsed] = useState<any>()
+  const handleClickFormatTsvToInput = () => {
+    const input = tsvToBoard(tsvInput)
+    $boardInput.set(input)
+  }
   const handleClickSimulate = () => {
     const { finalBoard, historicalBoards, spaceUsed } = simulate(
-      input,
+      boardInput,
       parseInt(varA),
       parseInt(varB)
     )
     setSpaceUsed(spaceUsed)
     setSnapshots(historicalBoards)
-    setStep(historicalBoards.length - 1)
+    setStep(0)
     setFinalBoard(finalBoard)
   }
   const [zoom, setZoom] = useState(1)
@@ -246,14 +256,30 @@ export default function Simulator() {
       </Helmet>
       <Container>
         <Stack w="100%">
-          <Textarea
-            styles={{ input: { fontFamily: 'monospace' } }}
-            label="Solution"
-            placeholder="Input formatted setup"
-            value={input}
-            onChange={(ev) => $input.set(ev.target.value)}
-            minRows={10}
-          />
+          <Group>
+            <Textarea
+              sx={{ flex: 1 }}
+              styles={{ input: { fontFamily: 'monospace' } }}
+              label="Spreadsheet input"
+              placeholder="Paste from spreadsheet"
+              value={tsvInput}
+              onChange={(ev) => $tsvInput.set(ev.target.value)}
+              minRows={10}
+            />
+            <ActionIcon sx={{ flexGrow: 0 }}>
+              <IconArrowRight onClick={handleClickFormatTsvToInput} />
+            </ActionIcon>
+            <Textarea
+              sx={{ flex: 1 }}
+              styles={{ input: { fontFamily: 'monospace' } }}
+              label="Board"
+              placeholder="Input formatted board"
+              value={boardInput}
+              onChange={(ev) => $boardInput.set(ev.target.value)}
+              minRows={10}
+            />
+          </Group>
+          <Button onClick={handleClickSimulate}>Simulate</Button>
           <Group>
             <TextInput
               label="Variable A"
@@ -266,7 +292,6 @@ export default function Simulator() {
               onChange={(ev) => $varB.set(ev.target.value)}
             />
           </Group>
-          <Button onClick={handleClickSimulate}>Simulate</Button>
 
           {finalBoard && (
             <>
