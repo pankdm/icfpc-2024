@@ -6,4 +6,5 @@ while true; do
     PYTHONPATH="./language/" python scripts/check_leaderboard.py
     date
     sleep 600  # Sleep for 10 minutes
+    # sleep 60  # Sleep for 1 minutes
 done
