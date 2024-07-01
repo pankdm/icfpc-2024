@@ -1,12 +1,9 @@
-		B		0	
-	B < #X	%	B*	=	B*
-	v	B*		B*	
-	X*			v	
-	v	A		B*	
-	X*	%	A*	=	A*
-	v	A*		A*	
-	X*	>	X*	+	A*
-B	+	X*		S	
-	X* (replaces X)				
-0	@ > #X	9			
-	4				
+				A		0	
+	kB*	<	B < #B	%	B*	eq	
+0* < #gate	add		v	B*		0*	
+	S		kB*		dx	@ > #gate	dy
+			v	B		dt = 2	
+			kB*	add	?*		
+				kB*			
+			dx	@ > #B	dy		
+				dt=3			
